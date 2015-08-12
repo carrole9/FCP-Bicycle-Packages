@@ -25,8 +25,8 @@ public class Bicycle {
 		this.frameComposition = frameComposition;
 		this.database = database;
 		
-		this.costPrice = costPrice;
-		this.salePrice = salePrice;
+		this.setCostPrice(costPrice);
+		this.setSalePrice(salePrice);
 	}
 	
 
@@ -91,6 +91,26 @@ public class Bicycle {
 		public void addBicycle(){
 			
 			
+		}
+
+
+		public double getCostPrice() {
+			return costPrice;
+		}
+
+
+		public void setCostPrice(double costPrice) {
+			this.costPrice = costPrice;
+		}
+
+
+		public double getSalePrice() {
+			return salePrice;
+		}
+
+
+		public void setSalePrice(double salePrice) {
+			this.salePrice = salePrice;
 		}
 	
 
