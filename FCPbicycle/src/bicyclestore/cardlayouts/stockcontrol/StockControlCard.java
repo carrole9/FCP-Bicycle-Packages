@@ -1,11 +1,18 @@
-package bicyclestore.transaction;
+package bicyclestore.cardlayouts.stockcontrol;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
+
+import bicyclestore.cardlayouts.customercardlayouts.AddCustomerCard;
+import bicyclestore.cardlayouts.customercardlayouts.EditCustomerCard;
+import bicyclestore.cardlayouts.customercardlayouts.ViewCustomerCard;
+import bicyclestore.transaction.StockControl;
  
 public class StockControlCard implements ItemListener {
-    JPanel cards; //a panel that uses CardLayout
+	
+    JPanel cardLayoutPane, cards; //a panel that uses CardLayout
     final static String TEXTPANEL = "Stock Control";
     final static String GRAPHPANEL = "View as a Graph";
     final static String PredictionPANEL = "Sales Forcast";
@@ -13,12 +20,19 @@ public class StockControlCard implements ItemListener {
 	JLabel sales, predictions;
     StockControl stock= new StockControl();
 	GraphIcon graph = new GraphIcon(null, 0, 0);
+	
+	//private JPanel comboBoxPane;
+	
+	public StockControlCard() {
+		cardLayoutPane = new JPanel(new BorderLayout());
+		addComponentToPane(cardLayoutPane);
+	}
      
     public void addComponentToPane(Container pane) {
         //Put the JComboBox in a JPanel to get a nicer look.
         JPanel comboBoxPane = new JPanel(); //use FlowLayout
         String comboBoxItems[] = { TEXTPANEL, GRAPHPANEL };
-        JComboBox cb = new JComboBox(comboBoxItems);
+        JComboBox<String> cb = new JComboBox<String>(comboBoxItems);
     	JButton salesPrediction = new JButton(PredictionPANEL);
     	JButton back = new JButton("Previous Page");
         cb.setEditable(false);
@@ -28,8 +42,6 @@ public class StockControlCard implements ItemListener {
         //Create the "cards".
         JPanel card1 = new JPanel();
         
-        
-         
         JPanel card2 = new JPanel();
         card2.add(graph.createAndShowGUI());
         
@@ -43,6 +55,7 @@ public class StockControlCard implements ItemListener {
          
         pane.add(comboBoxPane, BorderLayout.PAGE_START);
         pane.add(cards, BorderLayout.CENTER);
+        
         bmx = new JLabel("Bmx bikes: ");
 		motorised = new JLabel("Motorised Bike: ");
 		mountain = new JLabel("Mountain Bikes: ");
@@ -106,9 +119,18 @@ public class StockControlCard implements ItemListener {
         //Create and set up the content pane.
         StockControlCard demo = new StockControlCard();
         demo.addComponentToPane(frame.getContentPane());
-         
+        //demo.addComponentToPane(cardLayoutPane); 
+        
         //Display the window.
         frame.pack();
         frame.setVisible(true);
     }
+    
+    public JPanel getStockControlCardLayout() {
+    	return cardLayoutPane;
+    }
+    
+//    public static void main(String[] args) {
+//    	createAndShowGUI();
+//    }
 }

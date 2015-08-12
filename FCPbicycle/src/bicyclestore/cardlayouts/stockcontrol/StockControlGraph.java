@@ -1,4 +1,4 @@
-package bicyclestore.transaction;
+package bicyclestore.cardlayouts.stockcontrol;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.*;
+
+import bicyclestore.transaction.StockControl;
 
 public class StockControlGraph extends JPanel
 {
