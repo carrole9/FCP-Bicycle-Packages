@@ -10,6 +10,7 @@ import javax.swing.JTabbedPane;
 import bicyclestore.cardlayouts.customercardlayouts.CustomersCardLayout;
 import bicyclestore.cardlayouts.ordercardlayouts.OrdersCardLayout;
 import bicyclestore.cardlayouts.stockcontrol.StockControlCard;
+import bicyclestore.cardlayouts.suppliercardlayouts.SuppliersCardLayout;
 import bicyclestore.staff.Employee;
 import bicyclestore.staff.Manager;
 import bicyclestore.staff.SalesAssistant;
@@ -90,6 +91,10 @@ public class GUIDriver extends JFrame{
 		// add stock control layout to stock control tab
 		StockControlCard stockControlCard = new StockControlCard();
 		stockTab.add(stockControlCard.getStockControlCardLayout());
+		
+		// add supplier card layout to supplier control tab
+		SuppliersCardLayout suppliersLayout = new SuppliersCardLayout(database);
+		supplierTab.add(suppliersLayout.getCardLayoutPane());
 		
 		tabbedPane.add("Customers", customerTab);
 		tabbedPane.add("Products", productTab);
