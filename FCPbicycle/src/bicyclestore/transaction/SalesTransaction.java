@@ -30,6 +30,7 @@ public class SalesTransaction extends Transaction {
 		System.out.println("Transaction Cost: €"+ getTransactionCost());
 		System.out.println("Payment Method: "+getPaymentMethod());
 		System.out.println("Transaction Date: "+ getTransactionDate());
+		
 
 }
 }
