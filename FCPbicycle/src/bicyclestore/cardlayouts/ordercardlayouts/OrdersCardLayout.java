@@ -31,6 +31,7 @@ public class OrdersCardLayout extends JPanel implements ItemListener {
 	
 	// Card classes
 	private OrderFromSupplierCard orderSupplierCard;
+	private ViewOrdersCard viewOrdersCard;
 
 	public OrdersCardLayout(Database database, Employee employee) {
 		this.database = database;
@@ -44,13 +45,14 @@ public class OrdersCardLayout extends JPanel implements ItemListener {
 		createComboBoxPane();
 		cards = new JPanel(new CardLayout());
 		
-		orderSupplierCard = new OrderFromSupplierCard(database, employee);
+		orderSupplierCard = new OrderFromSupplierCard(database, employee, this);
+		viewOrdersCard = new ViewOrdersCard(database);
 		//viewCard = new ViewCustomerCard(database);
 		//editCard = new EditCustomerCard(database, this);
 		
 		// create cards to make up card layout
 		JPanel card1 = orderSupplierCard;
-		JPanel card2 = new JPanel();
+		JPanel card2 = viewOrdersCard;
 		JPanel card3 = new JPanel();
 		JPanel card4 = new JPanel();
 		JPanel card5 = new JPanel();
@@ -84,6 +86,12 @@ public class OrdersCardLayout extends JPanel implements ItemListener {
 	public void itemStateChanged(ItemEvent e) {
 		CardLayout cl = (CardLayout)(cards.getLayout());
         cl.show(cards, (String)e.getItem());
+	}
+	
+	public void newOrderAdded(int transactionId) {
+		// refresh customer lists
+		viewOrdersCard.refresh(transactionId);
+		//editCard.refresh(newCustomerName);
 	}
 
 }

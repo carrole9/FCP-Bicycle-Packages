@@ -1,6 +1,7 @@
 package bicyclestore.cardlayouts.ordercardlayouts;
 
 
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -37,6 +38,7 @@ public class OrderFromSupplierCard extends JPanel {
 
 	private Database database;
 	private Employee employee;
+	private OrdersCardLayout cardLayout;
 	
 	private JButton btnSubmit;
 	
@@ -45,17 +47,17 @@ public class OrderFromSupplierCard extends JPanel {
 	
 	private String[] productTypes = {"* Please Select Product Type *", "BMX", "Mountain Bike", "Road Bike", "Hybrid", "Cruiser", "Motorised Bike"};
 	
-	//private String[] productModels = {"Giant", "Lapierre", "Specialized", "GT","Scott"};
-	private String[] productModels;
+	private String[] productModels; // product models will be empty until use selects product type
 	
 	private SpinnerNumberModel numberModel;
 	private JSpinner quantitySpinner;
 	
-	private int transactionIdCount = 1001;
+	private int transactionIdCount = 10005;
 	
-	public OrderFromSupplierCard(Database database, Employee employee) {
+	public OrderFromSupplierCard(Database database, Employee employee, OrdersCardLayout cardLayout) {
 		this.database = database;
 		this.employee = employee;
+		this.cardLayout = cardLayout;
 		initComponents();
 		createOrderFromSupplierCard();
 		
@@ -124,7 +126,7 @@ public class OrderFromSupplierCard extends JPanel {
 	private void createPurchaseTransaction(String supplier, String productType, String model, int quantity) {
 		// add purchasing transaction to the database
 		int transactionId = transactionIdCount++; // retrieve transaction id counter and increment for next order
-		double cost = 350.00; // hard code cost in, temporary
+		double cost = database.getBicycle(model).getCostPrice();
 		database.addPurhasingTransaction(new PurchasingTransaction(transactionId, employee, 
 				database.getSupplier(supplier), cost, "Credit card", new Date()));
 		
@@ -136,6 +138,8 @@ public class OrderFromSupplierCard extends JPanel {
 				+ "\nProduct type: "+productType+", Model: "+model
 				+ "\nQuantity: "+quantity,
 						"Order Processed", JOptionPane.INFORMATION_MESSAGE);
+		
+		cardLayout.newOrderAdded(transactionId);
 	}
 	
 	private class ButtonListener implements ActionListener {
@@ -146,7 +150,7 @@ public class OrderFromSupplierCard extends JPanel {
 			String productChoice = productTypeList.getItemAt(productTypeList.getSelectedIndex());
 			String model = (String)productModelList.getSelectedItem();
 			int quantity = (int)quantitySpinner.getValue();
-			System.out.println("Supplier: "+supplierChoice+", Product type: "+productChoice+", Model: "+model+", Quantity: "+quantity);
+			System.out.println("Processing Order. Supplier: "+supplierChoice+", Product type: "+productChoice+", Model: "+model+", Quantity: "+quantity);
 			createPurchaseTransaction(supplierChoice, productChoice, model, quantity);
 		}
 			
