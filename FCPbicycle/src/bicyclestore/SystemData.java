@@ -1,9 +1,7 @@
 package bicyclestore;
 
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
->>>>>>> origin/master
+
 import java.util.Date;
 
 import bicyclestore.bikes.BMX;
@@ -18,12 +16,11 @@ import bicyclestore.staff.Employee;
 import bicyclestore.staff.Manager;
 import bicyclestore.staff.SalesAssistant;
 import bicyclestore.suppliers.Supplier;
-<<<<<<< HEAD
+
 import bicyclestore.transaction.PurchasingTransaction;
-=======
+
 import bicyclestore.transaction.SalesTransaction;
 
->>>>>>> origin/master
 
 public class SystemData {
 	
@@ -40,11 +37,8 @@ public class SystemData {
 		createCustomerAccounts();
 		createSupplierAccounts();
 		createBicycles();
-<<<<<<< HEAD
 		createOrders();
-=======
 		createSalesTransaction();
->>>>>>> origin/master
 	}
 
 	// hard code some employee accounts into database
@@ -94,7 +88,6 @@ public class SystemData {
 		database.addBicycle(new MotorisedBike("EBCO UCL30 Electric", "Black", 21, 26, "Aluminium", database, 480, 699.99));
 	}
 	
-<<<<<<< HEAD
 	private void createOrders() {
 		database.addPurhasingTransaction(new PurchasingTransaction(10001, database.getEmployee(10002),
 				database.getSupplier(101), 175.0, "Account", new Date()));
@@ -104,13 +97,13 @@ public class SystemData {
 				database.getSupplier(103), 350.0, "Account", new Date()));
 		database.addPurhasingTransaction(new PurchasingTransaction(10004, database.getEmployee(10002),
 				database.getSupplier(104), 180.0, "Account", new Date()));
-=======
+	}
+
 	private void createSalesTransaction() {
 		Date yesterday = new Date(System.currentTimeMillis() - 24*60*60*1000);
 		SalesTransaction firstsale= new SalesTransaction(111, database.getEmployee(10002),database.getCustomer("Tom Smith"),100.99, "Cash", yesterday);
 		database.addSalesTransaction(firstsale);
 		
->>>>>>> origin/master
 	}
 
 }
