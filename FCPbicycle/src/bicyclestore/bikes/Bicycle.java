@@ -112,6 +112,6 @@ public class Bicycle {
 		public void setSalePrice(double salePrice) {
 			this.salePrice = salePrice;
 		}
-	
+	 
 
 }

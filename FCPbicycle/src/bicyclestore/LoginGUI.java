@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -18,7 +19,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import bicyclestore.bikes.Bicycle;
 import bicyclestore.staff.Employee;
+import bicyclestore.transaction.StockControl;
 
 public class LoginGUI {
 	
@@ -31,7 +34,9 @@ public class LoginGUI {
 	private JPasswordField txtPassword;
 	private JButton btnSubmit;
 	
+	
 	public LoginGUI() {
+		
 		database = new Database();
 
 		// load database with hard coded values from SystemData class
@@ -123,10 +128,12 @@ public class LoginGUI {
 	}
 	
 	public static void main(String[] args) {
-		new LoginGUI();
+	
+	new LoginGUI();
 	}
 	
 	private class ButtonClickListener implements ActionListener {
+		
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {

@@ -12,7 +12,7 @@ import bicyclestore.bikes.MountainBike;
 import bicyclestore.bikes.RoadBike;
 
 public class StockControl {
-	private ArrayList<Bicycle>stockcontrol= new ArrayList<Bicycle>();
+	//private ArrayList<Bicycle>stockcontrol= new ArrayList<Bicycle>();
 	private int bmx;
 	private int motorizedBike;
 	private int mountainBike;
@@ -21,12 +21,12 @@ public class StockControl {
 	private MotorisedBike motor;
 	private MountainBike mountain;
 	private RoadBike road;
-	private double noOfbikesSold;
-	private double predictions;
+	private int noOfbikesSold;
+	private int predictions;
 	
 	
 	public StockControl(Database data) {
-		Collections.copy(stockcontrol,data.getBicycles());
+		//Collections.copy(stockcontrol,data.getBicycles());
 		this.bmx=bmx;
 		this.motorizedBike=motorizedBike;
 		this.mountainBike=mountainBike;
@@ -35,20 +35,14 @@ public class StockControl {
 	public StockControl(){
 		
 	}
-	
-	public ArrayList<Bicycle> getStockcontrol() {
-		return stockcontrol;
-	}
 
-	public double getNoOfbikesSold() {
+	public int getNoOfbikesSold() {
 		return noOfbikesSold;
 	}
-	public void setNoOfbikesSold(double noOfbikesSold) {
+	public void setNoOfbikesSold(int noOfbikesSold) {
 		this.noOfbikesSold = noOfbikesSold;
 	}
-	public void setStockcontrol(ArrayList<Bicycle> stockcontrol) {
-		this.stockcontrol = stockcontrol;
-	}
+	
 
 	public int getBmx() {
 		return bmx;
@@ -78,45 +72,49 @@ public class StockControl {
 		return roadBike;
 	}
 
-	public double getPredictions() {
+	public int getPredictions() {
 		return predictions;
 	}
-	public void setPredictions(double predictions) {
+	public void setPredictions(int predictions) {
 		this.predictions = predictions;
 	}
 	public void setRoadBike(int roadBike) {
 		this.roadBike = roadBike;
 	}
 
-	public void calculateStock(Bicycle bike){
-		for(Bicycle calculatebike:stockcontrol){
-		if(bmxx.isHasStuntPegs()==true){
+	public void calculateStock(Bicycle bike, Database data){
+		for(Bicycle calculatebike:data.getBicycles()){
+		if(calculatebike.getModel()==("Wethepeople Justice")||calculatebike.getModel()==("Mongoose Scan R90")
+				||calculatebike.getModel()==("Giant GFR")){
 			setBmx((getBmx())+1);}
 		
 	
-		else if(motor.isRequiresLicence()==true){
+		else if(calculatebike.getModel()==("EBCO UCL30 Electric")){
 			setMotorizedBike(getMotorizedBike()+1);
 	}
-		else if(mountain.getNoOfGears()<0 &&mountain.isHasSuspension()==true){
+		else if(calculatebike.getModel()==("Kona Blast")||calculatebike.getModel()==("VooDoo Aizan 29er")){
 			setMountainBike(getMountainBike()+1);
 		}
 		
-		else if(road.getNumberOfGears()<0){
+		else if(calculatebike.getModel()==("Boardman Road Comp")){
 			setRoadBike(getRoadBike()+1);
 		}
 	}
 	}
 	public void predictions(Database data){
-		ArrayList<SalesTransaction>temp= new ArrayList<SalesTransaction>();
-		Collections.copy(temp,data.getSalesTransactions());
+
 		Date now = new Date();
 		Date lastWeek = new Date(System.currentTimeMillis() - 7*24*60*60*1000);
-		for(Transaction transaction:temp){
-			if(transaction.getTransactionDate().before(now)&&transaction.getTransactionDate().after(lastWeek)){
-				setNoOfbikesSold(noOfbikesSold+1);
+		for(Transaction transaction:data.getSalesTransactions()){
+			//if(now.after(transaction.getTransactionDate())){
+			boolean wasDateLastWeek = ((transaction.getTransactionDate()).after(lastWeek) && ((transaction.getTransactionDate().before(now))));
+				if(wasDateLastWeek==true){
+					setNoOfbikesSold(getNoOfbikesSold()+1);
+				//&&transaction.getTransactionDate().after(lastWeek)
 			}	
 		}
-		 setPredictions(getNoOfbikesSold()*1.5);
+		 setPredictions(getNoOfbikesSold()+2);
+		 //System.out.print(getNoOfbikesSold());
 		
 	
 	}

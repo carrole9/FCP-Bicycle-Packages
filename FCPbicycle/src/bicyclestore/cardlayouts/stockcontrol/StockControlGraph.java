@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import bicyclestore.Database;
+import bicyclestore.SystemData;
 import bicyclestore.transaction.StockControl;
 
 public class StockControlGraph extends JPanel
@@ -147,8 +149,13 @@ public class StockControlGraph extends JPanel
     {
     	StockControl stock = new StockControl();
         StockControlGraph panel = new StockControlGraph();
-        panel.addColumn("BMX", stock.getBmx()+9, Color.BLUE);
-        panel.addColumn("Motorised Bike", stock.getMotorizedBike()+4, Color.ORANGE);
+		Database database= new Database();
+		SystemData data=new SystemData(database);
+		data.fillDatabase();
+        
+        stock.calculateStock(null, database);
+        panel.addColumn("BMX", stock.getBmx(), Color.BLUE);
+        panel.addColumn("Motorised Bike", stock.getMotorizedBike(), Color.ORANGE);
         panel.addColumn("Mountain Bike", stock.getMountainBike(), Color.YELLOW);
         panel.addColumn("Road Bike", stock.getRoadBike()+1, Color.GREEN);
         
