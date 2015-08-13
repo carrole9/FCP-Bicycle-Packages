@@ -1,6 +1,10 @@
 package bicyclestore;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import bicyclestore.bikes.BMX;
+import bicyclestore.bikes.Bicycle;
 import bicyclestore.bikes.Cruiser;
 import bicyclestore.bikes.Hybrid;
 import bicyclestore.bikes.MotorisedBike;
@@ -11,8 +15,12 @@ import bicyclestore.staff.Employee;
 import bicyclestore.staff.Manager;
 import bicyclestore.staff.SalesAssistant;
 import bicyclestore.suppliers.Supplier;
+import bicyclestore.transaction.SalesTransaction;
+
 
 public class SystemData {
+	
+	
 
 	private Database database;
 
@@ -25,6 +33,7 @@ public class SystemData {
 		createCustomerAccounts();
 		createSupplierAccounts();
 		createBicycles();
+		createSalesTransaction();
 	}
 
 	// hard code some employee accounts into database
@@ -72,6 +81,13 @@ public class SystemData {
 		
 		// create Motorised bikes
 		database.addBicycle(new MotorisedBike("EBCO UCL30 Electric", "Black", 21, 26, "Aluminium", database, 480, 699.99));
+	}
+	
+	private void createSalesTransaction() {
+		Date yesterday = new Date(System.currentTimeMillis() - 24*60*60*1000);
+		SalesTransaction firstsale= new SalesTransaction(111, database.getEmployee(10002),database.getCustomer("Tom Smith"),100.99, "Cash", yesterday);
+		database.addSalesTransaction(firstsale);
+		
 	}
 
 }
