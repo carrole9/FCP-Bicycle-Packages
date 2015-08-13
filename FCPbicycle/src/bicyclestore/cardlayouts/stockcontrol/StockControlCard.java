@@ -5,9 +5,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
-import bicyclestore.cardlayouts.customercardlayouts.AddCustomerCard;
-import bicyclestore.cardlayouts.customercardlayouts.EditCustomerCard;
-import bicyclestore.cardlayouts.customercardlayouts.ViewCustomerCard;
+import bicyclestore.Database;
+import bicyclestore.SystemData;
+//import bicyclestore.cardlayouts.customercardlayouts.AddCustomerCard;
+//import bicyclestore.cardlayouts.customercardlayouts.EditCustomerCard;
+//import bicyclestore.cardlayouts.customercardlayouts.ViewCustomerCard;
 import bicyclestore.transaction.StockControl;
  
 public class StockControlCard implements ItemListener {
@@ -18,7 +20,6 @@ public class StockControlCard implements ItemListener {
     final static String PredictionPANEL = "Sales Forcast";
     JLabel bmx, motorised, mountain, hybrid, road;
 	JLabel sales, predictions;
-    StockControl stock= new StockControl();
 	GraphIcon graph = new GraphIcon(null, 0, 0);
 	
 	//private JPanel comboBoxPane;
@@ -29,6 +30,16 @@ public class StockControlCard implements ItemListener {
 	}
      
     public void addComponentToPane(Container pane) {
+    	StockControl stock = new StockControl();
+        StockControlGraph panel = new StockControlGraph();
+		Database database= new Database();
+		SystemData data=new SystemData(database);
+		data.fillDatabase();
+		stock.calculateStock(null, database);
+		stock.predictions(database);
+		
+    	
+    	
         //Put the JComboBox in a JPanel to get a nicer look.
         JPanel comboBoxPane = new JPanel(); //use FlowLayout
         String comboBoxItems[] = { TEXTPANEL, GRAPHPANEL };
@@ -130,7 +141,5 @@ public class StockControlCard implements ItemListener {
     	return cardLayoutPane;
     }
     
-//    public static void main(String[] args) {
-//    	createAndShowGUI();
-//    }
+
 }
