@@ -1,31 +1,23 @@
 package bicyclestore;
 
-import java.util.ArrayList;
-
 import java.util.Date;
 
 import bicyclestore.bikes.BMX;
-import bicyclestore.bikes.Bicycle;
 import bicyclestore.bikes.Cruiser;
 import bicyclestore.bikes.Hybrid;
 import bicyclestore.bikes.MotorisedBike;
 import bicyclestore.bikes.MountainBike;
 import bicyclestore.bikes.RoadBike;
 import bicyclestore.customers.Customer;
-import bicyclestore.staff.Employee;
 import bicyclestore.staff.Manager;
 import bicyclestore.staff.SalesAssistant;
 import bicyclestore.suppliers.Supplier;
-
 import bicyclestore.transaction.PurchasingTransaction;
-
 import bicyclestore.transaction.SalesTransaction;
 
 
 public class SystemData {
 	
-	
-
 	private Database database;
 
 	public SystemData(Database database) {
