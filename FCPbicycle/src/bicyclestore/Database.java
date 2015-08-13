@@ -211,7 +211,7 @@ public class Database {
 	}
 
 	public void setSalesTransactions(ArrayList<SalesTransaction> salesTransactions) {
-		this.salesTransactions = salesTransactions;
+		this.salesTransactions = salesTransactions; 
 	}
 	
 }
