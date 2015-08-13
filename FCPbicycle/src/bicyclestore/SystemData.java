@@ -1,5 +1,7 @@
 package bicyclestore;
 
+import java.util.Date;
+
 import bicyclestore.bikes.BMX;
 import bicyclestore.bikes.Cruiser;
 import bicyclestore.bikes.Hybrid;
@@ -11,6 +13,7 @@ import bicyclestore.staff.Employee;
 import bicyclestore.staff.Manager;
 import bicyclestore.staff.SalesAssistant;
 import bicyclestore.suppliers.Supplier;
+import bicyclestore.transaction.PurchasingTransaction;
 
 public class SystemData {
 
@@ -25,15 +28,16 @@ public class SystemData {
 		createCustomerAccounts();
 		createSupplierAccounts();
 		createBicycles();
+		createOrders();
 	}
 
 	// hard code some employee accounts into database
 	private void createEmployeeAccounts() {
 		database.addEmployee(new SalesAssistant(10001, "Fred Flintstone", "0861234567", "password", 200004));
 		database.addEmployee(new Manager(10002, "Homer Simpson", "0869876543", "password", "Dublin", "IT"));
-		database.addEmployee(new Employee(10003, "Peter Griffin", "0875678987", "password"));
-		database.addEmployee(new Employee(10004, "barack obama", "0851239876", "password"));
-		database.addEmployee(new Employee(10005, "Bill Gates", "0835432198", "password"));
+		database.addEmployee(new SalesAssistant(10003, "Peter Griffin", "0875678987", "password", 10004));
+		database.addEmployee(new Manager(10004, "barack obama", "0851239876", "password","Cork", "Sales"));
+		database.addEmployee(new SalesAssistant(10006, "Bill Gates", "0835432198", "password", 10004));
 	}
 
 	// hard code some customers accounts to the database
@@ -72,6 +76,17 @@ public class SystemData {
 		
 		// create Motorised bikes
 		database.addBicycle(new MotorisedBike("EBCO UCL30 Electric", "Black", 21, 26, "Aluminium", database, 480, 699.99));
+	}
+	
+	private void createOrders() {
+		database.addPurhasingTransaction(new PurchasingTransaction(10001, database.getEmployee(10002),
+				database.getSupplier(101), 175.0, "Account", new Date()));
+		database.addPurhasingTransaction(new PurchasingTransaction(10002, database.getEmployee(10004),
+				database.getSupplier(102), 230.0, "Account", new Date()));
+		database.addPurhasingTransaction(new PurchasingTransaction(10003, database.getEmployee(10004),
+				database.getSupplier(103), 350.0, "Account", new Date()));
+		database.addPurhasingTransaction(new PurchasingTransaction(10004, database.getEmployee(10002),
+				database.getSupplier(104), 180.0, "Account", new Date()));
 	}
 
 }
