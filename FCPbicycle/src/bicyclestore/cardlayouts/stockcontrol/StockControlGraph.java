@@ -157,7 +157,7 @@ public class StockControlGraph extends JPanel
         panel.addColumn("BMX", stock.getBmx(), Color.BLUE);
         panel.addColumn("Motorised Bike", stock.getMotorizedBike(), Color.ORANGE);
         panel.addColumn("Mountain Bike", stock.getMountainBike(), Color.YELLOW);
-        panel.addColumn("Road Bike", stock.getRoadBike()+1, Color.GREEN);
+        panel.addColumn("Road Bike", stock.getRoadBike(), Color.GREEN);
         
         panel.layoutGraph();
 		return panel;	
