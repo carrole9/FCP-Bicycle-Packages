@@ -1,136 +1,145 @@
-package bicyclestore.transaction;
+package bicyclestore.cardlayouts.stockcontrol;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 import bicyclestore.Database;
-import bicyclestore.bikes.BMX;
-import bicyclestore.bikes.Bicycle;
-import bicyclestore.bikes.MotorisedBike;
-import bicyclestore.bikes.MountainBike;
-import bicyclestore.bikes.RoadBike;
-
-public class StockControl {
-	//private ArrayList<Bicycle>stockcontrol= new ArrayList<Bicycle>();
-	private int bmx;
-	private int motorizedBike;
-	private int mountainBike;
-	private int roadBike;
-	private BMX bmxx;
-	private MotorisedBike motor;
-	private MountainBike mountain;
-	private RoadBike road;
-	private int noOfbikesSold;
-	private int predictions;
+import bicyclestore.SystemData;
+//import bicyclestore.cardlayouts.customercardlayouts.AddCustomerCard;
+//import bicyclestore.cardlayouts.customercardlayouts.EditCustomerCard;
+//import bicyclestore.cardlayouts.customercardlayouts.ViewCustomerCard;
+import bicyclestore.transaction.StockControl;
+ 
+public class StockControlCard implements ItemListener {
 	
+    JPanel cardLayoutPane, cards; //a panel that uses CardLayout
+    final static String TEXTPANEL = "Stock Control";
+    final static String GRAPHPANEL = "View as a Graph";
+    final static String PredictionPANEL = "Sales Forcast";
+    JLabel bmx, motorised, mountain, hybrid, road;
+	JLabel sales, predictions;
+	GraphIcon graph = new GraphIcon(null, 0, 0);
 	
-	public StockControl(Database data) {
-		//Collections.copy(stockcontrol,data.getBicycles());
-		this.bmx=bmx;
-		this.motorizedBike=motorizedBike;
-		this.mountainBike=mountainBike;
-		this.roadBike=roadBike;
+	//private JPanel comboBoxPane;
+	
+	public StockControlCard() {
+		cardLayoutPane = new JPanel(new BorderLayout());
+		addComponentToPane(cardLayoutPane);
 	}
-	public StockControl(){
+     
+    public void addComponentToPane(Container pane) {
+    	StockControl stock = new StockControl();
+        StockControlGraph panel = new StockControlGraph();
+		Database database= new Database();
+		SystemData data=new SystemData(database);
+		data.fillDatabase();
+		stock.calculateStock(null, database);
+		stock.predictions(database);
 		
-	}
-
-	public int getNoOfbikesSold() {
-		return noOfbikesSold;
-	}
-	public void setNoOfbikesSold(int noOfbikesSold) {
-		this.noOfbikesSold = noOfbikesSold;
-	}
+    	
+    	
+        //Put the JComboBox in a JPanel to get a nicer look.
+        JPanel comboBoxPane = new JPanel(); //use FlowLayout
+        String comboBoxItems[] = { TEXTPANEL, GRAPHPANEL };
+        JComboBox<String> cb = new JComboBox<String>(comboBoxItems);
+    	JButton salesPrediction = new JButton(PredictionPANEL);
+    	JButton back = new JButton("Previous Page");
+        cb.setEditable(false);
+        cb.addItemListener(this);
+        comboBoxPane.add(cb);
+         
+        //Create the "cards".
+        JPanel card1 = new JPanel();
+        
+        JPanel card2 = new JPanel();
+        card2.add(graph.createAndShowGUI());
+        
+        JPanel card3 = new JPanel();
+         
+        //Create the panel that contains the "cards".
+        cards = new JPanel(new CardLayout());
+        cards.add(card1, TEXTPANEL);
+        cards.add(card2, GRAPHPANEL);
+        cards.add(card3, PredictionPANEL);
+         
+        pane.add(comboBoxPane, BorderLayout.PAGE_START);
+        pane.add(cards, BorderLayout.CENTER);
+        
+        bmx = new JLabel("Bmx bikes: ");
+		motorised = new JLabel("Motorised Bike: ");
+		mountain = new JLabel("Mountain Bikes: ");
+		//hybrid = new JLabel("Hybrid Bikes: " + stock.get);
+		road = new JLabel("Road Bike:" );
+		
+		card1.add(bmx);
+	    card1.add(new JTextField("" + stock.getBmx(), 15));
+		card1.add(motorised );
+		card1.add(new JTextField("" + stock.getMotorizedBike(), 15));
+		card1.add(mountain);
+		card1.add(new JTextField("" + stock.getMountainBike(), 15));
+		card1.add(road);
+		card1.add(new JTextField("" + stock.getRoadBike(), 15));
+		card1.add(salesPrediction);
+		card1.setLayout(new BoxLayout(card1, BoxLayout.Y_AXIS));
 	
-
-	public int getBmx() {
-		return bmx;
-	}
-
-	public void setBmx(int bmx) {
-		this.bmx = bmx;
-	}
-
-	public int getMotorizedBike() {
-		return motorizedBike;
-	}
-
-	public void setMotorizedBike(int motorizedBike) {
-		this.motorizedBike = motorizedBike;
-	}
-
-	public int getMountainBike() {
-		return mountainBike;
-	}
-
-	public void setMountainBike(int mountainBike) {
-		this.mountainBike = mountainBike;
-	}
-
-	public int getRoadBike() {
-		return roadBike;
-	}
-
-	public int getPredictions() {
-		return predictions;
-	}
-	public void setPredictions(int predictions) {
-		this.predictions = predictions;
-	}
-	public void setRoadBike(int roadBike) {
-		this.roadBike = roadBike;
-	}
-
-	public void calculateStock(Bicycle bike, Database data){
-		for(Bicycle calculatebike:data.getBicycles()){
-		/*if(calculatebike.getModel()==("Wethepeople Justice")||calculatebike.getModel()==("Mongoose Scan R90")
-				||calculatebike.getModel()==("Giant GFR")){
-			setBmx((getBmx())+1);}*/
-			
-		if(calculatebike instanceof BMX){
-			setBmx((getBmx())+1);
+        card3.add(new JLabel("Number of bikes sold last week: "));
+        card3.add(new JTextField("" + stock.getNoOfbikesSold(), 15));
+        
+        card3.add(new JLabel("Sales Forcast for next week: "));
+        card3.add(new JTextField("" + stock.getPredictions(), 15));
+        
+        card3.add(back);
+		
+       
+        
+        card3.setLayout(new BoxLayout(card3, BoxLayout.Y_AXIS));
+      
+        
+		
+        
+       salesPrediction.addActionListener(new ActionListener() {
+        	CardLayout cl = (CardLayout)(cards.getLayout());
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				cl.show(cards, PredictionPANEL);
 			}
-		else if(calculatebike instanceof MotorisedBike){
-			setMotorizedBike(getMotorizedBike()+1);
-		}
-		else if(calculatebike instanceof MountainBike){
-			setMountainBike(getMountainBike()+1);
-		}
-		else if(calculatebike instanceof RoadBike){
-			setRoadBike(getRoadBike()+1);
-		}
-		
-		
-	
-		/*else if(calculatebike.getModel()==("EBCO UCL30 Electric")){
-			setMotorizedBike(getMotorizedBike()+1);
-	}
-		else if(calculatebike.getModel()==("Kona Blast")||calculatebike.getModel()==("VooDoo Aizan 29er")){
-			setMountainBike(getMountainBike()+1);
-		}
-		
-		else if(calculatebike.getModel()==("Boardman Road Comp")){
-			setRoadBike(getRoadBike()+1);
-		}
-	}*/
-	}}
-	public void predictions(Database data){
+		});
+		back.addActionListener(new ActionListener() {
+			CardLayout cl = (CardLayout)(cards.getLayout());
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				cl.show(cards, TEXTPANEL);
+			}
+		});
+        
+    }
+     
+    public void itemStateChanged(ItemEvent evt) {
+        CardLayout cl = (CardLayout)(cards.getLayout());
+        cl.show(cards, (String)evt.getItem());
+    }
+     
+  
+    public static void createAndShowGUI() {
+        //Create and set up the window.
+        JFrame frame = new JFrame("CardLayoutDemo");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         
+        //Create and set up the content pane.
+        StockControlCard demo = new StockControlCard();
+        demo.addComponentToPane(frame.getContentPane());
+        //demo.addComponentToPane(cardLayoutPane); 
+        
+        //Display the window.
+        frame.pack();
+        frame.setVisible(true);
+    }
+    
+    public JPanel getStockControlCardLayout() {
+    	return cardLayoutPane;
+    }
+    
 
-		Date now = new Date();
-		Date lastWeek = new Date(System.currentTimeMillis() - 7*24*60*60*1000);
-		for(Transaction transaction:data.getSalesTransactions()){
-			//if(now.after(transaction.getTransactionDate())){
-			boolean wasDateLastWeek = ((transaction.getTransactionDate()).after(lastWeek) && ((transaction.getTransactionDate().before(now))));
-				if(wasDateLastWeek==true){
-					setNoOfbikesSold(getNoOfbikesSold()+1);
-				//&&transaction.getTransactionDate().after(lastWeek)
-			}	
-		}
-		 setPredictions(getNoOfbikesSold()+2);
-		 //System.out.print(getNoOfbikesSold());
-		
-	
-	}
-	
-	}
+}
