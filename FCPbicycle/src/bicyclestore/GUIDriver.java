@@ -33,7 +33,8 @@ public class GUIDriver extends JFrame{
 	
 	private void createAndShowGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(800, 500);
+		//setSize(800, 500);
+		setExtendedState(JFrame.MAXIMIZED_BOTH); // set full screen
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
 		
