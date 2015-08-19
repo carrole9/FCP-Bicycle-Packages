@@ -1,7 +1,7 @@
 package bicyclestore.cardlayouts.ordercardlayouts;
 
 
-import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -18,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 
@@ -42,17 +44,21 @@ public class OrderFromSupplierCard extends JPanel {
 	
 	private JButton btnSubmit;
 	
-	private JLabel lblSelectSupplier, lblSelectProductType, lblSelectProductModel, lblSelectQuantity;
+	private JLabel lblTransactionId, lblSelectSupplier, lblSelectProductType, lblSelectProductModel, lblSelectQuantity;
 	private JComboBox<String> supplierList, productTypeList, productModelList;
 	
-	private String[] productTypes = {"* Please Select Product Type *", "BMX", "Mountain Bike", "Road Bike", "Hybrid", "Cruiser", "Motorised Bike"};
+	private String[] productTypes = {"Please Select Product Type", "BMX", "Mountain Bike",
+			"Road Bike", "Hybrid", "Cruiser", "Motorised Bike"};
 	
 	private String[] productModels; // product models will be empty until use selects product type
 	
 	private SpinnerNumberModel numberModel;
 	private JSpinner quantitySpinner;
 	
-	private int transactionIdCount = 10005;
+	private JTextField txtId;
+	private JButton btnEditId;
+	private Box idPane;
+	private int transactionIdCount = 10009;
 	
 	public OrderFromSupplierCard(Database database, Employee employee, OrdersCardLayout cardLayout) {
 		this.database = database;
@@ -67,10 +73,13 @@ public class OrderFromSupplierCard extends JPanel {
 	private void initComponents() {
 		btnSubmit = new JButton("Submit Order");
 		
+		lblTransactionId = new JLabel("Transaction ID");
 		lblSelectSupplier = new JLabel("Select Supplier");
 		lblSelectProductType = new JLabel("Select Product Type");
 		lblSelectProductModel = new JLabel("Select Model");
 		lblSelectQuantity = new JLabel("Select Quantity");
+		
+		setUpIdPane();
 		
 		// set up combo boxes
 		supplierList = new JComboBox<String>(getSupplierListItems());
@@ -86,6 +95,22 @@ public class OrderFromSupplierCard extends JPanel {
 		quantitySpinner = new JSpinner(numberModel);
 	}
 	
+	private void setUpIdPane() {
+		idPane = Box.createHorizontalBox();
+		
+		// set ID field to auto-increment value, grey out colour and set editable to false
+		txtId = new JTextField(transactionIdCount+"",10);
+		txtId.setBackground(Color.LIGHT_GRAY);
+		txtId.setEditable(false);
+		
+		btnEditId = new JButton("Edit ID");
+		
+		idPane.add(txtId);
+		idPane.add(btnEditId);
+		
+		btnEditId.addActionListener(new ButtonListener());
+	}
+	
 	private void createOrderFromSupplierCard() {
 		TitledBorder addCustomerBorder = BorderFactory.createTitledBorder("Order from Supplier");
 		addCustomerBorder.setTitleJustification(TitledBorder.CENTER);
@@ -98,14 +123,16 @@ public class OrderFromSupplierCard extends JPanel {
 	
 	private JPanel createOrderDetailsForm() {
 		JPanel orderDetails = new JPanel();
-		GridLayout grid = new GridLayout(4, 2);
+		GridLayout grid = new GridLayout(5, 2);
 		grid.setVgap(10);
 		orderDetails.setLayout(grid);
 		orderDetails.setMaximumSize(new Dimension(400, 300));
-		orderDetails.add(lblSelectSupplier);
-		orderDetails.add(supplierList);
+		orderDetails.add(lblTransactionId);
+		orderDetails.add(idPane);
 		orderDetails.add(lblSelectProductType);
 		orderDetails.add(productTypeList);
+		orderDetails.add(lblSelectSupplier);
+		orderDetails.add(supplierList);
 		orderDetails.add(lblSelectProductModel);
 		orderDetails.add(productModelList);
 		orderDetails.add(lblSelectQuantity);
@@ -125,10 +152,13 @@ public class OrderFromSupplierCard extends JPanel {
 	
 	private void createPurchaseTransaction(String supplier, String productType, String model, int quantity) {
 		// add purchasing transaction to the database
-		int transactionId = transactionIdCount++; // retrieve transaction id counter and increment for next order
+		int transactionId = Integer.parseInt(txtId.getText());
+		// increment counter if auto-increment number was used
+		if(transactionId == transactionIdCount)
+			transactionIdCount++;
 		double cost = database.getBicycle(model).getCostPrice();
 		database.addPurhasingTransaction(new PurchasingTransaction(transactionId, employee, 
-				database.getSupplier(supplier), cost, "Credit card", new Date()));
+				database.getSupplier(supplier), cost, "Account", new Date()));
 		
 		// display confirmation dialogue to user
 		JOptionPane.showMessageDialog(null, "Order processed"
@@ -139,21 +169,43 @@ public class OrderFromSupplierCard extends JPanel {
 				+ "\nQuantity: "+quantity,
 						"Order Processed", JOptionPane.INFORMATION_MESSAGE);
 		
+		resetFields();
+		
 		cardLayout.newOrderAdded(transactionId);
+	}
+	
+	private void resetFields() {
+		txtId.setText(transactionIdCount+"");
+		productTypeList.setSelectedIndex(0);
+		supplierList.setSelectedIndex(0);
 	}
 	
 	private class ButtonListener implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			String supplierChoice = (String)supplierList.getSelectedItem();
-			String productChoice = productTypeList.getItemAt(productTypeList.getSelectedIndex());
-			String model = (String)productModelList.getSelectedItem();
-			int quantity = (int)quantitySpinner.getValue();
-			System.out.println("Processing Order. Supplier: "+supplierChoice+", Product type: "+productChoice+", Model: "+model+", Quantity: "+quantity);
-			createPurchaseTransaction(supplierChoice, productChoice, model, quantity);
-		}
-			
+		public void actionPerformed(ActionEvent event) {
+			// find out if user pressed process order button
+			if(event.getSource() == btnSubmit) {
+				// do not attempt to save an order if no product is present in combo box
+				if(productModelList.getSelectedObjects().length > 0) {
+					String supplierChoice = (String)supplierList.getSelectedItem();
+					String productChoice = productTypeList.getItemAt(productTypeList.getSelectedIndex());
+					String model = (String)productModelList.getSelectedItem();
+					int quantity = (int)quantitySpinner.getValue();
+					System.out.println("Processing Order. Supplier: "+supplierChoice+", Product type: "+productChoice+", Model: "+model+", Quantity: "+quantity);
+					createPurchaseTransaction(supplierChoice, productChoice, model, quantity);
+				}
+			}
+			if(event.getSource() == btnEditId) {
+				try{
+					txtId.setText(Integer.parseInt(JOptionPane.showInputDialog(null, "Enter customer ID",
+							"Edit Customer ID", JOptionPane.INFORMATION_MESSAGE))+"");
+				}catch(NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "Customer ID must contain a number",
+							"Invalid Input", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}	
 	}
 	
 	private class ComboBoxListener implements ActionListener {

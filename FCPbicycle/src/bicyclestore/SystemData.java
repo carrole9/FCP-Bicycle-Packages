@@ -81,14 +81,29 @@ public class SystemData {
 	}
 	
 	private void createOrders() {
-		database.addPurhasingTransaction(new PurchasingTransaction(10001, database.getEmployee(10002),
-				database.getSupplier(101), 175.0, "Account", new Date()));
-		database.addPurhasingTransaction(new PurchasingTransaction(10002, database.getEmployee(10004),
-				database.getSupplier(102), 230.0, "Account", new Date()));
+		// create old orders
+		// order from 7 days ago
+		database.addPurhasingTransaction(new PurchasingTransaction(10001, database.getEmployee(10004),
+				database.getSupplier(101), 300.0, "Account", new Date(System.currentTimeMillis() - 7*24*3600*1000)));
+		// order from 6 days ago
+		database.addPurhasingTransaction(new PurchasingTransaction(10002, database.getEmployee(10002),
+				database.getSupplier(102), 180.0, "Account", new Date(System.currentTimeMillis() - 6*24*3600*1000)));
+		// order from 4 days ago
 		database.addPurhasingTransaction(new PurchasingTransaction(10003, database.getEmployee(10004),
-				database.getSupplier(103), 350.0, "Account", new Date()));
+				database.getSupplier(103), 450.0, "Account", new Date(System.currentTimeMillis() - 4*24*3600*1000)));
+		// order from 3 days ago
 		database.addPurhasingTransaction(new PurchasingTransaction(10004, database.getEmployee(10002),
-				database.getSupplier(104), 180.0, "Account", new Date()));
+				database.getSupplier(104), 480.0, "Account", new Date(System.currentTimeMillis() - 3*24*3600*1000)));
+		
+		// create orders for current date
+		database.addPurhasingTransaction(new PurchasingTransaction(10005, database.getEmployee(10002),
+				database.getSupplier(102), 170.0, "Account", new Date()));
+		database.addPurhasingTransaction(new PurchasingTransaction(10006, database.getEmployee(10004),
+				database.getSupplier(104), 230.0, "Account", new Date()));
+		database.addPurhasingTransaction(new PurchasingTransaction(10007, database.getEmployee(10004),
+				database.getSupplier(101), 350.0, "Account", new Date()));
+		database.addPurhasingTransaction(new PurchasingTransaction(10008, database.getEmployee(10002),
+				database.getSupplier(103), 180.0, "Account", new Date()));
 	}
 
 	private void createSalesTransaction() {

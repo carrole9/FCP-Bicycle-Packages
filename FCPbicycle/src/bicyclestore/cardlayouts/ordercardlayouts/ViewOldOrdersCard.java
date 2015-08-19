@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -21,7 +23,7 @@ import bicyclestore.Database;
 import bicyclestore.transaction.PurchasingTransaction;
 
 @SuppressWarnings("serial")
-public class ViewOrdersCard extends JPanel implements ListSelectionListener {
+public class ViewOldOrdersCard extends JPanel implements ListSelectionListener {
 
 	private Database database;
 	
@@ -33,7 +35,7 @@ public class ViewOrdersCard extends JPanel implements ListSelectionListener {
 	private JLabel idLabel, employeeLabel, supplierLabel, costLabel, paymentMethodLabel, dateLabel,
 						lblTransactionID, lblEmployee, lblSupplier, lblCost, lblPaymentMethod, lblDate;
 	
-	public ViewOrdersCard(Database database) {
+	public ViewOldOrdersCard(Database database) {
 		this.database = database;
 		setUpOrderList();
 		createViewOrderCard();
@@ -59,8 +61,16 @@ public class ViewOrdersCard extends JPanel implements ListSelectionListener {
 	}
 
 	private void addOrdersFromDB() {
+		Calendar now = Calendar.getInstance();
+		Calendar yesterday = Calendar.getInstance();
+		yesterday.set(Calendar.DAY_OF_YEAR, now.get(Calendar.DAY_OF_YEAR)-1);
 		for(PurchasingTransaction order : database.getPurchasingTransactions()) {
-			listModel.addElement(order.getTransactionID()+"");
+			// if order is older than yesterday add to list
+			Calendar orderDate = Calendar.getInstance();
+			orderDate.setTime(order.getTransactionDate());
+			
+			if(orderDate.before(yesterday))
+				listModel.addElement(order.getTransactionID()+"");
 		}
 	}
 	
