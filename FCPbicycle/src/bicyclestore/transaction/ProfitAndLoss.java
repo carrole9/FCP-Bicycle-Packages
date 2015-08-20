@@ -9,8 +9,8 @@ import bicyclestore.Database;
 public class ProfitAndLoss {
 
 	     
-		  private ArrayList<PurchasingTransaction>purchasingTransactions= new ArrayList<PurchasingTransaction>();
-		  private ArrayList<SalesTransaction>salesTransactions= new ArrayList<SalesTransaction>();
+		  private ArrayList<PurchasingTransaction>purchasingTransactions;
+		  private ArrayList<SalesTransaction>salesTransactions;
 		  private double totalSalesTransactionValue;
 		  private double totalPurchasingTransactionValue;
 		  private boolean profitMaking;
@@ -19,8 +19,8 @@ public class ProfitAndLoss {
 			this.profitMaking = profitMaking;
 			this.totalSalesTransactionValue = totalSalesTransactionValue;
 			this.totalPurchasingTransactionValue = totalPurchasingTransactionValue;
-			Collections.copy(salesTransactions,data.getSalesTransactions());
-			Collections.copy(purchasingTransactions,data.getPurchasingTransactions());
+			salesTransactions = new ArrayList<SalesTransaction>(data.getSalesTransactions());
+			purchasingTransactions = new ArrayList<PurchasingTransaction>(data.getPurchasingTransactions());
 			
 			 
 			
@@ -73,7 +73,7 @@ public class ProfitAndLoss {
 		}setPurchasingTransactionValue( purchasingtotalValue);
 	}
 	
-	public void profitOrLoss(){
+	public double profitOrLoss(){
 		double result;
 		result = totalSalesTransactionValue-totalPurchasingTransactionValue;
 		if(result > 0){
@@ -82,15 +82,16 @@ public class ProfitAndLoss {
 		else if(result < 0){
 			setProfitMaking(false);
 		}
+		return result;
 	}
   
 	public void display() {
 		if(profitMaking==true){
 			System.out.println("The company is making a profit");
-			System.out.println("The companies profit is: €" + getSalesTransactionValue());
+			System.out.println("The companies profit is: €" + profitOrLoss());
 		}else if(profitMaking==false){
 			System.out.println("The company is making a loss");
-			System.out.println("The companies loss is: -€" + getPurchasingTransactionValue());
+			System.out.println("The companies loss is: " + profitOrLoss());
 			
 		}
 	}
