@@ -25,6 +25,7 @@ public class GUIDriver extends JFrame{
 	private Database database;
 	
 	private JTabbedPane tabbedPane;
+	private JButton logoutBtn;
 	
 	public GUIDriver(Employee employee, Database database) {
 		this.employee = employee;
