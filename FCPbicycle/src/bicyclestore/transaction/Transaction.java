@@ -3,6 +3,7 @@ package bicyclestore.transaction;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import bicyclestore.bikes.Bicycle;
 import bicyclestore.staff.Employee;
 
 public class Transaction {
@@ -13,9 +14,11 @@ public class Transaction {
 	private double transactionCost;
 	private String paymentMethod;
 	private Date transactionDate;
-	
+	private Bicycle bicycle;
+	private int quantity;
 
-	public Transaction(int transactionID, Employee employee,double transactionCost, String paymentMethod,Date transactionDate) {
+	public Transaction(int transactionID, Employee employee,double transactionCost, String paymentMethod
+			,Date transactionDate, Bicycle bicycle, int quantity) {
 
 		this.transactionID = transactionID;
 		this.employee = employee;
@@ -24,7 +27,8 @@ public class Transaction {
 		this.transactionDate=transactionDate;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
 		transactionDate = new Date();
-				
+		this.bicycle = bicycle;
+		this.quantity = quantity;
 	}
 
 	public double getTransactionCost() {
@@ -72,5 +76,21 @@ public class Transaction {
 
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
+	}
+	
+	public Bicycle getBicycle() {
+		return bicycle;
+	}
+	
+	public void setBicycle(Bicycle bicycle) {
+		this.bicycle = bicycle;
+	}
+	
+	public int getQuantity() {
+		return quantity;
+	}
+	
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 }

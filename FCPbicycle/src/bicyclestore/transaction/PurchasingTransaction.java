@@ -2,6 +2,7 @@ package bicyclestore.transaction;
 
 import java.util.Date;
 
+import bicyclestore.bikes.Bicycle;
 import bicyclestore.staff.Employee;
 import bicyclestore.suppliers.Supplier;
 
@@ -9,8 +10,9 @@ public class PurchasingTransaction extends Transaction {
 	
 	private Supplier supplier;
 
-	public PurchasingTransaction(int transactionID, Employee employee,Supplier supplier,double transactionCost, String paymentMethod,Date transactionDate) {
-		super(transactionID,employee,transactionCost, paymentMethod,transactionDate);
+	public PurchasingTransaction(int transactionID, Employee employee,Supplier supplier,double transactionCost,
+			String paymentMethod,Date transactionDate, Bicycle bicycle, int quantity) {
+		super(transactionID,employee,transactionCost, paymentMethod,transactionDate, bicycle, quantity);
 		this.supplier=supplier;
 	}
 
