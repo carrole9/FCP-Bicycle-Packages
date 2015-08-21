@@ -58,6 +58,11 @@ public class ShoppingBasketTest {
 		basket.add(new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", database, 170, 300));
 		
 		assertEquals(650, basket.getTotalCostValue(), DELTA);
+		
+		basket.remove(0);
+		assertEquals(170, basket.getTotalCostValue(), DELTA);
+		
+		basket.removeAll();
 	}
 
 	@Test
@@ -67,6 +72,12 @@ public class ShoppingBasketTest {
 		basket.add(new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", database, 170, 300));
 		
 		assertEquals(949, basket.getTotalSaleValue(), DELTA);
+		
+		basket.remove(1);
+		assertEquals(649, basket.getTotalSaleValue(), DELTA);
+		
+		basket.removeAll();
+		assertEquals(0, basket.getTotalSaleValue(), DELTA);
 	}
 
 }
