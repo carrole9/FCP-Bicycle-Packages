@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import bicyclestore.LoginGUI;
 import bicyclestore.cardlayouts.customercardlayouts.CustomersCardLayout;
 import bicyclestore.cardlayouts.ordercardlayouts.OrdersCardLayout;
 import bicyclestore.cardlayouts.stockcontrol.StockControlCard;
@@ -44,6 +45,17 @@ public class GUIDriver extends JFrame{
 		cp.add(tabbedPane, BorderLayout.CENTER);
 		
 		setVisible(true);
+		
+		logoutBtn = new JButton("Log Out");
+		add(logoutBtn, BorderLayout.SOUTH);
+		logoutBtn.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				new LoginGUI();
+			}
+		});
+		
 	}
 	
 	private void setUpTabbedPane() {
