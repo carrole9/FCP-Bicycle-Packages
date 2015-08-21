@@ -14,6 +14,7 @@ import bicyclestore.staff.SalesAssistant;
 import bicyclestore.suppliers.Supplier;
 import bicyclestore.transaction.PurchasingTransaction;
 import bicyclestore.transaction.SalesTransaction;
+import bicyclestore.transaction.ShoppingBasket;
 
 
 public class SystemData {
@@ -81,34 +82,50 @@ public class SystemData {
 	}
 	
 	private void createOrders() {
+		
+		
+		// create shopping baskets to add to transactions
+		ShoppingBasket basket1 = new ShoppingBasket();
+		ShoppingBasket basket2 = new ShoppingBasket();
+		ShoppingBasket basket3 = new ShoppingBasket();
+		basket1.add(new MountainBike(27, "VooDoo Aizan 29er", "Black", 29, 29, "6061 Aluminium", database, 400, 565.95));
+		basket2.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", database, 300, 479.95));
+		basket2.add(new BMX("Blue", "Mongoose Scan R90", 21, 20, "Aluminium", database, 180, 299.99));
+		basket3.add(new MotorisedBike("EBCO UCL30 Electric", "Black", 21, 26, "Aluminium", database, 480, 699.99));
+		
 		// create old orders
+		
 		// order from 7 days ago
 		database.addPurhasingTransaction(new PurchasingTransaction(10001, database.getEmployee(10004),
-				database.getSupplier(101), 300.0, "Account", new Date(System.currentTimeMillis() - 7*24*3600*1000)));
+				database.getSupplier(101), 300.0, "Account", new Date(System.currentTimeMillis() - 7*24*3600*1000), basket1));
 		// order from 6 days ago
 		database.addPurhasingTransaction(new PurchasingTransaction(10002, database.getEmployee(10002),
-				database.getSupplier(102), 180.0, "Account", new Date(System.currentTimeMillis() - 6*24*3600*1000)));
+				database.getSupplier(102), 180.0, "Account", new Date(System.currentTimeMillis() - 6*24*3600*1000), basket2));
 		// order from 4 days ago
 		database.addPurhasingTransaction(new PurchasingTransaction(10003, database.getEmployee(10004),
-				database.getSupplier(103), 450.0, "Account", new Date(System.currentTimeMillis() - 4*24*3600*1000)));
+				database.getSupplier(103), 450.0, "Account", new Date(System.currentTimeMillis() - 4*24*3600*1000), basket3));
 		// order from 3 days ago
 		database.addPurhasingTransaction(new PurchasingTransaction(10004, database.getEmployee(10002),
-				database.getSupplier(104), 480.0, "Account", new Date(System.currentTimeMillis() - 3*24*3600*1000)));
+				database.getSupplier(104), 480.0, "Account", new Date(System.currentTimeMillis() - 3*24*3600*1000), basket2));
 		
 		// create orders for current date
 		database.addPurhasingTransaction(new PurchasingTransaction(10005, database.getEmployee(10002),
-				database.getSupplier(102), 170.0, "Account", new Date()));
+				database.getSupplier(102), 170.0, "Account", new Date(), basket1));
 		database.addPurhasingTransaction(new PurchasingTransaction(10006, database.getEmployee(10004),
-				database.getSupplier(104), 230.0, "Account", new Date()));
+				database.getSupplier(104), 230.0, "Account", new Date(), basket2));
 		database.addPurhasingTransaction(new PurchasingTransaction(10007, database.getEmployee(10004),
-				database.getSupplier(101), 350.0, "Account", new Date()));
+				database.getSupplier(101), 350.0, "Account", new Date(), basket3));
 		database.addPurhasingTransaction(new PurchasingTransaction(10008, database.getEmployee(10002),
-				database.getSupplier(103), 180.0, "Account", new Date()));
+				database.getSupplier(103), 180.0, "Account", new Date(), basket2));
 	}
 
 	private void createSalesTransaction() {
+		ShoppingBasket basket = new ShoppingBasket();
+		basket.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", database, 300, 479.95));
+		basket.add(new BMX("Blue", "Mongoose Scan R90", 21, 20, "Aluminium", database, 180, 299.99));
+		
 		Date yesterday = new Date(System.currentTimeMillis() - 24*60*60*1000);
-		SalesTransaction firstsale= new SalesTransaction(111, database.getEmployee(10002),database.getCustomer("Tom Smith"),100.99, "Cash", yesterday);
+		SalesTransaction firstsale= new SalesTransaction(111, database.getEmployee(10002),database.getCustomer("Tom Smith"),100.99, "Cash", yesterday, basket);
 		database.addSalesTransaction(firstsale);
 		
 	}
