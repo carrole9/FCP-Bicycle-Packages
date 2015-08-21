@@ -11,8 +11,8 @@ public class PurchasingTransaction extends Transaction {
 	private Supplier supplier;
 
 	public PurchasingTransaction(int transactionID, Employee employee,Supplier supplier,double transactionCost,
-			String paymentMethod,Date transactionDate, Bicycle bicycle, int quantity) {
-		super(transactionID,employee,transactionCost, paymentMethod,transactionDate, bicycle, quantity);
+			String paymentMethod,Date transactionDate, ShoppingBasket shoppingList) {
+		super(transactionID,employee,transactionCost, paymentMethod,transactionDate, shoppingList);
 		this.supplier=supplier;
 	}
 

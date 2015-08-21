@@ -14,11 +14,10 @@ public class Transaction {
 	private double transactionCost;
 	private String paymentMethod;
 	private Date transactionDate;
-	private Bicycle bicycle;
-	private int quantity;
+	private ShoppingBasket shoppingList;
 
-	public Transaction(int transactionID, Employee employee,double transactionCost, String paymentMethod
-			,Date transactionDate, Bicycle bicycle, int quantity) {
+	public Transaction(int transactionID, Employee employee,double transactionCost, String paymentMethod,
+			Date transactionDate, ShoppingBasket shoppingList) {
 
 		this.transactionID = transactionID;
 		this.employee = employee;
@@ -27,8 +26,7 @@ public class Transaction {
 		this.transactionDate=transactionDate;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
 		transactionDate = new Date();
-		this.bicycle = bicycle;
-		this.quantity = quantity;
+		this.shoppingList = shoppingList;
 	}
 
 	public double getTransactionCost() {
@@ -78,19 +76,11 @@ public class Transaction {
 		this.employee = employee;
 	}
 	
-	public Bicycle getBicycle() {
-		return bicycle;
+	public ShoppingBasket getShoppingList() {
+		return shoppingList;
 	}
 	
-	public void setBicycle(Bicycle bicycle) {
-		this.bicycle = bicycle;
-	}
-	
-	public int getQuantity() {
-		return quantity;
-	}
-	
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
+	public void getShoppingList(ShoppingBasket shoppingList) {
+		this.shoppingList = shoppingList;
 	}
 }

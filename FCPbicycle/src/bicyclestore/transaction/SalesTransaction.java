@@ -11,8 +11,8 @@ public class SalesTransaction extends Transaction {
 	
 	
 	public SalesTransaction (int transactionID, Employee employee,Customer customer,double transactionCost,
-			String paymentMethod,Date transactionDate, Bicycle bicycle, int quantity) {
-		super(transactionID,employee,transactionCost,paymentMethod,transactionDate, bicycle, quantity);
+			String paymentMethod,Date transactionDate, ShoppingBasket shoppingList) {
+		super(transactionID,employee,transactionCost,paymentMethod,transactionDate, shoppingList);
 		this.customer=customer;
 
 		}
