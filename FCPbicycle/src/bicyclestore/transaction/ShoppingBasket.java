@@ -23,15 +23,21 @@ public class ShoppingBasket {
 	}
 	
 	public void remove(int index) {
-		shoppingList.remove(index);
+		Bicycle bicycle = shoppingList.remove(index);
+		totalCostValue -= bicycle.getCostPrice();
+		totalSaleValue -= bicycle.getSalePrice();
 	}
 	
 	public void remove(Bicycle bicycle) {
+		totalCostValue -= bicycle.getCostPrice();
+		totalSaleValue -= bicycle.getSalePrice();
 		shoppingList.remove(bicycle);
 	}
 	
 	public void removeAll() {
 		shoppingList.clear();
+		totalCostValue = 0;
+		totalSaleValue = 0;
 	}
 	
 	public ArrayList<Bicycle> getShoppingList() {
