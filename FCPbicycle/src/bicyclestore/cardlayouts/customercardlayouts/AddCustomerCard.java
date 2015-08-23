@@ -170,13 +170,17 @@ public class AddCustomerCard extends JPanel {
 			}
 			// if the user pressed the edit id button display dialogue allowing them to edit id field
 			if(event.getSource() == btnEditId) {
-				try{
-					txtId.setText(Integer.parseInt(JOptionPane.showInputDialog(null, "Enter customer ID",
-							"Edit Customer ID", JOptionPane.INFORMATION_MESSAGE))+"");
-				}catch(NumberFormatException e) {
-					JOptionPane.showMessageDialog(null, "Customer ID must contain a number",
+				String custIdStr = JOptionPane.showInputDialog(null, "Enter customer ID",
+						"Edit Customer ID", JOptionPane.INFORMATION_MESSAGE);
+				if(custIdStr != null) {
+					try{
+						txtId.setText(Integer.parseInt(custIdStr) + "");
+					}catch(NumberFormatException e) {
+						JOptionPane.showMessageDialog(null, "Customer ID must contain a number",
 							"Invalid Input", JOptionPane.ERROR_MESSAGE);
+					}
 				}
+				
 			}
 		}
 		

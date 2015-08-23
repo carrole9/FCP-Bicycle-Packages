@@ -14,6 +14,7 @@ import javax.swing.border.TitledBorder;
 
 import bicyclestore.Database;
 import bicyclestore.staff.Employee;
+import bicyclestore.transaction.ShoppingBasket;
 
 @SuppressWarnings("serial")
 public class OrdersCardLayout extends JPanel implements ItemListener {
@@ -31,6 +32,7 @@ public class OrdersCardLayout extends JPanel implements ItemListener {
 	
 	// Card classes
 	private OrderFromSupplierCard orderSupplierCard;
+	private OrderShoppingCartCard shoppingCartCard;
 	private ViewOrdersCard viewOrdersCard;
 	private ViewOldOrdersCard viewOldOrdersCard;
 
@@ -49,7 +51,6 @@ public class OrdersCardLayout extends JPanel implements ItemListener {
 		orderSupplierCard = new OrderFromSupplierCard(database, employee, this);
 		viewOrdersCard = new ViewOrdersCard(database);
 		viewOldOrdersCard = new ViewOldOrdersCard(database);
-		//editCard = new EditCustomerCard(database, this);
 		
 		// create cards to make up card layout
 		JPanel card1 = orderSupplierCard;
@@ -92,7 +93,6 @@ public class OrdersCardLayout extends JPanel implements ItemListener {
 	public void newOrderAdded(int transactionId) {
 		// refresh customer lists
 		viewOrdersCard.refresh(transactionId);
-		//editCard.refresh(newCustomerName);
 	}
 
 }
