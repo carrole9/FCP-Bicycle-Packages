@@ -5,22 +5,24 @@ import java.util.Collections;
 import java.util.Date;
 
 import bicyclestore.Database;
+import bicyclestore.staff.Employee;
 
 public class ProfitAndLoss {
 
 	     
 		  private ArrayList<PurchasingTransaction>purchasingTransactions;
 		  private ArrayList<SalesTransaction>salesTransactions;
+		  private ArrayList<Employee>wages;
 		  private double totalSalesTransactionValue;
 		  private double totalPurchasingTransactionValue;
+		  private double overallBalance;
 		  private boolean profitMaking;
+		  private double employeeWages;
 		
-            public ProfitAndLoss(Database data,double totalTransactionValue,boolean profitMaking) {
-			this.profitMaking = profitMaking;
-			this.totalSalesTransactionValue = totalSalesTransactionValue;
-			this.totalPurchasingTransactionValue = totalPurchasingTransactionValue;
-			salesTransactions = new ArrayList<SalesTransaction>(data.getSalesTransactions());
-			purchasingTransactions = new ArrayList<PurchasingTransaction>(data.getPurchasingTransactions());
+            public ProfitAndLoss(Database data) {
+			this.salesTransactions = new ArrayList<SalesTransaction>(data.getSalesTransactions());
+			this.purchasingTransactions = new ArrayList<PurchasingTransaction>(data.getPurchasingTransactions());
+			this.wages = new ArrayList<Employee>(data.getEmployees());
 			
 			 
 			
@@ -42,6 +44,16 @@ public class ProfitAndLoss {
 	}
 
 
+	public double getEmployeeWages() {
+		return employeeWages;
+	}
+
+
+	public void setEmployeeWages(double employeeWages) {
+		this.employeeWages = employeeWages;
+	}
+
+
 	public void setSalesTransactionValue(double totalSalesTransactionValue) {
 		this.totalSalesTransactionValue = totalSalesTransactionValue;
 	}
@@ -56,6 +68,25 @@ public class ProfitAndLoss {
 	}
 	
 	
+	
+	
+	public double getOverallBalance() {
+		return overallBalance;
+	}
+
+
+	public void setOverallBalance(double overallBalance) {
+		this.overallBalance = overallBalance;
+	}
+	
+	public void calculateWages(){
+		double total=0;
+		for(Employee wage:wages){
+			total=total + (wage.getWages()*40);
+		}setEmployeeWages(total);
+	}
+
+
 	public void calculateSalesTransactionValue(){
 		double salestotalValue=0;
 		for(SalesTransaction salesTransaction: salesTransactions){
@@ -73,7 +104,7 @@ public class ProfitAndLoss {
 		}setPurchasingTransactionValue( purchasingtotalValue);
 	}
 	
-	public double profitOrLoss(){
+	public void profitOrLoss(){
 		double result;
 		result = totalSalesTransactionValue-totalPurchasingTransactionValue;
 		if(result > 0){
@@ -82,16 +113,17 @@ public class ProfitAndLoss {
 		else if(result < 0){
 			setProfitMaking(false);
 		}
-		return result;
+		setOverallBalance(result);
 	}
   
 	public void display() {
+		int balance= (int) Math.round(getOverallBalance());
 		if(profitMaking==true){
 			System.out.println("The company is making a profit");
-			System.out.println("The companies profit is: €" + profitOrLoss());
+			System.out.println("The companies profit is: €" + balance);
 		}else if(profitMaking==false){
 			System.out.println("The company is making a loss");
-			System.out.println("The companies loss is: " + profitOrLoss());
+			System.out.println("The companies loss is: €" + balance);
 			
 		}
 	}
