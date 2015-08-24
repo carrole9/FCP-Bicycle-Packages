@@ -4,8 +4,8 @@ public class SalesAssistant extends Employee {
 	
 	private int managerID;
 
-	public SalesAssistant(int staffID, String name, String phoneNum, String password, int managerID) {
-		super(staffID, name, phoneNum, password);
+	public SalesAssistant(int staffID, String name, String phoneNum, String password, double wages, int managerID) {
+		super(staffID, name, phoneNum, password, wages);
 		this.managerID = managerID;
 	}
 
