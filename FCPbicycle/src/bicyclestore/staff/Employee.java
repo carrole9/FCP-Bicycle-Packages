@@ -1,16 +1,16 @@
-package bicyclestore.staff;
 
-public class Employee {
 	
 	private int staffID;
 	private String name, phoneNum, password;
+	private double wages;
 
-	public Employee(int staffID, String name, String phoneNum, String password) {
+	public Employee(int staffID, String name, String phoneNum, String password, double wages) {
 		
 		this.staffID = staffID;
 		this.name = name;
 		this.phoneNum = phoneNum;
 		this.password = password;
+		this.wages=wages;		
 	}
 
 
@@ -53,6 +53,16 @@ public class Employee {
 		this.password = password;
 	}
 	
+	public double getWages() {
+		return wages;
+	}
+
+
+	public void setWages(double wages) {
+		this.wages = wages;
+	}
+
+
 	public void display(){
 		System.out.println(name+ "'s staff I.D is: "+ staffID + ", the contact number is "+ phoneNum+ ".");
 	}
