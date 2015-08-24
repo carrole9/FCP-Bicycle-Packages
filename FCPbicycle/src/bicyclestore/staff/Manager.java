@@ -10,9 +10,9 @@ public class Manager extends Employee{
 	private String division, speciality;
 	
 
-	public Manager(int staffID, String name, String phoneNum, String password, String division, String speciality) {
+	public Manager(int staffID, String name, String phoneNum, String password,double wages, String division, String speciality) {
 		
-		super(staffID, name, phoneNum, password);
+		super(staffID, name, phoneNum, password, wages);
 		this.division = division;
 		this.speciality = speciality;
 	
