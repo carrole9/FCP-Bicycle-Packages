@@ -36,11 +36,11 @@ public class SystemData {
 
 	// hard code some employee accounts into database
 	private void createEmployeeAccounts() {
-		database.addEmployee(new SalesAssistant(10001, "Fred Flintstone", "0861234567", "password", 200004));
-		database.addEmployee(new Manager(10002, "Homer Simpson", "0869876543", "password", "Dublin", "IT"));
-		database.addEmployee(new SalesAssistant(10003, "Peter Griffin", "0875678987", "password", 10004));
-		database.addEmployee(new Manager(10004, "barack obama", "0851239876", "password","Cork", "Sales"));
-		database.addEmployee(new SalesAssistant(10006, "Bill Gates", "0835432198", "password", 10004));
+		database.addEmployee(new SalesAssistant(10001, "Fred Flintstone", "0861234567", "password",8.65, 200004));
+		database.addEmployee(new Manager(10002, "Homer Simpson", "0869876543", "password", "Dublin",15.99, "IT"));
+		database.addEmployee(new SalesAssistant(10003, "Peter Griffin", "0875678987", "password",8.65, 10004));
+		database.addEmployee(new Manager(10004, "barack obama", "0851239876", "password","Cork",15.99, "Sales"));
+		database.addEmployee(new SalesAssistant(10006, "Bill Gates", "0835432198", "password",8.65, 10004));
 	}
 
 	// hard code some customers accounts to the database
