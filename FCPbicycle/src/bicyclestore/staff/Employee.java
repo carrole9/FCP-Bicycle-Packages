@@ -1,4 +1,6 @@
+package bicyclestore.staff;
 
+public class Employee {
 	
 	private int staffID;
 	private String name, phoneNum, password;
