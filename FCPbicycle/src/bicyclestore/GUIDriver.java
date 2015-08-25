@@ -1,10 +1,16 @@
 package bicyclestore;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -26,6 +32,7 @@ public class GUIDriver extends JFrame{
 	private Employee employee;
 	private Database database;
 	
+	private JPanel mainPanel;
 	private JTabbedPane tabbedPane;
 	private JButton logoutBtn;
 	
@@ -36,32 +43,24 @@ public class GUIDriver extends JFrame{
 	}
 	
 	private void createAndShowGUI() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//setSize(800, 500);
-		setExtendedState(JFrame.MAXIMIZED_BOTH); // set full screen
-		setLocationRelativeTo(null);
-		setLayout(new BorderLayout());
 		
-		setUpTabbedPane();
+		JPanel backgroundPanel = new BackgroundPanel();
+		backgroundPanel.setLayout(new BoxLayout(backgroundPanel, BoxLayout.X_AXIS));
 		
-		Container cp = getContentPane();
-		cp.add(tabbedPane, BorderLayout.CENTER);
+		mainPanel = new GUIPanel();
+		backgroundPanel.add(Box.createHorizontalGlue());
+		backgroundPanel.add(mainPanel, BorderLayout.CENTER);
+		backgroundPanel.add(Box.createHorizontalGlue());
 		
-		setVisible(true);
-		
-		logoutBtn = new JButton("Log Out");
-		add(logoutBtn, BorderLayout.SOUTH);
-		logoutBtn.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent arg0) {
-				dispose();
-				new LoginGUI();
-			}
-		});
-		
+		setContentPane(backgroundPanel);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setMinimumSize(new Dimension(800,600));
+        setVisible(true);
 	}
 	
 	private void setUpTabbedPane() {
+		//tabbedPane.setSize(800, 600);
 		// find out if employee is a sales assistant or manager
 		if(employee instanceof SalesAssistant)
 			setUpSalesAssistantTabs();
@@ -121,12 +120,49 @@ public class GUIDriver extends JFrame{
 		tabbedPane.add("Stock Control", stockTab);
 	}
 	
+	@SuppressWarnings("serial")
+	private class BackgroundPanel extends JPanel {
+	    Image bg = new ImageIcon("src/images/bike_shop_background.png").getImage();
+	    @Override
+	    public void paintComponent(Graphics g) {
+	        g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+	    }
+	}
+	
+	@SuppressWarnings("serial")
+	class GUIPanel extends JPanel {
+	    GUIPanel() {
+	    	setUpTabbedPane();
+	    	
+	    	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+			setOpaque(false);
+			add(Box.createVerticalGlue());
+			add(tabbedPane);
+		
+			// add log out button and event handler
+			logoutBtn = new JButton("Log Out");
+			logoutBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
+			add(logoutBtn);
+			add(Box.createVerticalGlue());
+			logoutBtn.addActionListener(new ActionListener(){
+
+				public void actionPerformed(ActionEvent arg0) {
+					dispose();
+					new LoginGUI();
+				}
+			});
+			pack();
+	    }
+	}
+	
 //	*------ uncomment main method if you would like to avoid logging in during testing    -------*
 	
 //	public static void main(String[] args) {
-//		Employee e = new SalesAssistant(10001, "Fred Flintstone", "0861234567", "password", 200004);
 //		Database d = new Database();
-//		d.addEmployee(e);
+//		SystemData data = new SystemData(d);
+//		data.fillDatabase();
+//		Employee e = d.getEmployee(10002);
 //		new GUIDriver(e, d);
 //	}
 }
