@@ -15,18 +15,30 @@ public class ProfitAndLoss {
 		  private ArrayList<Employee>wages;
 		  private double totalSalesTransactionValue;
 		  private double totalPurchasingTransactionValue;
+		  private double totalIncome;
+		  private double totalExpenditure;
 		  private double overallBalance;
 		  private boolean profitMaking;
 		  private double employeeWages;
+		  private double bills;
 		
             public ProfitAndLoss(Database data) {
 			this.salesTransactions = new ArrayList<SalesTransaction>(data.getSalesTransactions());
 			this.purchasingTransactions = new ArrayList<PurchasingTransaction>(data.getPurchasingTransactions());
 			this.wages = new ArrayList<Employee>(data.getEmployees());
-			
+			bills=500;
 			 
 			
 		}
+            
+    public void updateAccounts(){
+    	calculateWages();
+    	calculateSalesTransactionValue();
+    	calculatePurchasingTransactionValue();
+    	calculateTotalIncome();
+    	calculateTotalExpenditure();
+    	profitOrLoss();
+    }
 
 
 	public boolean isProfitMaking() {
@@ -70,6 +82,14 @@ public class ProfitAndLoss {
 	
 	
 	
+	public double getBills() {
+		return bills;
+	}
+
+	public void setBills(double bills) {
+		this.bills = bills;
+	}
+
 	public double getOverallBalance() {
 		return overallBalance;
 	}
@@ -77,6 +97,33 @@ public class ProfitAndLoss {
 
 	public void setOverallBalance(double overallBalance) {
 		this.overallBalance = overallBalance;
+	}
+	
+	public double getTotalIncome() {
+		return totalIncome;
+	}
+
+	public void setTotalIncome(double totalIncome) {
+		this.totalIncome = totalIncome;
+	}
+
+	public double getTotalExpenditure() {
+		return totalExpenditure;
+	}
+
+	public void setTotalExpenditure(double totalExpenditure) {
+		this.totalExpenditure = totalExpenditure;
+	}
+	public void calculateTotalIncome(){
+		double total =0;
+		total = getSalesTransactionValue();
+		setTotalIncome(total);
+	}
+
+	public void calculateTotalExpenditure(){
+		double total =0;
+		total = getEmployeeWages()+getPurchasingTransactionValue()+bills;
+		setTotalExpenditure(total);
 	}
 	
 	public void calculateWages(){
@@ -106,7 +153,7 @@ public class ProfitAndLoss {
 	
 	public void profitOrLoss(){
 		double result;
-		result = totalSalesTransactionValue-totalPurchasingTransactionValue;
+		result = totalIncome-totalExpenditure;
 		if(result > 0){
 			setProfitMaking(true);
 		}
