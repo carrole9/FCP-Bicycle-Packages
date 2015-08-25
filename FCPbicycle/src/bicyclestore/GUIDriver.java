@@ -79,6 +79,9 @@ public class GUIDriver extends JFrame{
 		CustomersCardLayout customersLayout = new CustomersCardLayout(database);
 		customerTab.add(customersLayout.getCardLayoutPane());
 		
+		InvoiceCardLayout invoiceCard = new InvoiceCardLayout(database, employee);
+		invoicingTab.add(invoiceCard);
+		
 		tabbedPane.add("Customers", customerTab);
 		tabbedPane.add("Products", productTab);
 		tabbedPane.add("Invoicing", invoicingTab);
@@ -110,6 +113,9 @@ public class GUIDriver extends JFrame{
 		// add supplier card layout to supplier control tab
 		SuppliersCardLayout suppliersLayout = new SuppliersCardLayout(database);
 		supplierTab.add(suppliersLayout.getCardLayoutPane());
+		
+		InvoiceCardLayout invoiceCard = new InvoiceCardLayout(database, employee);
+		invoicingTab.add(invoiceCard);
 		
 		tabbedPane.add("Customers", customerTab);
 		tabbedPane.add("Products", productTab);
