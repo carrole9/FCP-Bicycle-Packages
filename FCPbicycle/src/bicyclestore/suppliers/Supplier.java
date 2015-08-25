@@ -1,20 +1,25 @@
 package bicyclestore.suppliers;
 
+import bicyclestore.Database;
+import bicyclestore.bikes.Bicycle;
+
 public class Supplier {
 	
 	private int supplierID;
 	private String name;
 	private String address;
-	private String typeOfProduct;
+//	private String typeOfProduct;
+	private Bicycle typeOfProduct;
 	private String phoneNum;
 	private String email;
+	private Database database;
 
 	public Supplier(int supplierID, String name, String address, String typeOfProduct, String phoneNum, String email) {
 		
 		this.supplierID = supplierID;
 		this.name = name;
 		this.address = address;
-		this.typeOfProduct = typeOfProduct;
+		this.typeOfProduct = new Bicycle(typeOfProduct, "Black", 21, 20, "Aluminium", database, 300, 469.95);
 		this.phoneNum = phoneNum;
 		this.email = email;
 	}
@@ -43,12 +48,12 @@ public class Supplier {
 		this.address = address;
 	}
 
-	public String getTypeOfProduct() {
+	public Bicycle getTypeOfProduct() {
 		return typeOfProduct;
 	}
 
 	public void setTypeOfProduct(String typeOfProduct) {
-		this.typeOfProduct = typeOfProduct;
+		this.typeOfProduct.setModel(typeOfProduct);
 	}
 	
 	public String getPhoneNum() {
@@ -78,6 +83,3 @@ public class Supplier {
 	}
 	
 }
-
-
-
