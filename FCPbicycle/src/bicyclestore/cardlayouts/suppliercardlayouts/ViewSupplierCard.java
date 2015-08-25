@@ -168,7 +168,7 @@ public class ViewSupplierCard extends JPanel implements ListSelectionListener {
 		supplierID.setText(supplier.getSupplierID()+"");
 		supplierName.setText(supplier.getName());
 		supplierAddress.setText(supplier.getAddress());
-		supplierTypeOfProduct.setText(supplier.getTypeOfProduct());
+		supplierTypeOfProduct.setText(supplier.getTypeOfProduct().getModel());
 		supplierPhoneNum.setText(supplier.getPhoneNum());
 		supplierEmail.setText(supplier.getEmail());
 	}
