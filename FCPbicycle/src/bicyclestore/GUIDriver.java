@@ -7,14 +7,19 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 
 import bicyclestore.cardlayouts.customercardlayouts.CustomersCardLayout;
 import bicyclestore.cardlayouts.ordercardlayouts.OrdersCardLayout;
@@ -36,6 +41,10 @@ public class GUIDriver extends JFrame{
 	private JTabbedPane tabbedPane;
 	private JButton logoutBtn;
 	
+	private JMenuBar menuBar;
+	private JMenu fileMenu;
+	private JMenuItem logOutMenuItem, exitMenuItem;
+	
 	public GUIDriver(Employee employee, Database database) {
 		this.employee = employee;
 		this.database = database;
@@ -51,6 +60,8 @@ public class GUIDriver extends JFrame{
 		backgroundPanel.add(Box.createHorizontalGlue());
 		backgroundPanel.add(mainPanel, BorderLayout.CENTER);
 		backgroundPanel.add(Box.createHorizontalGlue());
+		
+		createMenu();
 		
 		setContentPane(backgroundPanel);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -126,6 +137,40 @@ public class GUIDriver extends JFrame{
 		tabbedPane.add("Stock Control", stockTab);
 	}
 	
+	private void createMenu() {
+		menuBar = new JMenuBar();
+		
+		fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		fileMenu.getAccessibleContext().setAccessibleDescription(
+		        "The only menu in this program that has menu items");
+		
+		setFileMenuItems();
+		
+		menuBar.add(fileMenu);
+		
+		setJMenuBar(menuBar);
+	}
+	
+	private void setFileMenuItems() {
+		// create log out menu item
+		logOutMenuItem = new JMenuItem("Log out");
+		logOutMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_L, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+		logOutMenuItem.setMnemonic(KeyEvent.VK_L);
+		logOutMenuItem.addActionListener(new MenuItemListener());
+		
+		exitMenuItem = new JMenuItem("Exit program");
+		exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_X, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+		exitMenuItem.setMnemonic(KeyEvent.VK_X);
+		
+		exitMenuItem.addActionListener(new MenuItemListener());
+		
+		fileMenu.add(logOutMenuItem);
+		fileMenu.add(exitMenuItem);
+	}
+	
 	@SuppressWarnings("serial")
 	private class BackgroundPanel extends JPanel {
 	    Image bg = new ImageIcon("src/images/bike_shop_background.png").getImage();
@@ -160,6 +205,22 @@ public class GUIDriver extends JFrame{
 			});
 			pack();
 	    }
+	}
+	
+	private class MenuItemListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == exitMenuItem) {
+				System.exit(0);
+			}
+			
+			if(e.getSource() == logOutMenuItem) {
+				dispose();
+				new LoginGUI();
+			}
+		}
+		
 	}
 	
 //	*------ uncomment main method if you would like to avoid logging in during testing    -------*
