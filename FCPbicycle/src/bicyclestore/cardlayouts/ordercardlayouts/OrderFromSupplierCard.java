@@ -129,12 +129,12 @@ public class OrderFromSupplierCard extends JPanel implements ItemListener {
 		grid.setVgap(10);
 		orderDetails.setLayout(grid);
 		orderDetails.setMaximumSize(new Dimension(400, 300));
-		orderDetails.add(lblSelectSupplier);
-		orderDetails.add(supplierList);
 		orderDetails.add(lblSelectProductType);
 		orderDetails.add(productTypeList);
 		orderDetails.add(lblSelectProductModel);
 		orderDetails.add(productModelList);
+		orderDetails.add(lblSelectSupplier);
+		orderDetails.add(supplierList);
 		orderDetails.add(lblSelectQuantity);
 		orderDetails.add(quantitySpinner);
 		
