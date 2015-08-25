@@ -22,6 +22,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import bicyclestore.cardlayouts.customercardlayouts.CustomersCardLayout;
+import bicyclestore.cardlayouts.invoicecardlayouts.InvoiceCardLayout;
 import bicyclestore.cardlayouts.ordercardlayouts.OrdersCardLayout;
 import bicyclestore.cardlayouts.stockcontrol.StockControlCard;
 import bicyclestore.cardlayouts.suppliercardlayouts.SuppliersCardLayout;
@@ -37,17 +38,19 @@ public class GUIDriver extends JFrame{
 	private Employee employee;
 	private Database database;
 	
+	private JFrame frame;
 	private JPanel mainPanel;
 	private JTabbedPane tabbedPane;
 	private JButton logoutBtn;
 	
 	private JMenuBar menuBar;
-	private JMenu fileMenu;
-	private JMenuItem logOutMenuItem, exitMenuItem;
+	private JMenu fileMenu, viewMenu;
+	private JMenuItem logOutMenuItem, exitMenuItem, shrinkWindowMenuItem, fullScreenMenuItem;
 	
 	public GUIDriver(Employee employee, Database database) {
 		this.employee = employee;
 		this.database = database;
+		frame = this;
 		createAndShowGUI();
 	}
 	
@@ -142,12 +145,15 @@ public class GUIDriver extends JFrame{
 		
 		fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
-		fileMenu.getAccessibleContext().setAccessibleDescription(
-		        "The only menu in this program that has menu items");
+		
+		viewMenu = new JMenu("View");
+		viewMenu.setMnemonic(KeyEvent.VK_V);
 		
 		setFileMenuItems();
+		setViewMenuItems();
 		
 		menuBar.add(fileMenu);
+		menuBar.add(viewMenu);
 		
 		setJMenuBar(menuBar);
 	}
@@ -169,6 +175,23 @@ public class GUIDriver extends JFrame{
 		
 		fileMenu.add(logOutMenuItem);
 		fileMenu.add(exitMenuItem);
+	}
+	
+	private void setViewMenuItems() {
+		fullScreenMenuItem = new JMenuItem("Full Screen");
+		fullScreenMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_F, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+		fullScreenMenuItem.setMnemonic(KeyEvent.VK_F);
+		fullScreenMenuItem.addActionListener(new MenuItemListener());
+		
+		shrinkWindowMenuItem = new JMenuItem("Shrink Window");
+		shrinkWindowMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_S, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+		shrinkWindowMenuItem.setMnemonic(KeyEvent.VK_S);
+		shrinkWindowMenuItem.addActionListener(new MenuItemListener());
+		
+		viewMenu.add(shrinkWindowMenuItem);
+		viewMenu.add(fullScreenMenuItem);
 	}
 	
 	@SuppressWarnings("serial")
@@ -218,6 +241,15 @@ public class GUIDriver extends JFrame{
 			if(e.getSource() == logOutMenuItem) {
 				dispose();
 				new LoginGUI();
+			}
+			
+			if(e.getSource() == shrinkWindowMenuItem) {
+				frame.setSize(800,500);;
+				frame.setLocationRelativeTo(null);
+			}
+			
+			if(e.getSource() == fullScreenMenuItem) {
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			}
 		}
 		
