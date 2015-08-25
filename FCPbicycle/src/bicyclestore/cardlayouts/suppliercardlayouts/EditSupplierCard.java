@@ -163,7 +163,7 @@ public class EditSupplierCard extends JPanel implements ListSelectionListener {
 		txtSupplierID.setText(supplier.getSupplierID()+"");
 		txtSupplierName.setText(supplier.getName());
 		txtSupplierAddress.setText(supplier.getAddress());
-		txtSupplierTypeOfProduct.setText(supplier.getTypeOfProduct());
+		txtSupplierTypeOfProduct.setText(supplier.getTypeOfProduct().getModel());
 		txtSupplierPhoneNum.setText(supplier.getPhoneNum());
 		txtSupplierEmail.setText(supplier.getEmail());
 	}
