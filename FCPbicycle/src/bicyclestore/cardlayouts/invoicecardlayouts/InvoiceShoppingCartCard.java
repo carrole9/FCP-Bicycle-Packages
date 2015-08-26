@@ -4,7 +4,11 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 	import java.awt.Dimension;
 	import java.awt.event.ActionEvent;
 	import java.awt.event.ActionListener;
-	import java.util.Date;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Date;
 
 	import javax.swing.Box;
 	import javax.swing.BoxLayout;
@@ -129,7 +133,7 @@ import bicyclestore.transaction.ShoppingBasket;
 			this.customer = customer;
 		}
 
-		private void createPurchasingTransaction() {
+		private void createSalesTransaction() throws IOException {
 			
 			int transactionId = Integer.parseInt(txtId.getText());
 			// increment counter if auto-increment number was used
@@ -148,6 +152,36 @@ import bicyclestore.transaction.ShoppingBasket;
 					+ "\nCustomer: "+ customer.getName()
 					+ "\nAmount: "+cost ,
 					"Order Processed", JOptionPane.INFORMATION_MESSAGE);
+			
+			
+			String data="Invoice"
+					+ "\nTransaction id: "+transactionId
+					+ "\nCustomer: "+ customer.getName()
+					+ "\nAmount: "+cost;
+			
+			String fileName= ""+transactionId;
+			File file = new File(fileName);
+			file.createNewFile();
+
+	        FileWriter fr = null;
+	        BufferedWriter br = null;
+	        String dataWithNewLine=data+System.getProperty("line.separator");
+	        try{
+	            fr = new FileWriter(file);
+	            br = new BufferedWriter(fr);
+
+	                br.write(dataWithNewLine);
+
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }finally{
+	            try {
+	                br.close();
+	                fr.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
 					
 			resetFields();
 			
@@ -185,7 +219,12 @@ import bicyclestore.transaction.ShoppingBasket;
 								"No products in shopping cart", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
-						createPurchasingTransaction();
+						try {
+							createSalesTransaction();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 				

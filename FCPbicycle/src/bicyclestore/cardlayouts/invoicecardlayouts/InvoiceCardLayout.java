@@ -24,11 +24,11 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 		
 		private JPanel  comboBoxPane, cards;
 		private static final String INVOICE_A_CUSTOMER = "Sell to a Customer";
-		private static final String VIEW_ORDERS = "View Invoice";
+		private static final String VIEW_INVOICE = "View Invoice";
 		private static final String VIEW_OLD_ORDERS = "View Old Orders";
 		private static final String VIEW_DELIVERY_DATES = "View Delivery Dates";
 		private static final String VIEW_COSTS = "View Costs";
-		private String[] comboBoxItems = {INVOICE_A_CUSTOMER, VIEW_ORDERS, VIEW_OLD_ORDERS, VIEW_DELIVERY_DATES, VIEW_COSTS};
+		private String[] comboBoxItems = {INVOICE_A_CUSTOMER, VIEW_INVOICE};
 		
 		// Card classes
 		private CreateInvoiceCard createInvoice;
@@ -60,7 +60,7 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 			JPanel card5 = new JPanel();
 			
 			cards.add(card1, INVOICE_A_CUSTOMER);
-			cards.add(card2, VIEW_ORDERS);
+			cards.add(card2, VIEW_INVOICE);
 			//cards.add(card3, VIEW_OLD_ORDERS);
 			//cards.add(card4, VIEW_DELIVERY_DATES);
 			//cards.add(card5, VIEW_COSTS);
