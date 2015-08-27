@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.Box;
@@ -135,19 +137,35 @@ public class OrderShoppingCartCard extends JPanel {
 		
 		double cost = calculateCost();
 		
+		// get date of order and delivery date
+		Date now = new Date();
+		Date deliveryDate = getDeliveryDate(now, 4);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm");
+		
 		database.addPurhasingTransaction(new PurchasingTransaction(transactionId, employee, 
-				supplier, cost, "Account", new Date(), basket));
+				supplier, cost, "Account", now, basket, deliveryDate));
 		
 		// display confirmation dialogue to user
 		JOptionPane.showMessageDialog(null, "Order processed"
 				+ "\nTransaction id: "+transactionId
-				+ "\nSupplier: "+supplier
-				+ "\nAmount: "+cost ,
+				+ "\nSupplier: "+supplier.getName()
+				+ "\nAmount: "+cost
+				+ "\nDelivery date: "+ sdf.format(deliveryDate),
 				"Order Processed", JOptionPane.INFORMATION_MESSAGE);
 				
 		resetFields();
 		
 		cardLayout.newOrderAdded(transactionId);
+	}
+	
+	private Date getDeliveryDate(Date current, int deliveryDays) {
+		Calendar c = Calendar.getInstance();
+		// add number of delivery days and set time to 14:00:00
+		c.set(Calendar.DAY_OF_YEAR, c.get(Calendar.DAY_OF_YEAR) +deliveryDays); 
+		c.set(Calendar.HOUR_OF_DAY, 14);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		return c.getTime();
 	}
 	
 	private void resetFields() {
