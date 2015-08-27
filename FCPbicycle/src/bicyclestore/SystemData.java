@@ -1,6 +1,5 @@
 package bicyclestore;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -91,6 +90,8 @@ public class SystemData {
 		ShoppingBasket basket2 = new ShoppingBasket();
 		ShoppingBasket basket3 = new ShoppingBasket();
 		basket1.add(new MountainBike(27, "VooDoo Aizan 29er", "Black", 29, 29, "6061 Aluminium", database, 400, 565.95));
+		basket1.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", database, 300, 479.95));
+		basket1.add(new MotorisedBike("EBCO UCL30 Electric", "Black", 21, 26, "Aluminium", database, 480, 699.99));
 		basket2.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", database, 300, 479.95));
 		basket2.add(new BMX("Blue", "Mongoose Scan R90", 21, 20, "Aluminium", database, 180, 299.99));
 		basket3.add(new MotorisedBike("EBCO UCL30 Electric", "Black", 21, 26, "Aluminium", database, 480, 699.99));
