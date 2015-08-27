@@ -69,7 +69,7 @@ public class ViewOrdersCard extends JPanel implements ListSelectionListener {
 		setUpOrderDetailsPane();
 		setUpLabels();
 		
-		if(database.getCustomers().size() > 0)
+		if(database.getPurchasingTransactions().size() > 0)
 			setOrderDetailsContent();
 		
 		add(listScrollPane, BorderLayout.WEST);
