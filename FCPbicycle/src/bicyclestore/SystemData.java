@@ -100,32 +100,40 @@ public class SystemData {
 		// order from 7 days ago
 		Date sevenDaysAgo = new Date(System.currentTimeMillis() - 7*24*3600*1000);
 		database.addPurhasingTransaction(new PurchasingTransaction(10001, database.getEmployee(10004),
-				database.getSupplier(101), 300.0, "Account", sevenDaysAgo, basket1, getDeliveryDate(sevenDaysAgo, 4)));
+				database.getSupplier(101), basket1.getTotalCostValue(), "Account", sevenDaysAgo,
+				basket1, getDeliveryDate(sevenDaysAgo, 4)));
 		
 		// order from 6 days ago
 		Date sixDaysAgo = new Date(System.currentTimeMillis() - 6*24*3600*1000);
 		database.addPurhasingTransaction(new PurchasingTransaction(10002, database.getEmployee(10002),
-				database.getSupplier(102), 180.0, "Account", sixDaysAgo, basket2, getDeliveryDate(sixDaysAgo, 4)));
+				database.getSupplier(102), basket2.getTotalCostValue(), "Account", sixDaysAgo, 
+				basket2, getDeliveryDate(sixDaysAgo, 4)));
 		
 		// order from 4 days ago
 		Date fourDaysAgo = new Date(System.currentTimeMillis() - 4*24*3600*1000);
 		database.addPurhasingTransaction(new PurchasingTransaction(10003, database.getEmployee(10004),
-				database.getSupplier(103), 450.0, "Account", fourDaysAgo, basket3, getDeliveryDate(fourDaysAgo, 4)));
+				database.getSupplier(103), basket3.getTotalCostValue(), "Account", fourDaysAgo, 
+				basket3, getDeliveryDate(fourDaysAgo, 4)));
 		
 		// order from 3 days ago
 		Date threeDaysAgo = new Date(System.currentTimeMillis() - 3*24*3600*1000);
 		database.addPurhasingTransaction(new PurchasingTransaction(10004, database.getEmployee(10002),
-				database.getSupplier(104), 480.0, "Account", threeDaysAgo, basket2, getDeliveryDate(threeDaysAgo, 4)));
+				database.getSupplier(104), basket2.getTotalCostValue(), "Account", threeDaysAgo, 
+				basket2, getDeliveryDate(threeDaysAgo, 4)));
 		
 		// create orders for current date
 		database.addPurhasingTransaction(new PurchasingTransaction(10005, database.getEmployee(10002),
-				database.getSupplier(102), 170.0, "Account", new Date(), basket1, getDeliveryDate(new Date(), 4)));
+				database.getSupplier(102), basket1.getTotalCostValue(), "Account", new Date(),
+				basket1, getDeliveryDate(new Date(), 4)));
 		database.addPurhasingTransaction(new PurchasingTransaction(10006, database.getEmployee(10004),
-				database.getSupplier(104), 230.0, "Account", new Date(), basket2,getDeliveryDate(new Date(), 4)));
+				database.getSupplier(104), basket2.getTotalCostValue(), "Account", new Date(), 
+				basket2,getDeliveryDate(new Date(), 4)));
 		database.addPurhasingTransaction(new PurchasingTransaction(10007, database.getEmployee(10004),
-				database.getSupplier(101), 350.0, "Account", new Date(), basket3, getDeliveryDate(new Date(), 4)));
+				database.getSupplier(101), basket3.getTotalCostValue(), "Account", new Date(), 
+				basket3, getDeliveryDate(new Date(), 4)));
 		database.addPurhasingTransaction(new PurchasingTransaction(10008, database.getEmployee(10002),
-				database.getSupplier(103), 180.0, "Account", new Date(), basket2, getDeliveryDate(new Date(), 4)));
+				database.getSupplier(103), basket2.getTotalCostValue(), "Account", new Date(),
+				basket2, getDeliveryDate(new Date(), 4)));
 	}
 	
 	private Date getDeliveryDate(Date orderDate, int deliveryDays) {
