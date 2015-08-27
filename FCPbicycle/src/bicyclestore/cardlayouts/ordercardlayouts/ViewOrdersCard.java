@@ -5,17 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.text.SimpleDateFormat;
-import java.util.Scanner;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -30,9 +27,10 @@ public class ViewOrdersCard extends JPanel implements ListSelectionListener {
 
 	private Database database;
 	
-	private JList<String> orderList;
-	private DefaultListModel<String> listModel;
+	private JTable orderListTable;
+	private DefaultTableModel orderListModel;
 	private JScrollPane listScrollPane;
+	
 	private JPanel orderDetailsPane;
 	private Box orderDetailsBox;
 	private JTable productDetailsTable;
@@ -44,33 +42,40 @@ public class ViewOrdersCard extends JPanel implements ListSelectionListener {
 	
 	public ViewOrdersCard(Database database) {
 		this.database = database;
-		setUpOrderList();
+		setUpOrderListTable();
 		createViewOrderCard();
 	}
 	
-	private void setUpOrderList() {
-		listModel = new DefaultListModel<String>();
-		addOrdersFromDB();
-		
-		orderList = new JList<String>(listModel);
-		orderList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		orderList.setSelectedIndex(0);
-		orderList.addListSelectionListener(this);
-		orderList.setVisibleRowCount(10);
+	private void setUpOrderListTable() {
+		Object[] colNames = {"Transaction ID", "Date"};
+		orderListModel = new DefaultTableModel();
+		orderListModel.setColumnIdentifiers(colNames);
+		orderListTable = new JTable() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		orderListTable.setModel(orderListModel);
+		orderListTable.setFillsViewportHeight(true);
+		orderListTable.setPreferredScrollableViewportSize(new Dimension(200,200));
 		
 		// set up scroll pane to contain list and wrap in titled border
-		listScrollPane = new JScrollPane(orderList);
+		listScrollPane = new JScrollPane(orderListTable);
 		TitledBorder scrollPaneBorder = BorderFactory.createTitledBorder("Select an order");
 		scrollPaneBorder.setTitleJustification(TitledBorder.CENTER);
 		listScrollPane.setBorder(scrollPaneBorder);
 		
-		orderList.setPreferredSize(new Dimension(200,200));
+		addOrdersFromDB();
+		orderListTable.setRowSelectionInterval(0, 0);
+		orderListTable.getSelectionModel().addListSelectionListener(this);
 	}
-
+	
 	private void addOrdersFromDB() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
 		for(PurchasingTransaction order : database.getPurchasingTransactions()) {
-			listModel.addElement(order.getTransactionID()+"    -    "+sdf.format(order.getTransactionDate()));
+			Object[] row = {order.getTransactionID(), sdf.format(order.getTransactionDate() ) };
+			orderListModel.addRow(row);
 		}
 	}
 	
@@ -166,11 +171,7 @@ public class ViewOrdersCard extends JPanel implements ListSelectionListener {
 	}
 	
 	private void setOrderDetailsContent() {
-		// get customer at selected index
-		Scanner scanner = new Scanner(orderList.getSelectedValue());
-		int transactionId = scanner.nextInt();
-		scanner.close();
-		//int transactionId = Integer.parseInt(orderList.getSelectedValue());
+		int transactionId = (int)orderListTable.getValueAt(orderListTable.getSelectedRow(), 0);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		PurchasingTransaction order = database.getPurchasingTransaction(transactionId);
 		lblTransactionID.setText(order.getTransactionID()+"");
@@ -238,9 +239,7 @@ public class ViewOrdersCard extends JPanel implements ListSelectionListener {
 	@Override
 	public void valueChanged(ListSelectionEvent arg0) {
 		// if list still contains entries reset selection and display content
-		if(!listModel.isEmpty()) {
-			if(orderList.isSelectionEmpty())
-				orderList.setSelectedIndex(0);
+		if(orderListModel.getRowCount() > 0) {
 			setOrderDetailsContent();	
 		}
 		// if list empty reset fields to blank
@@ -249,21 +248,24 @@ public class ViewOrdersCard extends JPanel implements ListSelectionListener {
 	}
 	
 	public void refresh(int newTransactionID) {
-		listModel.addElement(newTransactionID+"");
+		Date orderDate = database.getPurchasingTransaction(newTransactionID).getTransactionDate();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+		Object[] row = {newTransactionID, sdf.format(orderDate)};
+		orderListModel.addRow(row);
 	}
 	
-	public void customerDetailsEdited(int oldID, int newID) {
-		listModel.setElementAt(oldID+"", listModel.indexOf(newID));
-		orderList.setSelectedValue(newID, true);
-		setOrderDetailsContent();
-	}
-	
-	public void customerDeleted(int transactionID) {
-		listModel.removeElement(transactionID);
-		int currentId = Integer.parseInt(lblTransactionID.getText());
-		if(currentId == transactionID) {
-			orderList.setSelectedIndex(0);
-		}
-	}
+//	public void customerDetailsEdited(int oldID, int newID) {
+//		listModel.setElementAt(oldID+"", listModel.indexOf(newID));
+//		orderList.setSelectedValue(newID, true);
+//		setOrderDetailsContent();
+//	}
+//	
+//	public void customerDeleted(int transactionID) {
+//		listModel.removeElement(transactionID);
+//		int currentId = Integer.parseInt(lblTransactionID.getText());
+//		if(currentId == transactionID) {
+//			orderList.setSelectedIndex(0);
+//		}
+//	}
 
 }
