@@ -24,6 +24,7 @@ import javax.swing.KeyStroke;
 import bicyclestore.cardlayouts.customercardlayouts.CustomersCardLayout;
 import bicyclestore.cardlayouts.invoicecardlayouts.InvoiceCardLayout;
 import bicyclestore.cardlayouts.ordercardlayouts.OrdersCardLayout;
+import bicyclestore.cardlayouts.profitandlosscardlayout.ProfitAndLossCard;
 import bicyclestore.cardlayouts.stockcontrol.StockControlCard;
 import bicyclestore.cardlayouts.suppliercardlayouts.SuppliersCardLayout;
 import bicyclestore.staff.Employee;
@@ -130,6 +131,9 @@ public class GUIDriver extends JFrame{
 		
 		InvoiceCardLayout invoiceCard = new InvoiceCardLayout(database, employee);
 		invoicingTab.add(invoiceCard);
+		
+		ProfitAndLossCard profitAndLossCard = new ProfitAndLossCard(database);
+		profitAndLossTab.add(profitAndLossCard.getStockControlCardLayout());
 		
 		tabbedPane.add("Customers", customerTab);
 		tabbedPane.add("Products", productTab);
