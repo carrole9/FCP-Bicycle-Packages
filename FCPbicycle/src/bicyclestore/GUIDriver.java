@@ -196,7 +196,7 @@ public class GUIDriver extends JFrame{
 	
 	@SuppressWarnings("serial")
 	private class BackgroundPanel extends JPanel {
-	    Image bg = new ImageIcon("src/images/bike_shop_background.png").getImage();
+	    Image bg = new ImageIcon(getClass().getResource("/images/bike_shop_background.png")).getImage();
 	    @Override
 	    public void paintComponent(Graphics g) {
 	        g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);

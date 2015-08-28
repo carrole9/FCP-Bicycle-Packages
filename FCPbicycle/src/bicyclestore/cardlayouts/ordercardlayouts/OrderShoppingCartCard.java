@@ -97,7 +97,12 @@ public class OrderShoppingCartCard extends JPanel {
 	private void setUpTable() {
 		tableModel = new DefaultTableModel();
 		tableModel.setColumnIdentifiers(TABLE_COLS);
-		orderDetailsTable = new JTable(tableModel);
+		orderDetailsTable = new JTable(tableModel) {
+			@Override
+			public boolean isCellEditable(int arg0, int arg1) {
+				return false; // don't allow the user to edit table fields
+			}
+		};
 		orderDetailsTable.setFillsViewportHeight(true);
 		orderDetailsTable.setPreferredScrollableViewportSize(new Dimension(600,150));
 	}
