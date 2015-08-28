@@ -166,13 +166,13 @@ import bicyclestore.transaction.SalesTransaction;
 			// get customer at selected index
 			int transactionId = Integer.parseInt(invoiceList.getSelectedValue());
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-			SalesTransaction order = database.getSalesTransaction(transactionId);
-			lblTransactionID.setText(order.getTransactionID()+"");
-			lblEmployee.setText(order.getEmployee().getName());
-			lblCustomer.setText(order.getCustomer().getName());
-			lblCost.setText(order.getTransactionCost()+"");
-			lblPaymentMethod.setText(order.getPaymentMethod());
-			lblDate.setText(sdf.format(order.getTransactionDate()));
+			SalesTransaction invoice = database.getSalesTransaction(transactionId);
+			lblTransactionID.setText(invoice.getTransactionID()+"");
+			lblEmployee.setText(invoice.getEmployee().getName()+"");
+			lblCustomer.setText(invoice.getCustomer().getName()+"");
+			lblCost.setText(invoice.getTransactionCost()+"");
+			lblPaymentMethod.setText(invoice.getPaymentMethod()+"");
+			lblDate.setText(sdf.format(invoice.getTransactionDate()));
 		}
 		
 		private void setUpButtonPane() {

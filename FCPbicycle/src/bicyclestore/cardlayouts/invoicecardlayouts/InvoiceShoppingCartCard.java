@@ -50,7 +50,7 @@ import bicyclestore.transaction.ShoppingBasket;
 		private JTextField txtId;
 		private JButton btnEditId;
 		
-		private int transactionIdCount = 10002;
+		private int transactionIdCount = 10003;
 		
 		private DefaultTableModel tableModel;
 		private JTable orderDetailsTable;
