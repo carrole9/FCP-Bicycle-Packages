@@ -49,6 +49,17 @@ public class LoginGUI {
 		frame.setVisible(true);
 	}
 	
+	// Alternative constructor to allow persistence between log ins
+	// database can be passed back when logging out
+	public LoginGUI(Database database) {
+		this.database = database;
+		
+		initComponents();
+		createLogInPanel();
+		btnSubmit.addActionListener(new ButtonClickListener());
+		frame.setVisible(true);
+	}
+	
 	private void initComponents() {
 		frame = new JFrame("Bicycle Store System");
 		frame.setSize(400, 400);

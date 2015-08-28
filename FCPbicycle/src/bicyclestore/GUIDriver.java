@@ -227,7 +227,7 @@ public class GUIDriver extends JFrame{
 
 				public void actionPerformed(ActionEvent arg0) {
 					dispose();
-					new LoginGUI();
+					new LoginGUI(database);
 				}
 			});
 			pack();
@@ -244,7 +244,7 @@ public class GUIDriver extends JFrame{
 			
 			if(e.getSource() == logOutMenuItem) {
 				dispose();
-				new LoginGUI();
+				new LoginGUI(database);
 			}
 			
 			if(e.getSource() == shrinkWindowMenuItem) {
