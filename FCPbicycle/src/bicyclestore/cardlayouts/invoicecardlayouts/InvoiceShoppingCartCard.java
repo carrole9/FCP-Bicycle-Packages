@@ -50,7 +50,7 @@ import bicyclestore.transaction.ShoppingBasket;
 		private JTextField txtId;
 		private JButton btnEditId;
 		
-		private int transactionIdCount = 10009;
+		private int transactionIdCount = 10002;
 		
 		private DefaultTableModel tableModel;
 		private JTable orderDetailsTable;
@@ -185,7 +185,7 @@ import bicyclestore.transaction.ShoppingBasket;
 					
 			resetFields();
 			
-			cardLayout.newOrderAdded(transactionId);
+			cardLayout.newInvoiceAdded(transactionId);
 		}
 		
 		private void resetFields() {
@@ -202,9 +202,7 @@ import bicyclestore.transaction.ShoppingBasket;
 			return basket.getTotalCostValue();
 		}
 		
-		/*private Customer getCustomer(){
-			return basket.getCustomer().getName();
-		}*/
+		
 		
 		private class ButtonListener implements ActionListener {
 

@@ -25,16 +25,15 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 		private JPanel  comboBoxPane, cards;
 		private static final String INVOICE_A_CUSTOMER = "Sell to a Customer";
 		private static final String VIEW_INVOICE = "View Invoice";
-		private static final String VIEW_OLD_ORDERS = "View Old Orders";
-		private static final String VIEW_DELIVERY_DATES = "View Delivery Dates";
-		private static final String VIEW_COSTS = "View Costs";
+		private static final String DELETE_INVOICE = "Delete Invoice";
 		private String[] comboBoxItems = {INVOICE_A_CUSTOMER, VIEW_INVOICE};
 		
 		// Card classes
 		private CreateInvoiceCard createInvoice;
 		private InvoiceShoppingCartCard shoppingCartCard;
 		private ViewInvoiceCard viewInvoiceCard;
-		//private ViewOldOrdersCard viewOldOrdersCard;
+		//private DeleteInvoice deleteInvoice;
+		
 
 		public InvoiceCardLayout(Database database, Employee employee) {
 			this.database = database;
@@ -49,24 +48,30 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 			cards = new JPanel(new CardLayout());
 			
 			createInvoice = new CreateInvoiceCard(database, employee, this);
-			viewInvoiceCard = new ViewInvoiceCard(database);
-			//viewOldOrdersCard = new ViewOldOrdersCard(database);
+			viewInvoiceCard = new ViewInvoiceCard(database, this);
+			//deleteInvoice = new DeleteInvoice(database, this);
 			
 			// create cards to make up card layout
 			JPanel card1 = createInvoice;
 			JPanel card2 = viewInvoiceCard;
-			//JPanel card3 = viewOldOrdersCard;
-			JPanel card4 = new JPanel();
-			JPanel card5 = new JPanel();
+			//JPanel card3 = deleteInvoice;
+		
 			
 			cards.add(card1, INVOICE_A_CUSTOMER);
 			cards.add(card2, VIEW_INVOICE);
-			//cards.add(card3, VIEW_OLD_ORDERS);
-			//cards.add(card4, VIEW_DELIVERY_DATES);
-			//cards.add(card5, VIEW_COSTS);
+			//cards.add(card3, DELETE_INVOICE);
+			
 			
 			this.add(comboBoxPane, BorderLayout.NORTH);
 			this.add(cards, BorderLayout.CENTER);
+		}
+		
+		public void customerDeleted(String customerName) {
+			viewInvoiceCard.customerDeleted(customerName);
+		}
+		
+		public void customerEdited(String oldName, String newName) {
+			viewInvoiceCard.customerDetailsEdited(oldName, newName);
 		}
 		
 		private void createComboBoxPane() {
@@ -90,7 +95,7 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 	        cl.show(cards, (String)e.getItem());
 		}
 		
-		public void newOrderAdded(int transactionId) {
+		public void newInvoiceAdded(int transactionId) {
 			// refresh customer lists
 			viewInvoiceCard.refresh(transactionId);
 		}

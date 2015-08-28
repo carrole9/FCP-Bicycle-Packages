@@ -4,21 +4,28 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 	import java.awt.Color;
 	import java.awt.Dimension;
 	import java.awt.GridLayout;
-	import java.text.SimpleDateFormat;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 
 	import javax.swing.BorderFactory;
-	import javax.swing.DefaultListModel;
-	import javax.swing.JLabel;
+import javax.swing.Box;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 	import javax.swing.JList;
-	import javax.swing.JPanel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 	import javax.swing.JScrollPane;
 	import javax.swing.ListSelectionModel;
-	import javax.swing.border.TitledBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 	import javax.swing.event.ListSelectionEvent;
 	import javax.swing.event.ListSelectionListener;
 
 	import bicyclestore.Database;
-    import bicyclestore.transaction.SalesTransaction;
+
+import bicyclestore.transaction.SalesTransaction;
 
 	@SuppressWarnings("serial")
 	public class ViewInvoiceCard extends JPanel implements ListSelectionListener {
@@ -29,14 +36,22 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 		private DefaultListModel<String> listModel;
 		private JScrollPane listScrollPane;
 		private JPanel invoiceDetailsPane;
+		private Box buttonPane;
+		private JButton btnDeleteCustomer;
+		
+		private InvoiceCardLayout cardlayout;
 		
 		private JLabel idLabel, employeeLabel, customerLabel, costLabel, paymentMethodLabel, dateLabel,
 							lblTransactionID, lblEmployee, lblCustomer, lblCost, lblPaymentMethod, lblDate;
 		
-		public ViewInvoiceCard(Database database) {
+		public ViewInvoiceCard(Database database,InvoiceCardLayout cardlayout) {
 			this.database = database;
+			this.cardlayout=cardlayout;
 			setUpinvoiceList();
 			createViewOrderCard();
+			setUpButtonPane();
+			
+			add(buttonPane, BorderLayout.SOUTH);
 		}
 		
 		private void setUpinvoiceList() {
@@ -160,6 +175,25 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 			lblDate.setText(sdf.format(order.getTransactionDate()));
 		}
 		
+		private void setUpButtonPane() {
+			buttonPane = Box.createHorizontalBox();
+			
+			
+			btnDeleteCustomer = new JButton("Delete Customer");
+			
+			
+		    buttonPane.add(Box.createHorizontalStrut(10));
+		    buttonPane.add(btnDeleteCustomer);
+		    buttonPane.add(Box.createHorizontalGlue());
+		    
+		    buttonPane.setBorder(new EmptyBorder(20,20,20,20));
+		    
+		
+			btnDeleteCustomer.addActionListener(new ButtonClickListener());
+			
+			
+		}
+		
 		private void emptyOrderDetailFields() {
 			lblTransactionID.setText("");
 			lblEmployee.setText("");
@@ -186,19 +220,44 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 			listModel.addElement(newTransactionID+"");
 		}
 		
-		public void customerDetailsEdited(int oldID, int newID) {
+		public void customerDetailsEdited(String oldID, String newID) {
 			listModel.setElementAt(oldID+"", listModel.indexOf(newID));
 			invoiceList.setSelectedValue(newID, true);
 			setOrderDetailsContent();
 		}
 		
-		public void customerDeleted(int transactionID) {
+		public void customerDeleted(String transactionID) {
 			listModel.removeElement(transactionID);
-			int currentId = Integer.parseInt(lblTransactionID.getText());
+			String currentId = lblTransactionID.getText();
 			if(currentId == transactionID) {
 				invoiceList.setSelectedIndex(0);
 			}
 		}
+		
+		private void deleteSelectedCustomer() {
+			int value = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected customer?",
+					"Warning, Customer will be removed from system", JOptionPane.YES_NO_OPTION);
+			
+			if(value == JOptionPane.YES_OPTION) {
+				// if the customer selected yes, delete the customer
+				String customerName = invoiceList.getSelectedValue();
+				database.removeSalesTransaction(database.getSalesTransaction(Integer.parseInt(customerName)));
+				listModel.removeElement(customerName);
+				cardlayout.customerDeleted(customerName);
+			}
+		}
+		
+		private class ButtonClickListener implements ActionListener {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == btnDeleteCustomer) {
+					if(!listModel.isEmpty())
+						deleteSelectedCustomer();
+				}
+			}
+		}
 	}
+
+	
 
