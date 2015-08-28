@@ -5,21 +5,21 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
+import javax.swing.Box;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
+import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 import bicyclestore.Database;
+import bicyclestore.bikes.Bicycle;
 import bicyclestore.transaction.PurchasingTransaction;
 
 @SuppressWarnings("serial")
@@ -27,50 +27,59 @@ public class ViewOldOrdersCard extends JPanel implements ListSelectionListener {
 
 	private Database database;
 	
-	private JList<String> orderList;
-	private DefaultListModel<String> listModel;
+	private JTable orderListTable;
+	private DefaultTableModel orderListModel;
 	private JScrollPane listScrollPane;
-	private JPanel orderDetailsPane;
 	
-	private JLabel idLabel, employeeLabel, supplierLabel, costLabel, paymentMethodLabel, dateLabel,
-						lblTransactionID, lblEmployee, lblSupplier, lblCost, lblPaymentMethod, lblDate;
+	private JPanel orderDetailsPane;
+	private Box orderDetailsBox;
+	private JTable productDetailsTable;
+	private DefaultTableModel tableModel;
+	private JScrollPane tableScrollPane;
+	
+	private JLabel idLabel, employeeLabel, supplierLabel, costLabel, dateLabel, deliveryDateLabel,
+						lblTransactionID, lblEmployee, lblSupplier, lblCost, lblDate, lblDeliveryDate;
 	
 	public ViewOldOrdersCard(Database database) {
 		this.database = database;
-		setUpOrderList();
+		setUpOrderListTable();
 		createViewOrderCard();
 	}
 	
-	private void setUpOrderList() {
-		listModel = new DefaultListModel<String>();
-		addOrdersFromDB();
-		
-		orderList = new JList<String>(listModel);
-		orderList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		orderList.setSelectedIndex(0);
-		orderList.addListSelectionListener(this);
-		orderList.setVisibleRowCount(10);
+	private void setUpOrderListTable() {
+		Object[] colNames = {"Transaction ID", "Date"};
+		orderListModel = new DefaultTableModel();
+		orderListModel.setColumnIdentifiers(colNames);
+		orderListTable = new JTable() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		orderListTable.setModel(orderListModel);
+		orderListTable.setFillsViewportHeight(true);
+		orderListTable.setPreferredScrollableViewportSize(new Dimension(200,200));
 		
 		// set up scroll pane to contain list and wrap in titled border
-		listScrollPane = new JScrollPane(orderList);
+		listScrollPane = new JScrollPane(orderListTable);
 		TitledBorder scrollPaneBorder = BorderFactory.createTitledBorder("Select an order");
 		scrollPaneBorder.setTitleJustification(TitledBorder.CENTER);
 		listScrollPane.setBorder(scrollPaneBorder);
 		
-		orderList.setPreferredSize(new Dimension(200,200));
+		addOrdersFromDB();
+		orderListTable.setRowSelectionInterval(0, 0);
+		orderListTable.getSelectionModel().addListSelectionListener(this);
 	}
-
+	
 	private void addOrdersFromDB() {
-		Calendar now = Calendar.getInstance();
-		Calendar yesterday = Calendar.getInstance();
-		yesterday.set(Calendar.DAY_OF_YEAR, now.get(Calendar.DAY_OF_YEAR)-1);
+		Date now = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
 		for(PurchasingTransaction order : database.getPurchasingTransactions()) {
-			// if order is older than yesterday add to list
-			Calendar orderDate = Calendar.getInstance();
-			orderDate.setTime(order.getTransactionDate());
-			
-			if(orderDate.before(yesterday))
-				listModel.addElement(order.getTransactionID()+"");
+			// if delivery date has passed display as old order
+			if(now.after(order.getDeliveryDate())) {
+				Object[] row = {order.getTransactionID(), sdf.format(order.getTransactionDate() ) };
+				orderListModel.addRow(row);
+			}
 		}
 	}
 	
@@ -83,10 +92,12 @@ public class ViewOldOrdersCard extends JPanel implements ListSelectionListener {
 			setOrderDetailsContent();
 		
 		add(listScrollPane, BorderLayout.WEST);
-		add(orderDetailsPane, BorderLayout.CENTER);
+		add(orderDetailsBox, BorderLayout.CENTER);
 	}
 	
 	private void setUpOrderDetailsPane() {
+		orderDetailsBox = Box.createVerticalBox();
+		
 		// set titled border on panel
 		GridLayout detailsGrid = new GridLayout(6,2);
 		detailsGrid.setVgap(5);
@@ -94,7 +105,13 @@ public class ViewOldOrdersCard extends JPanel implements ListSelectionListener {
 		orderDetailsPane = new JPanel(detailsGrid);
 		TitledBorder detailsBorder = BorderFactory.createTitledBorder("Order Details");
 		detailsBorder.setTitleJustification(TitledBorder.CENTER);
-		orderDetailsPane.setBorder(detailsBorder);
+		orderDetailsBox.setBorder(detailsBorder);
+		
+		createProductDetailsTable();
+		
+		orderDetailsBox.add(orderDetailsPane);
+		orderDetailsBox.add(tableScrollPane);
+		
 	}
 	
 	private void setUpLabels() {
@@ -102,8 +119,8 @@ public class ViewOldOrdersCard extends JPanel implements ListSelectionListener {
 		employeeLabel = new JLabel("Employee Name:", JLabel.CENTER);
 		supplierLabel = new JLabel("Supplier Name:", JLabel.CENTER);
 		costLabel = new JLabel("Cost of transaction:", JLabel.CENTER);
-		paymentMethodLabel = new JLabel("Payment method:", JLabel.CENTER);
 		dateLabel = new JLabel("Date:", JLabel.CENTER);
+		deliveryDateLabel = new JLabel("Delivery Date:", JLabel.CENTER);
 		
 		idLabel.setOpaque(true);
 		idLabel.setBackground(new Color(107,106,104));
@@ -117,19 +134,19 @@ public class ViewOldOrdersCard extends JPanel implements ListSelectionListener {
 		costLabel.setBackground(new Color(107,106,104));
 		costLabel.setForeground(Color.WHITE);
 		costLabel.setOpaque(true);
-		paymentMethodLabel.setBackground(new Color(107,106,104));
-		paymentMethodLabel.setForeground(Color.WHITE);
-		paymentMethodLabel.setOpaque(true);
 		dateLabel.setBackground(new Color(107,106,104));
 		dateLabel.setForeground(Color.WHITE);
 		dateLabel.setOpaque(true);
+		deliveryDateLabel.setBackground(new Color(107,106,104));
+		deliveryDateLabel.setForeground(Color.WHITE);
+		deliveryDateLabel.setOpaque(true);
 		
 		lblTransactionID = new JLabel("", JLabel.CENTER);
 		lblEmployee = new JLabel("", JLabel.CENTER);
 		lblSupplier = new JLabel("", JLabel.CENTER);
 		lblCost = new JLabel("", JLabel.CENTER);
-		lblPaymentMethod = new JLabel("", JLabel.CENTER);
 		lblDate = new JLabel("", JLabel.CENTER);
+		lblDeliveryDate = new JLabel("", JLabel.CENTER);
 		lblTransactionID.setBackground(Color.LIGHT_GRAY);
 		lblTransactionID.setOpaque(true);
 		lblEmployee.setBackground(Color.LIGHT_GRAY);
@@ -138,10 +155,10 @@ public class ViewOldOrdersCard extends JPanel implements ListSelectionListener {
 		lblSupplier.setOpaque(true);
 		lblCost.setBackground(Color.LIGHT_GRAY);
 		lblCost.setOpaque(true);
-		lblPaymentMethod.setBackground(Color.LIGHT_GRAY);
-		lblPaymentMethod.setOpaque(true);
 		lblDate.setBackground(Color.LIGHT_GRAY);
 		lblDate.setOpaque(true);
+		lblDeliveryDate.setBackground(Color.LIGHT_GRAY);
+		lblDeliveryDate.setOpaque(true);
 		// add labels to panel
 		orderDetailsPane.add(idLabel);
 		orderDetailsPane.add(lblTransactionID);
@@ -151,23 +168,62 @@ public class ViewOldOrdersCard extends JPanel implements ListSelectionListener {
 		orderDetailsPane.add(lblSupplier);
 		orderDetailsPane.add(costLabel);
 		orderDetailsPane.add(lblCost);
-		orderDetailsPane.add(paymentMethodLabel);
-		orderDetailsPane.add(lblPaymentMethod);
 		orderDetailsPane.add(dateLabel);
 		orderDetailsPane.add(lblDate);
+		orderDetailsPane.add(deliveryDateLabel);
+		orderDetailsPane.add(lblDeliveryDate);
 	}
 	
 	private void setOrderDetailsContent() {
-		// get customer at selected index
-		int transactionId = Integer.parseInt(orderList.getSelectedValue());
+		int transactionId = (int)orderListTable.getValueAt(orderListTable.getSelectedRow(), 0);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		PurchasingTransaction order = database.getPurchasingTransaction(transactionId);
 		lblTransactionID.setText(order.getTransactionID()+"");
 		lblEmployee.setText(order.getEmployee().getName());
 		lblSupplier.setText(order.getSupplier().getName());
 		lblCost.setText(order.getTransactionCost()+"");
-		lblPaymentMethod.setText(order.getPaymentMethod());
 		lblDate.setText(sdf.format(order.getTransactionDate()));
+		lblDeliveryDate.setText(sdf.format(order.getDeliveryDate()));
+	
+		addProductDetailsContent(order);
+	}
+	
+	private void createProductDetailsTable() {
+		// set up scroll pane and border for products table
+		tableScrollPane = new JScrollPane();
+		TitledBorder border = BorderFactory.createTitledBorder("Products in order");
+		border.setTitleJustification(TitledBorder.CENTER);
+		tableScrollPane.setBorder(border);
+		
+		Object[] colNames = {"Product Type","Model","Cost"};
+		tableModel = new DefaultTableModel();
+		
+		// set up table and make sure cells can not be edited by user
+		productDetailsTable = new JTable() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		tableModel.setColumnIdentifiers(colNames);
+		
+		productDetailsTable.setModel(tableModel);
+		productDetailsTable.setFillsViewportHeight(true);
+		productDetailsTable.setPreferredScrollableViewportSize(new Dimension(600,100));
+		
+		tableScrollPane.setViewportView(productDetailsTable);
+	}
+	
+	private void addProductDetailsContent(PurchasingTransaction order) {
+		// remove any products already on table
+		for(int i = tableModel.getRowCount()-1; i >= 0; i--) {
+			tableModel.removeRow(i);
+		}
+		// add all product details from order
+		for(Bicycle bike : order.getShoppingList().getShoppingList()) {
+			Object[] row = {bike.getClass().getSimpleName(), bike.getModel(), bike.getCostPrice()};
+			tableModel.addRow(row);
+		}
 	}
 	
 	private void emptyOrderDetailFields() {
@@ -175,16 +231,19 @@ public class ViewOldOrdersCard extends JPanel implements ListSelectionListener {
 		lblEmployee.setText("");
 		lblSupplier.setText("");
 		lblCost.setText("");
-		lblPaymentMethod.setText("");
 		lblDate.setText("");
+		lblDeliveryDate.setText("");
+		
+		// remove any products on table
+		for (int i = tableModel.getRowCount() - 1; i >= 0; i--) {
+			tableModel.removeRow(i);
+		}
 	}
 	
 	@Override
 	public void valueChanged(ListSelectionEvent arg0) {
 		// if list still contains entries reset selection and display content
-		if(!listModel.isEmpty()) {
-			if(orderList.isSelectionEmpty())
-				orderList.setSelectedIndex(0);
+		if(orderListModel.getRowCount() > 0) {
 			setOrderDetailsContent();	
 		}
 		// if list empty reset fields to blank
@@ -193,21 +252,24 @@ public class ViewOldOrdersCard extends JPanel implements ListSelectionListener {
 	}
 	
 	public void refresh(int newTransactionID) {
-		listModel.addElement(newTransactionID+"");
+		Date orderDate = database.getPurchasingTransaction(newTransactionID).getTransactionDate();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+		Object[] row = {newTransactionID, sdf.format(orderDate)};
+		orderListModel.addRow(row);
 	}
 	
-	public void customerDetailsEdited(int oldID, int newID) {
-		listModel.setElementAt(oldID+"", listModel.indexOf(newID));
-		orderList.setSelectedValue(newID, true);
-		setOrderDetailsContent();
-	}
-	
-	public void customerDeleted(int transactionID) {
-		listModel.removeElement(transactionID);
-		int currentId = Integer.parseInt(lblTransactionID.getText());
-		if(currentId == transactionID) {
-			orderList.setSelectedIndex(0);
-		}
-	}
+//	public void customerDetailsEdited(int oldID, int newID) {
+//		listModel.setElementAt(oldID+"", listModel.indexOf(newID));
+//		orderList.setSelectedValue(newID, true);
+//		setOrderDetailsContent();
+//	}
+//	
+//	public void customerDeleted(int transactionID) {
+//		listModel.removeElement(transactionID);
+//		int currentId = Integer.parseInt(lblTransactionID.getText());
+//		if(currentId == transactionID) {
+//			orderList.setSelectedIndex(0);
+//		}
+//	}
 
 }
