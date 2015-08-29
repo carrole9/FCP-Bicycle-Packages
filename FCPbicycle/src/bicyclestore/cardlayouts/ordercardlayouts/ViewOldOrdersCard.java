@@ -66,8 +66,9 @@ public class ViewOldOrdersCard extends JPanel implements ListSelectionListener {
 		scrollPaneBorder.setTitleJustification(TitledBorder.CENTER);
 		listScrollPane.setBorder(scrollPaneBorder);
 		
-		if(database.getPurchasingTransactions().size() > 0){
-			addOrdersFromDB();
+		addOrdersFromDB();
+		
+		if(orderListTable.getRowCount() > 0){
 			orderListTable.setRowSelectionInterval(0, 0);
 		}
 		
@@ -91,7 +92,7 @@ public class ViewOldOrdersCard extends JPanel implements ListSelectionListener {
 		setUpOrderDetailsPane();
 		setUpLabels();
 		
-		if(database.getPurchasingTransactions().size() > 0)
+		if(orderListTable.getRowCount() > 0)
 			setOrderDetailsContent();
 		
 		add(listScrollPane, BorderLayout.WEST);
