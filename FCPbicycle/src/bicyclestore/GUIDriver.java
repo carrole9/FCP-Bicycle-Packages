@@ -210,6 +210,8 @@ public class GUIDriver extends JFrame{
 		viewMenu.add(fullScreenMenuItem);
 	}
 	
+	/* Class to draw background image to JPanel at correct width and height
+	 * Override paintComponent method re-draws image every time window is re-sized  */
 	@SuppressWarnings("serial")
 	private class BackgroundPanel extends JPanel {
 	    Image bg = new ImageIcon(getClass().getResource("/images/bike_shop_background.png")).getImage();
