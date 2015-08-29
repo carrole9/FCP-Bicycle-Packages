@@ -95,8 +95,13 @@ public class GUIDriver extends JFrame{
 		CustomersCardLayout customersLayout = new CustomersCardLayout(database);
 		customerTab.add(customersLayout.getCardLayoutPane());
 		
+		// add Invoice card layout to invoice tab
 		InvoiceCardLayout invoiceCard = new InvoiceCardLayout(database, employee);
 		invoicingTab.add(invoiceCard);
+		
+		// add Bicycle card layout to products tab
+		BicycleTableSorter bicycleTableSorter = new BicycleTableSorter();
+		productTab.add(bicycleTableSorter.getBicycleLayoutPane());
 		
 		tabbedPane.add("Customers", customerTab);
 		tabbedPane.add("Products", productTab);
@@ -139,7 +144,7 @@ public class GUIDriver extends JFrame{
 		profitAndLossTab.add(profitAndLossCard.getStockControlCardLayout());
 		
 		// add Bicycle card layout to products tab
-		BicycleTableSorter bicycleTableSorter = new BicycleTableSorter(database);
+		BicycleTableSorter bicycleTableSorter = new BicycleTableSorter();
 		productTab.add(bicycleTableSorter.getBicycleLayoutPane());
 		
 		tabbedPane.add("Customers", customerTab);
