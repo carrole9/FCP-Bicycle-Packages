@@ -64,22 +64,38 @@ public class SystemData {
 		database.addBicycle(new BMX("Black", "Wethepeople Justice", 21, 20, "Aluminium", database, 300, 469.95));
 		database.addBicycle(new BMX("Blue", "Mongoose Scan R90", 21, 20, "Aluminium", database, 180, 299.99));
 		database.addBicycle(new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", database, 170, 300));
+		database.addBicycle(new BMX("Blue", "Social Storm", 21, 20, "CrMo", database, 400, 630));
 		
 		// create Mountain bikes
 		database.addBicycle(new MountainBike(27, "Kona Blast","Orange", 27, 27, "Aluminium", database, 550, 719.99));
 		database.addBicycle(new MountainBike(27, "VooDoo Aizan 29er", "Black", 29, 29, "6061 Aluminium", database, 400, 565.95));
+		database.addBicycle(new MountainBike(24, "Cannondale Tango 7", "Black", 29, 27, "Optimized 6061 alloy", database, 350, 640));
+		database.addBicycle(new MountainBike(30, "Cube LTD Race", "Blue", 20, 29, "Aluminium Lite", database, 750, 1149));
+		database.addBicycle(new MountainBike(20, "Boardman Pro Carbon", "Carbon", 21, 27, "Super light carbon", database, 1100, 1649));
 		
 		// create Road bikes
 		database.addBicycle(new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", database, 480, 649));
+		database.addBicycle(new RoadBike(11, "Cannondale CAAD10", "Black", 56, 700, "SmartFormed 6069 Alloy", database, 1350, 1845));
+		database.addBicycle(new RoadBike(20, "Giant Anyroad 1", "Black", 60, 700, "ALUXX-Grade Aluminum", database, 1249, 800));
+		database.addBicycle(new RoadBike(22, "Lapierre Aircode 300", "Black", 58, 700, "AIRCODE CARBON", database, 2949, 1850));
 		
 		// create Hybrid bikes
+		database.addBicycle(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", database, 300, 479.95));
+		database.addBicycle(new Hybrid(18, "Lapierre Sit and Go", "White", 24, 26, "ALLOY 6061", database, 280, 449));
+		database.addBicycle(new Hybrid(21, "Giant Escape 3", "Black/Blue", 700, 27, "ALUXX-Grade Aluminum", database, 200, 375));
 		database.addBicycle(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", database, 300, 479.95));
 		
 		// create Cruiser bikes
 		database.addBicycle(new Cruiser("Red", " Schwinn Corvette", 26, 26, "Steel", database, 450, 749.99));
+		database.addBicycle(new Cruiser("Blue", " Kent Bay Breeze", 15, 26, "Steel", database, 120, 200));
+		database.addBicycle(new Cruiser("Green", "Firmstrong Bella", 26, 26, "Steel", database, 180, 300));
+		database.addBicycle(new Cruiser("Green", "DiamondBack Drifter", 26, 26, "Steel", database, 100, 180));
 		
 		// create Motorised bikes
 		database.addBicycle(new MotorisedBike("EBCO UCL30 Electric", "Black", 21, 26, "Aluminium", database, 480, 699.99));
+		database.addBicycle(new MotorisedBike("A2B Hybrid 24", "White", 26, 26, "Aluminium", database, 2200, 3049));
+		database.addBicycle(new MotorisedBike("Neo Street Unisex", "Black", 26, 26, "Alloy", database, 1500, 2249));
+		database.addBicycle(new MotorisedBike("BH Evo City", "White", 28, 700, "Aluminium", database, 1800, 2650));
 	}
 	
 	private void createOrders() {
@@ -89,50 +105,106 @@ public class SystemData {
 		ShoppingBasket basket1 = new ShoppingBasket();
 		ShoppingBasket basket2 = new ShoppingBasket();
 		ShoppingBasket basket3 = new ShoppingBasket();
+		ShoppingBasket basket4 = new ShoppingBasket();
 		basket1.add(new MountainBike(27, "VooDoo Aizan 29er", "Black", 29, 29, "6061 Aluminium", database, 400, 565.95));
 		basket1.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", database, 300, 479.95));
 		basket1.add(new MotorisedBike("EBCO UCL30 Electric", "Black", 21, 26, "Aluminium", database, 480, 699.99));
+		basket1.add(new RoadBike(22, "Lapierre Aircode 300", "Black", 58, 700, "AIRCODE CARBON", database, 2949, 1850));
+		basket1.add(new MountainBike(24, "Cannondale Tango 7", "Black", 29, 27, "Optimized 6061 alloy", database, 350, 640));
+		basket1.add(new Cruiser("Blue", " Kent Bay Breeze", 15, 26, "Steel", database, 120, 200));
 		basket2.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", database, 300, 479.95));
 		basket2.add(new BMX("Blue", "Mongoose Scan R90", 21, 20, "Aluminium", database, 180, 299.99));
 		basket3.add(new MotorisedBike("EBCO UCL30 Electric", "Black", 21, 26, "Aluminium", database, 480, 699.99));
+		basket3.add(new Cruiser("Blue", " Kent Bay Breeze", 15, 26, "Steel", database, 120, 200));
+		basket4.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", database, 300, 479.95));
+		basket4.add(new MountainBike(30, "Cube LTD Race", "Blue", 20, 29, "Aluminium Lite", database, 750, 1149));
+		basket4.add(new MotorisedBike("BH Evo City", "White", 28, 700, "Aluminium", database, 1800, 2650));
+		basket4.add(new Cruiser("Green", "Firmstrong Bella", 26, 26, "Steel", database, 180, 300));
+		basket4.add(new BMX("Blue", "Social Storm", 21, 20, "CrMo", database, 400, 630));
 		
 		// create old orders
+
+		// order from 60 days ago
+		Calendar sixtyDaysAgo = Calendar.getInstance();
+		sixtyDaysAgo.add(Calendar.DAY_OF_YEAR, -60);
+		database.addPurhasingTransaction(new PurchasingTransaction(10001, database.getEmployee(10002),
+				database.getSupplier(102), basket1.getTotalCostValue(), "Account", sixtyDaysAgo.getTime(), basket1,
+				getDeliveryDate(sixtyDaysAgo.getTime(), 4)));
+
+		// order from 45 days ago
+		Calendar fortyFiveDaysAgo = Calendar.getInstance();
+		fortyFiveDaysAgo.add(Calendar.DAY_OF_YEAR, -45);
+		database.addPurhasingTransaction(new PurchasingTransaction(10002, database.getEmployee(10004),
+				database.getSupplier(101), basket3.getTotalCostValue(), "Account", fortyFiveDaysAgo.getTime(), basket3,
+				getDeliveryDate(fortyFiveDaysAgo.getTime(), 4)));
+
+		// order from 30 days ago
+		Calendar thirtyDaysAgo = Calendar.getInstance();
+		thirtyDaysAgo.add(Calendar.DAY_OF_YEAR, -30);
+		database.addPurhasingTransaction(new PurchasingTransaction(10003, database.getEmployee(10004),
+				database.getSupplier(103), basket4.getTotalCostValue(), "Account", thirtyDaysAgo.getTime(), basket4,
+				getDeliveryDate(thirtyDaysAgo.getTime(), 4)));
+
+		// order from 25 days ago
+		Calendar twentyFiveDaysAgo = Calendar.getInstance();
+		twentyFiveDaysAgo.add(Calendar.DAY_OF_YEAR, -25);
+		database.addPurhasingTransaction(new PurchasingTransaction(10004, database.getEmployee(10002),
+				database.getSupplier(101), basket2.getTotalCostValue(), "Account", twentyFiveDaysAgo.getTime(), basket2,
+				getDeliveryDate(twentyFiveDaysAgo.getTime(), 4)));
+
+		// order from 20 days ago
+		Date twentyDaysAgo = new Date(System.currentTimeMillis() - 20 * 24 * 3600 * 1000);
+		database.addPurhasingTransaction(new PurchasingTransaction(10005, database.getEmployee(10002),
+				database.getSupplier(102), basket3.getTotalCostValue(), "Account", twentyDaysAgo, basket3,
+				getDeliveryDate(twentyDaysAgo, 4)));
+
+		// order from 15 days ago
+		Date fifteenDaysAgo = new Date(System.currentTimeMillis() - 15 * 24 * 3600 * 1000);
+		database.addPurhasingTransaction(new PurchasingTransaction(10006, database.getEmployee(10002),
+				database.getSupplier(104), basket4.getTotalCostValue(), "Account", fifteenDaysAgo, basket4,
+				getDeliveryDate(fifteenDaysAgo, 4)));
+
+		// order from 10 days ago
+		Date tenDaysAgo = new Date(System.currentTimeMillis() - 10*24*3600*1000);
+		database.addPurhasingTransaction(new PurchasingTransaction(10007, database.getEmployee(10004),
+				database.getSupplier(104), basket1.getTotalCostValue(), "Account", tenDaysAgo,
+				basket1, getDeliveryDate(tenDaysAgo, 4)));
 		
 		// order from 7 days ago
 		Date sevenDaysAgo = new Date(System.currentTimeMillis() - 7*24*3600*1000);
-		database.addPurhasingTransaction(new PurchasingTransaction(10001, database.getEmployee(10004),
-				database.getSupplier(101), basket1.getTotalCostValue(), "Account", sevenDaysAgo,
-				basket1, getDeliveryDate(sevenDaysAgo, 4)));
+		database.addPurhasingTransaction(new PurchasingTransaction(10008, database.getEmployee(10004),
+				database.getSupplier(101), basket3.getTotalCostValue(), "Account", sevenDaysAgo,
+				basket3, getDeliveryDate(sevenDaysAgo, 4)));
 		
 		// order from 6 days ago
 		Date sixDaysAgo = new Date(System.currentTimeMillis() - 6*24*3600*1000);
-		database.addPurhasingTransaction(new PurchasingTransaction(10002, database.getEmployee(10002),
+		database.addPurhasingTransaction(new PurchasingTransaction(10009, database.getEmployee(10002),
 				database.getSupplier(102), basket2.getTotalCostValue(), "Account", sixDaysAgo, 
 				basket2, getDeliveryDate(sixDaysAgo, 4)));
 		
 		// order from 4 days ago
 		Date fourDaysAgo = new Date(System.currentTimeMillis() - 4*24*3600*1000);
-		database.addPurhasingTransaction(new PurchasingTransaction(10003, database.getEmployee(10004),
+		database.addPurhasingTransaction(new PurchasingTransaction(10010, database.getEmployee(10004),
 				database.getSupplier(103), basket3.getTotalCostValue(), "Account", fourDaysAgo, 
 				basket3, getDeliveryDate(fourDaysAgo, 4)));
 		
 		// order from 3 days ago
 		Date threeDaysAgo = new Date(System.currentTimeMillis() - 3*24*3600*1000);
-		database.addPurhasingTransaction(new PurchasingTransaction(10004, database.getEmployee(10002),
+		database.addPurhasingTransaction(new PurchasingTransaction(10011, database.getEmployee(10002),
 				database.getSupplier(104), basket2.getTotalCostValue(), "Account", threeDaysAgo, 
 				basket2, getDeliveryDate(threeDaysAgo, 4)));
 		
 		// create orders for current date
-		database.addPurhasingTransaction(new PurchasingTransaction(10005, database.getEmployee(10002),
+		database.addPurhasingTransaction(new PurchasingTransaction(10012, database.getEmployee(10002),
 				database.getSupplier(102), basket1.getTotalCostValue(), "Account", new Date(),
 				basket1, getDeliveryDate(new Date(), 4)));
-		database.addPurhasingTransaction(new PurchasingTransaction(10006, database.getEmployee(10004),
+		database.addPurhasingTransaction(new PurchasingTransaction(10013, database.getEmployee(10004),
 				database.getSupplier(104), basket2.getTotalCostValue(), "Account", new Date(), 
 				basket2,getDeliveryDate(new Date(), 4)));
-		database.addPurhasingTransaction(new PurchasingTransaction(10007, database.getEmployee(10004),
+		database.addPurhasingTransaction(new PurchasingTransaction(10014, database.getEmployee(10004),
 				database.getSupplier(101), basket3.getTotalCostValue(), "Account", new Date(), 
 				basket3, getDeliveryDate(new Date(), 4)));
-		database.addPurhasingTransaction(new PurchasingTransaction(10008, database.getEmployee(10002),
+		database.addPurhasingTransaction(new PurchasingTransaction(10015, database.getEmployee(10002),
 				database.getSupplier(103), basket2.getTotalCostValue(), "Account", new Date(),
 				basket2, getDeliveryDate(new Date(), 4)));
 	}

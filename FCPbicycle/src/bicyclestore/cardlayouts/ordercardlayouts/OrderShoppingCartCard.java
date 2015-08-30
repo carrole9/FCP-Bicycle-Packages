@@ -45,7 +45,7 @@ public class OrderShoppingCartCard extends JPanel {
 	private JTextField txtId;
 	private JButton btnEditId;
 	
-	private int transactionIdCount = 10009;
+	private int transactionIdCount = 10016;
 	
 	private DefaultTableModel tableModel;
 	private JTable orderDetailsTable;
