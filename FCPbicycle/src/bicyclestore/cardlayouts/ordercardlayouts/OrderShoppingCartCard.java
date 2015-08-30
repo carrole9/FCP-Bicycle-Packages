@@ -175,7 +175,7 @@ public class OrderShoppingCartCard extends JPanel {
 	
 	private void resetFields() {
 		txtId.setText(transactionIdCount+"");
-		basket.removeAll();
+		basket = new ShoppingBasket();
 		// remove all table rows
 		for(int i = tableModel.getRowCount() -1; i >= 0; i--) {
 			tableModel.removeRow(i);

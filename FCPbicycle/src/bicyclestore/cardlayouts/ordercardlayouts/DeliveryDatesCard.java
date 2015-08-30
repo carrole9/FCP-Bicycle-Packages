@@ -124,8 +124,26 @@ public class DeliveryDatesCard extends JPanel implements ListSelectionListener {
 		int transactionId = (int)deliveryTable.getValueAt(deliveryTable.getSelectedRow(), 0);
 		PurchasingTransaction order = database.getPurchasingTransaction(transactionId);
 		for(Bicycle bike : order.getShoppingList().getShoppingList()) {
-			Object[] row = {bike.getClass().getSimpleName(), bike.getModel(), bike.getCostPrice()};
+			Object[] row = {splitCamelCase(bike.getClass().getSimpleName()), bike.getModel(), bike.getCostPrice()};
 			productsTableModel.addRow(row);
+		}
+	}
+	
+	// separate words contained in camelCase. E.g class name "RoadBike" will become "Road Bike"
+	private String splitCamelCase(String s) {
+		return s.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])",
+				"(?<=[A-Za-z])(?=[^A-Za-z])"), " ");
+	}
+	
+	// refresh table to add new orders to delivery dates table
+	public void newOrderAdded(int newTransactionID) {
+		PurchasingTransaction order = database.getPurchasingTransaction(newTransactionID);
+		if(order.getDeliveryDate().after(new Date())) {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm");
+			Object[] row = {order.getTransactionID(), sdf.format(order.getDeliveryDate()),
+					sdf.format(order.getTransactionDate()), order.getSupplier().getName(),
+					order.getEmployee().getName(), order.getShoppingList().getTotalCostValue()};
+			tableModel.addRow(row);
 		}
 	}
 
