@@ -36,6 +36,7 @@ public class OrdersCardLayout extends JPanel implements ItemListener {
 	private ViewOrdersCard viewOrdersCard;
 	private ViewOldOrdersCard viewOldOrdersCard;
 	private DeliveryDatesCard deliveryDatesCard;
+	private ViewOrderCostsCard viewCostsCard;
 
 	public OrdersCardLayout(Database database, Employee employee) {
 		this.database = database;
@@ -53,13 +54,14 @@ public class OrdersCardLayout extends JPanel implements ItemListener {
 		viewOrdersCard = new ViewOrdersCard(database);
 		viewOldOrdersCard = new ViewOldOrdersCard(database);
 		deliveryDatesCard = new DeliveryDatesCard(database);
+		viewCostsCard = new ViewOrderCostsCard(database);
 		
 		// create cards to make up card layout
 		JPanel card1 = orderSupplierCard;
 		JPanel card2 = viewOrdersCard;
 		JPanel card3 = viewOldOrdersCard;
 		JPanel card4 = deliveryDatesCard;
-		JPanel card5 = new JPanel();
+		JPanel card5 = viewCostsCard;
 		
 		cards.add(card1, ORDER_SUPPLIER);
 		cards.add(card2, VIEW_ORDERS);
@@ -93,8 +95,10 @@ public class OrdersCardLayout extends JPanel implements ItemListener {
 	}
 	
 	public void newOrderAdded(int transactionId) {
-		// refresh customer lists
+		// refresh order details on all other cards
 		viewOrdersCard.refresh(transactionId);
+		deliveryDatesCard.newOrderAdded(transactionId);
+		viewCostsCard.newOrderAdded();
 	}
 
 }
