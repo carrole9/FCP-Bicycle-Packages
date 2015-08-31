@@ -42,7 +42,7 @@ public class AddSupplierCard extends JPanel {
 	private Database database;
 	private SuppliersCardLayout cardLayout;
 	
-	private ArrayList<Bicycle> catelog;
+	private ArrayList<Bicycle> catalog;
 					
 	private JTextField txtID, txtName, txtAddress, txtPhoneNum, txtEmail;
 	private JButton btnAddSupplier, btnAddProduct;
@@ -51,11 +51,7 @@ public class AddSupplierCard extends JPanel {
 	private DefaultTableModel productsTableModel;
 	private JTable productDetailsTable;
 	private JScrollPane tableScrollPane;
-	
-	private String[] productTypes = {"* Please Select Product Type *", "BMX", "Mountain Bike", "Road Bike", "Hybrid", "Cruiser", "Motorised Bike"};
-	private String[] productModels; // product models will be empty until use selects product type
-	
-	//private JButton btnEditId;
+
 	private Box idPane;
 	private int idCounter = 105;
 	
@@ -73,7 +69,7 @@ public class AddSupplierCard extends JPanel {
 	private void initComponents() {
 		
 		setUpIdPane();
-		catelog = new ArrayList<Bicycle>();
+		catalog = new ArrayList<Bicycle>();
 		txtName = new JTextField(10);
 		txtAddress = new JTextField(10);
 		txtPhoneNum = new JTextField(10);
@@ -187,7 +183,7 @@ public class AddSupplierCard extends JPanel {
         	else {
         		Bicycle bike = createBicycle();
 	        	if(!(bike == null)) {
-	        		catelog.add(bike);
+	        		catalog.add(bike);
 	        		Object[] row = {bike.getClass().getSimpleName(), bike.getModel(), bike.getCostPrice()};
 	        		productsTableModel.addRow(row);
 	        	}
@@ -315,12 +311,13 @@ public class AddSupplierCard extends JPanel {
 		JOptionPane.showMessageDialog(null, "New supplier added,\nID: "+supID+", Name: "+name+", Address: "+address+","
 				+ " Phone: "+phoneNum+", Email: "+email,"Success", JOptionPane.INFORMATION_MESSAGE);
 		
+		// reset fields and product catalog
 		txtID.setText(idCounter+"");
 		txtName.setText("");
 		txtAddress.setText("");
 		txtPhoneNum.setText("");
 		txtEmail.setText("");
-		
+		catalog = new ArrayList<Bicycle>();
 		
 		cardLayout.newSupplierAdded(name);
 	}
@@ -348,7 +345,7 @@ public class AddSupplierCard extends JPanel {
 
 				// attempt to add supplier if all fields are complete
 				else {
-					addSupplier(supId, supName, supAddress, supPhoneNum, supEmail, catelog);
+					addSupplier(supId, supName, supAddress, supPhoneNum, supEmail, catalog);
 				}
 			}
 			
