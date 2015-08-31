@@ -154,7 +154,7 @@ public class BicycleTableSorter {
 
     			if (newArrayList.size() != 0) {
 
-    				data[i][0] = bicycle.getModel();
+    				data[i][0] = bicycle.getSimpleName();
     				data[i][1] = bicycle.getColour();
     				data[i][2] = bicycle.getFrameSize() + "";
     				data[i][3] = bicycle.getWheelSize() + "";
