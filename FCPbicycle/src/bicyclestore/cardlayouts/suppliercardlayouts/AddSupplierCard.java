@@ -322,6 +322,14 @@ public class AddSupplierCard extends JPanel {
 		cardLayout.newSupplierAdded(name);
 	}
 	
+	private void resetProductFields() {
+		txtID.setText(idCounter+"");
+		for(int i = productsTableModel.getRowCount() -1; i >= 0; i--) {
+			productsTableModel.removeRow(i);
+		}
+		
+	}
+	
 	private class ButtonActionListener implements ActionListener {
 
 		@Override
@@ -346,6 +354,7 @@ public class AddSupplierCard extends JPanel {
 				// attempt to add supplier if all fields are complete
 				else {
 					addSupplier(supId, supName, supAddress, supPhoneNum, supEmail, catalog);
+					resetProductFields();
 				}
 			}
 			
