@@ -56,43 +56,43 @@ public class SystemData {
 
 	private void createSupplierAccounts() {
 		// create catalogs of products for suppliers
-		ArrayList<Bicycle> catelog1 = new ArrayList<Bicycle>();
-		ArrayList<Bicycle> catelog2 = new ArrayList<Bicycle>();
-		ArrayList<Bicycle> catelog3 = new ArrayList<Bicycle>();
-		ArrayList<Bicycle> catelog4 = new ArrayList<Bicycle>();
-		catelog1.add(new BMX("Black", "Wethepeople Justice", 21, 20, "Aluminium", database, 300, 469.95));
-		catelog1.add(new BMX("Blue", "Mongoose Scan R90", 21, 20, "Aluminium", database, 180, 299.99));
-		catelog1.add(new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", database, 170, 300));
-		catelog1.add(new BMX("Blue", "Social Storm", 21, 20, "CrMo", database, 400, 630));
-		catelog1.add(new MotorisedBike("EBCO UCL30 Electric", "Black", 21, 26, "Aluminium", database, 480, 699.99));
-		catelog1.add(new MotorisedBike("A2B Hybrid 24", "White", 26, 26, "Aluminium", database, 2200, 3049));
-		catelog1.add(new MotorisedBike("Neo Street Unisex", "Black", 26, 26, "Alloy", database, 1500, 2249));
-		catelog1.add(new MotorisedBike("BH Evo City", "White", 28, 700, "Aluminium", database, 1800, 2650));
-		catelog1.add(new Cruiser("Red", " Schwinn Corvette", 26, 26, "Steel", database, 450, 749.99));
-		catelog1.add(new Cruiser("Blue", " Kent Bay Breeze", 15, 26, "Steel", database, 120, 200));
-		catelog1.add(new Cruiser("Green", "Firmstrong Bella", 26, 26, "Steel", database, 180, 300));
-		catelog1.add(new Cruiser("Green", "DiamondBack Drifter", 26, 26, "Steel", database, 100, 180));
+		ArrayList<Bicycle> catalog1 = new ArrayList<Bicycle>();
+		ArrayList<Bicycle> catalog2 = new ArrayList<Bicycle>();
+		ArrayList<Bicycle> catalog3 = new ArrayList<Bicycle>();
+		ArrayList<Bicycle> catalog4 = new ArrayList<Bicycle>();
+		catalog1.add(new BMX("Black", "Wethepeople Justice", 21, 20, "Aluminium", database, 300, 469.95));
+		catalog1.add(new BMX("Blue", "Mongoose Scan R90", 21, 20, "Aluminium", database, 180, 299.99));
+		catalog1.add(new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", database, 170, 300));
+		catalog1.add(new BMX("Blue", "Social Storm", 21, 20, "CrMo", database, 400, 630));
+		catalog1.add(new MotorisedBike("EBCO UCL30 Electric", "Black", 21, 26, "Aluminium", database, 480, 699.99));
+		catalog1.add(new MotorisedBike("A2B Hybrid 24", "White", 26, 26, "Aluminium", database, 2200, 3049));
+		catalog1.add(new MotorisedBike("Neo Street Unisex", "Black", 26, 26, "Alloy", database, 1500, 2249));
+		catalog1.add(new MotorisedBike("BH Evo City", "White", 28, 700, "Aluminium", database, 1800, 2650));
+		catalog1.add(new Cruiser("Red", " Schwinn Corvette", 26, 26, "Steel", database, 450, 749.99));
+		catalog1.add(new Cruiser("Blue", " Kent Bay Breeze", 15, 26, "Steel", database, 120, 200));
+		catalog1.add(new Cruiser("Green", "Firmstrong Bella", 26, 26, "Steel", database, 180, 300));
+		catalog1.add(new Cruiser("Green", "DiamondBack Drifter", 26, 26, "Steel", database, 100, 180));
 		
-		catelog2.add(new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", database, 480, 649));
-		catelog2.add(new RoadBike(11, "Cannondale CAAD10", "Black", 56, 700, "SmartFormed 6069 Alloy", database, 1350, 1845));
-		catelog2.add(new RoadBike(20, "Giant Anyroad 1", "Black", 60, 700, "ALUXX-Grade Aluminum", database, 1249, 800));
-		catelog2.add(new RoadBike(22, "Lapierre Aircode 300", "Black", 58, 700, "AIRCODE CARBON", database, 2949, 1850));
+		catalog2.add(new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", database, 480, 649));
+		catalog2.add(new RoadBike(11, "Cannondale CAAD10", "Black", 56, 700, "SmartFormed 6069 Alloy", database, 1350, 1845));
+		catalog2.add(new RoadBike(20, "Giant Anyroad 1", "Black", 60, 700, "ALUXX-Grade Aluminum", database, 1249, 800));
+		catalog2.add(new RoadBike(22, "Lapierre Aircode 300", "Black", 58, 700, "AIRCODE CARBON", database, 2949, 1850));
 		
-		catelog3.add(new MountainBike(27, "Kona Blast","Orange", 27, 27, "Aluminium", database, 550, 719.99));
-		catelog3.add(new MountainBike(27, "VooDoo Aizan 29er", "Black", 29, 29, "6061 Aluminium", database, 400, 565.95));
-		catelog3.add(new MountainBike(24, "Cannondale Tango 7", "Black", 29, 27, "Optimized 6061 alloy", database, 350, 640));
-		catelog3.add(new MountainBike(30, "Cube LTD Race", "Blue", 20, 29, "Aluminium Lite", database, 750, 1149));
-		catelog3.add(new MountainBike(20, "Boardman Pro Carbon", "Carbon", 21, 27, "Super light carbon", database, 1100, 1649));
+		catalog3.add(new MountainBike(27, "Kona Blast","Orange", 27, 27, "Aluminium", database, 550, 719.99));
+		catalog3.add(new MountainBike(27, "VooDoo Aizan 29er", "Black", 29, 29, "6061 Aluminium", database, 400, 565.95));
+		catalog3.add(new MountainBike(24, "Cannondale Tango 7", "Black", 29, 27, "Optimized 6061 alloy", database, 350, 640));
+		catalog3.add(new MountainBike(30, "Cube LTD Race", "Blue", 20, 29, "Aluminium Lite", database, 750, 1149));
+		catalog3.add(new MountainBike(20, "Boardman Pro Carbon", "Carbon", 21, 27, "Super light carbon", database, 1100, 1649));
 		
-		catelog4.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", database, 300, 479.95));
-		catelog4.add(new Hybrid(18, "Lapierre Sit and Go", "White", 24, 26, "ALLOY 6061", database, 280, 449));
-		catelog4.add(new Hybrid(21, "Giant Escape 3", "Black/Blue", 700, 27, "ALUXX-Grade Aluminum", database, 200, 375));
-		catelog4.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", database, 300, 479.95));
+		catalog4.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", database, 300, 479.95));
+		catalog4.add(new Hybrid(18, "Lapierre Sit and Go", "White", 24, 26, "ALLOY 6061", database, 280, 449));
+		catalog4.add(new Hybrid(21, "Giant Escape 3", "Black/Blue", 700, 27, "ALUXX-Grade Aluminum", database, 200, 375));
+		catalog4.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", database, 300, 479.95));
 		
-		database.addSupplier(new Supplier(101, "ABC Bicycle Supplies", "Dublin","01 1234567", "abc.bike.supplies@yahoo.com", catelog1));
-		database.addSupplier(new Supplier(102, "Road Bike Wholesale", "Cork","021 6543212", "road.bike.wholesales@gmail.com", catelog2));
-		database.addSupplier(new Supplier(103, "The Mountain Bike Shack", "Wexfor","053 6789101", "mountainbikes@hotmail.com", catelog3));
-		database.addSupplier(new Supplier(104, "City Bike Warehouse", "Wicklow","0404 123456", "citybikes@yahoo.com", catelog4));
+		database.addSupplier(new Supplier(101, "ABC Bicycle Supplies", "Dublin","01 1234567", "abc.bike.supplies@yahoo.com", catalog1));
+		database.addSupplier(new Supplier(102, "Road Bike Wholesale", "Cork","021 6543212", "road.bike.wholesales@gmail.com", catalog2));
+		database.addSupplier(new Supplier(103, "The Mountain Bike Shack", "Wexfor","053 6789101", "mountainbikes@hotmail.com", catalog3));
+		database.addSupplier(new Supplier(104, "City Bike Warehouse", "Wicklow","0404 123456", "citybikes@yahoo.com", catalog4));
 	}
 	
 	private void createBicycles() {
