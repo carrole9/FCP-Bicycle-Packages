@@ -163,7 +163,6 @@ public class EditSupplierCard extends JPanel implements ListSelectionListener {
 		txtSupplierID.setText(supplier.getSupplierID()+"");
 		txtSupplierName.setText(supplier.getName());
 		txtSupplierAddress.setText(supplier.getAddress());
-		txtSupplierTypeOfProduct.setText(supplier.getTypeOfProduct().getModel());
 		txtSupplierPhoneNum.setText(supplier.getPhoneNum());
 		txtSupplierEmail.setText(supplier.getEmail());
 	}
@@ -231,7 +230,6 @@ public class EditSupplierCard extends JPanel implements ListSelectionListener {
 					supplier.setSupplierID(supplierID);
 					supplier.setName(supName);
 					supplier.setAddress(supAddress);
-					supplier.setTypeOfProduct(supTypeOfProduct);
 					supplier.setPhoneNum(supPhoneNum);
 					supplier.setEmail(supEmail);
 					

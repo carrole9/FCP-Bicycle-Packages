@@ -1,9 +1,11 @@
 package bicyclestore;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import bicyclestore.bikes.BMX;
+import bicyclestore.bikes.Bicycle;
 import bicyclestore.bikes.Cruiser;
 import bicyclestore.bikes.Hybrid;
 import bicyclestore.bikes.MotorisedBike;
@@ -53,10 +55,14 @@ public class SystemData {
 	}
 
 	private void createSupplierAccounts() {
-		database.addSupplier(new Supplier(101, "ABC Bicycle Supplies", "Dublin", "BMX","01 1234567", "abc.bike.supplies@yahoo.com"));
-		database.addSupplier(new Supplier(102, "Road Bike Wholesale", "Cork", "Road bikes","021 6543212", "road.bike.wholesales@gmail.com"));
-		database.addSupplier(new Supplier(103, "The Mountain Bike Shack", "Wexfor", "Mountain bikes","053 6789101", "mountainbikes@hotmail.com"));
-		database.addSupplier(new Supplier(104, "City Bike Warehouse", "Wicklow", "Hybrids","0404 123456", "citybikes@yahoo.com"));
+		ArrayList<Bicycle> catelog1 = new ArrayList<Bicycle>();
+		ArrayList<Bicycle> catelog2 = new ArrayList<Bicycle>();
+		ArrayList<Bicycle> catelog3 = new ArrayList<Bicycle>();
+		ArrayList<Bicycle> catelog4 = new ArrayList<Bicycle>();
+		database.addSupplier(new Supplier(101, "ABC Bicycle Supplies", "Dublin","01 1234567", "abc.bike.supplies@yahoo.com", catelog1));
+		database.addSupplier(new Supplier(102, "Road Bike Wholesale", "Cork","021 6543212", "road.bike.wholesales@gmail.com", catelog2));
+		database.addSupplier(new Supplier(103, "The Mountain Bike Shack", "Wexfor","053 6789101", "mountainbikes@hotmail.com", catelog3));
+		database.addSupplier(new Supplier(104, "City Bike Warehouse", "Wicklow","0404 123456", "citybikes@yahoo.com", catelog4));
 	}
 	
 	private void createBicycles() {

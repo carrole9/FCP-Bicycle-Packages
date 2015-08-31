@@ -2,6 +2,7 @@ package bicyclestore.staff;
 
 import java.util.ArrayList;
 
+import bicyclestore.bikes.Bicycle;
 import bicyclestore.suppliers.Supplier;
 
 public class Manager extends Employee{
@@ -41,9 +42,9 @@ public class Manager extends Employee{
 		
 	}
 	
-	public void addNewSupplier(int supplierID, String name, String address, String typeOfProduct, String phoneNum, String email){
+	public void addNewSupplier(int supplierID, String name, String address, String phoneNum, String email, ArrayList<Bicycle> catelog){
 		ArrayList <Supplier> suppliers = new ArrayList <Supplier>();
-		Supplier supplier = new Supplier(supplierID, name, address, typeOfProduct, phoneNum, email);
+		Supplier supplier = new Supplier(supplierID, name, address, phoneNum, email, catelog);
 		suppliers.add(supplier);
 		 
 	}
