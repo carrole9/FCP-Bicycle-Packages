@@ -18,7 +18,7 @@ public class StockControlCard implements ItemListener {
     final static String TEXTPANEL = "Stock Control";
     final static String GRAPHPANEL = "View as a Graph";
     final static String PredictionPANEL = "Sales Forcast";
-    JLabel bmx, motorised, mountain, hybrid, road;
+    JLabel bmx, motorised, mountain, hybrid, road, cruiser;
 	JLabel sales, predictions;
 	GraphIcon graph = new GraphIcon(null, 0, 0);
 	
@@ -70,25 +70,30 @@ public class StockControlCard implements ItemListener {
         bmx = new JLabel("Bmx bikes: ");
 		motorised = new JLabel("Motorised Bike: ");
 		mountain = new JLabel("Mountain Bikes: ");
-		//hybrid = new JLabel("Hybrid Bikes: " + stock.get);
 		road = new JLabel("Road Bike:" );
+		cruiser = new JLabel("Cruiser Bikes: ");
+		hybrid = new JLabel("Hybrid Bikes: ");
 		
-		card1.add(bmx);
-	    card1.add(new JTextField("" + stock.getBmx(), 15));
-		card1.add(motorised );
-		card1.add(new JTextField("" + stock.getMotorizedBike(), 15));
-		card1.add(mountain);
-		card1.add(new JTextField("" + stock.getMountainBike(), 15));
-		card1.add(road);
-		card1.add(new JTextField("" + stock.getRoadBike(), 15));
+		card1.add(bmx).setBackground(Color.LIGHT_GRAY);
+	    card1.add(new JTextField("" + stock.getBmx(), 15)).setFocusable(false);;
+		card1.add(motorised ).setBackground(Color.LIGHT_GRAY);
+		card1.add(new JTextField("" + stock.getMotorizedBike(), 15)).setFocusable(false);
+		card1.add(mountain).setBackground(Color.LIGHT_GRAY);
+		card1.add(new JTextField("" + stock.getMountainBike(), 15)).setFocusable(false);
+		card1.add(road).setBackground(Color.LIGHT_GRAY);
+		card1.add(new JTextField("" + stock.getRoadBike(), 15)).setFocusable(false);
+		card1.add(cruiser);
+		card1.add(new JTextField("" + stock.getCruiserBike(), 15)).setFocusable(false);
+		card1.add(hybrid).setBackground(Color.LIGHT_GRAY);
+		card1.add(new JTextField("" + stock.getHybridBike(), 15)).setFocusable(false);;
 		card1.add(salesPrediction);
 		card1.setLayout(new BoxLayout(card1, BoxLayout.Y_AXIS));
 	
         card3.add(new JLabel("Number of bikes sold last week: "));
-        card3.add(new JTextField("" + stock.getNoOfbikesSold(), 15));
+        card3.add(new JTextField("" + stock.getNoOfbikesSold(), 15)).setFocusable(false);;
         
         card3.add(new JLabel("Sales Forcast for next week: "));
-        card3.add(new JTextField("" + stock.getPredictions(), 15));
+        card3.add(new JTextField("" + stock.getPredictions(), 15)).setFocusable(false);;
         
         card3.add(back);
 		
