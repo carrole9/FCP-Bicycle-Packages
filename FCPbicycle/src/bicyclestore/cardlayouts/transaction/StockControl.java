@@ -7,6 +7,8 @@ import java.util.Date;
 import bicyclestore.Database;
 import bicyclestore.bikes.BMX;
 import bicyclestore.bikes.Bicycle;
+import bicyclestore.bikes.Cruiser;
+import bicyclestore.bikes.Hybrid;
 import bicyclestore.bikes.MotorisedBike;
 import bicyclestore.bikes.MountainBike;
 import bicyclestore.bikes.RoadBike;
@@ -17,10 +19,14 @@ public class StockControl {
 	private int motorizedBike;
 	private int mountainBike;
 	private int roadBike;
+	private int cruiserBike;
+	private int hybridBike;
 	private BMX bmxx;
 	private MotorisedBike motor;
 	private MountainBike mountain;
 	private RoadBike road;
+	private Cruiser cruiser;
+	private Hybrid hyrid;
 	private int noOfbikesSold;
 	private int predictions;
 	private Database data;
@@ -32,6 +38,8 @@ public class StockControl {
 		this.motorizedBike=motorizedBike;
 		this.mountainBike=mountainBike;
 		this.roadBike=roadBike;
+		this.cruiserBike=cruiserBike;
+		this.hybridBike=hybridBike;
 		this.data=data;
 	}
 	public StockControl(){
@@ -84,22 +92,41 @@ public class StockControl {
 		this.roadBike = roadBike;
 	}
 
+	public int getCruiserBike() {
+		return cruiserBike;
+	}
+	public void setCruiserBike(int cruiserBike) {
+		this.cruiserBike = cruiserBike;
+	}
+	public int getHybridBike() {
+		return hybridBike;
+	}
+	public void setHybridBike(int hybridBike) {
+		this.hybridBike = hybridBike;
+	}
 	public void calculateStock(Bicycle bike, Database data){
 		for(Bicycle calculatebike:data.getBicycles()){
-		if(calculatebike.getModel()==("Wethepeople Justice")||calculatebike.getModel()==("Mongoose Scan R90")
-				||calculatebike.getModel()==("Giant GFR")){
+		if(calculatebike instanceof BMX){
 			setBmx((getBmx())+1);}
 		
 	
-		else if(calculatebike.getModel()==("EBCO UCL30 Electric")){
+		else if(calculatebike instanceof MotorisedBike){
 			setMotorizedBike(getMotorizedBike()+1);
 	}
-		else if(calculatebike.getModel()==("Kona Blast")||calculatebike.getModel()==("VooDoo Aizan 29er")){
+		else if(calculatebike instanceof MountainBike){
 			setMountainBike(getMountainBike()+1);
 		}
 		
-		else if(calculatebike.getModel()==("Boardman Road Comp")){
+		else if(calculatebike instanceof RoadBike){
 			setRoadBike(getRoadBike()+1);
+		}
+		
+		else if(calculatebike instanceof Cruiser){
+			setCruiserBike(getCruiserBike()+1);
+		}
+		
+		else if(calculatebike instanceof Hybrid){
+			setHybridBike(getHybridBike()+1);
 		}
 	}
 	}

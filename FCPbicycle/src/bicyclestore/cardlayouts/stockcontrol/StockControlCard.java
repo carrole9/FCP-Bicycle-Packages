@@ -1,4 +1,4 @@
-package bicyclestore.cardlayouts.stockcontrol;
+package bicyclestore.stockcontrol;
 
 import java.awt.*;
 import java.awt.event.*;
