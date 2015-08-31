@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -21,6 +20,7 @@ import org.jfree.data.general.PieDataset;
 import org.jfree.util.Rotation;
 
 import bicyclestore.Database;
+import bicyclestore.Utilities;
 import bicyclestore.transaction.PurchasingTransaction;
 
 /* Class uses features from JFreeChart to draw Pie Charts
@@ -164,7 +164,7 @@ public class ViewOrderCostsCard extends JPanel {
 	private double getThisWeeksOrdersCost() {
 		double totalCost = 0.0;
 		for(PurchasingTransaction order : database.getPurchasingTransactions()) {
-			if(isDateInCurrentWeek(order.getTransactionDate()))
+			if(Utilities.isDateInCurrentWeek(order.getTransactionDate()))
 					totalCost += order.getTransactionCost();
 		}
 		return totalCost;
@@ -176,7 +176,7 @@ public class ViewOrderCostsCard extends JPanel {
 		Calendar startOfWeek = Calendar.getInstance();
 		startOfWeek.set(Calendar.DAY_OF_YEAR, (Calendar.DAY_OF_YEAR-Calendar.DAY_OF_WEEK));
 		for(PurchasingTransaction order : database.getPurchasingTransactions()) {
-			if(isDateInCurrentWeek(order.getTransactionDate())) {
+			if(Utilities.isDateInCurrentWeek(order.getTransactionDate())) {
 				noOrders++;
 			}
 		}
@@ -188,7 +188,7 @@ public class ViewOrderCostsCard extends JPanel {
 		double totalCost = 0.0;
 		double earlierCost = 0.0;
 		for(PurchasingTransaction order : database.getPurchasingTransactions()) {
-			if(!isDateInCurrentWeek(order.getTransactionDate())) {
+			if(!Utilities.isDateInCurrentWeek(order.getTransactionDate())) {
 				earlierCost += order.getTransactionCost();
 			}
 			totalCost += order.getTransactionCost();
@@ -200,24 +200,12 @@ public class ViewOrderCostsCard extends JPanel {
 		double weeksCost = 0.0;
 		double totalCost = 0.0;
 		for(PurchasingTransaction order : database.getPurchasingTransactions()) {
-			if(isDateInCurrentWeek(order.getTransactionDate())) {
+			if(Utilities.isDateInCurrentWeek(order.getTransactionDate())) {
 				weeksCost += order.getTransactionCost();
 			}
 			totalCost += order.getTransactionCost();
 		}
 		return (double)weeksCost/totalCost *100;
-	}
-	
-	// returns true if the date passed in is in the current week
-	private boolean isDateInCurrentWeek(Date date) {
-		Calendar currentCalendar = Calendar.getInstance();
-		int week = currentCalendar.get(Calendar.WEEK_OF_YEAR);
-		int year = currentCalendar.get(Calendar.YEAR);
-		Calendar targetCalendar = Calendar.getInstance();
-		targetCalendar.setTime(date);
-		int targetWeek = targetCalendar.get(Calendar.WEEK_OF_YEAR);
-		int targetYear = targetCalendar.get(Calendar.YEAR);
-		return week == targetWeek && year == targetYear;
 	}
 	
 	// create data set for JFreeChart pie chart

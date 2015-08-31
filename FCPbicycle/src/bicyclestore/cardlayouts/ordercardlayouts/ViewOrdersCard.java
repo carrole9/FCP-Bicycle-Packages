@@ -19,6 +19,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import bicyclestore.Database;
+import bicyclestore.Utilities;
 import bicyclestore.bikes.Bicycle;
 import bicyclestore.transaction.PurchasingTransaction;
 
@@ -220,15 +221,9 @@ public class ViewOrdersCard extends JPanel implements ListSelectionListener {
 		}
 		// add all product details from order
 		for(Bicycle bike : order.getShoppingList().getShoppingList()) {
-			Object[] row = {splitCamelCase(bike.getClass().getSimpleName()), bike.getModel(), bike.getCostPrice()};
+			Object[] row = {Utilities.splitCamelCase(bike.getClass().getSimpleName()), bike.getModel(), bike.getCostPrice()};
 			tableModel.addRow(row);
 		}
-	}
-	
-	// separate words contained in camelCase. E.g class name "RoadBike" will become "Road Bike"
-	private String splitCamelCase(String s) {
-		return s.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])",
-				"(?<=[A-Za-z])(?=[^A-Za-z])"), " ");
 	}
 	
 	private void emptyOrderDetailFields() {
@@ -262,19 +257,5 @@ public class ViewOrdersCard extends JPanel implements ListSelectionListener {
 		Object[] row = {newTransactionID, sdf.format(orderDate)};
 		orderListModel.addRow(row);
 	}
-	
-//	public void customerDetailsEdited(int oldID, int newID) {
-//		listModel.setElementAt(oldID+"", listModel.indexOf(newID));
-//		orderList.setSelectedValue(newID, true);
-//		setOrderDetailsContent();
-//	}
-//	
-//	public void customerDeleted(int transactionID) {
-//		listModel.removeElement(transactionID);
-//		int currentId = Integer.parseInt(lblTransactionID.getText());
-//		if(currentId == transactionID) {
-//			orderList.setSelectedIndex(0);
-//		}
-//	}
 
 }
