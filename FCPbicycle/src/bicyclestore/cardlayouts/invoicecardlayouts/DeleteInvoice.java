@@ -17,29 +17,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 	import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+	import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 	import javax.swing.event.ListSelectionEvent;
 	import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 
-import bicyclestore.Database;
-import bicyclestore.bikes.BMX;
-import bicyclestore.bikes.Bicycle;
-import bicyclestore.bikes.Cruiser;
-import bicyclestore.bikes.Hybrid;
-import bicyclestore.bikes.MotorisedBike;
-import bicyclestore.bikes.MountainBike;
-import bicyclestore.bikes.RoadBike;
-import bicyclestore.customers.Customer;
-import bicyclestore.staff.Employee;
+	import bicyclestore.Database;
+
 import bicyclestore.transaction.SalesTransaction;
-import bicyclestore.transaction.ShoppingBasket;
 
 	@SuppressWarnings("serial")
-	public class ViewInvoiceCard extends JPanel implements ListSelectionListener {
+	public class DeleteInvoice extends JPanel implements ListSelectionListener {
 
 		private Database database;
 		
@@ -50,36 +39,19 @@ import bicyclestore.transaction.ShoppingBasket;
 		private Box buttonPane;
 		private JButton btnDeleteCustomer;
 		
-		private ShoppingBasket basket;
-		private Customer customer;
-		
 		private InvoiceCardLayout cardlayout;
 		
 		private JLabel idLabel, employeeLabel, customerLabel, costLabel, paymentMethodLabel, dateLabel,
 							lblTransactionID, lblEmployee, lblCustomer, lblCost, lblPaymentMethod, lblDate;
 		
-		private DefaultTableModel tableModel;
-		private JTable orderDetailsTable;
-		private static final String[] TABLE_COLS = {"Product Type","Model","Colour","Price"};
-		private String productType;
-		private Bicycle bicycle;
-		private int quantity;
-		
-		
-		public ViewInvoiceCard(Database database,InvoiceCardLayout cardlayout) {
-			basket = new ShoppingBasket();
+		public DeleteInvoice(Database database,InvoiceCardLayout cardlayout) {
 			this.database = database;
 			this.cardlayout=cardlayout;
 			setUpinvoiceList();
 			createViewOrderCard();
 			setUpButtonPane();
 			
-
-			
-			add(buttonPane, BorderLayout.EAST);
-			
-			setUpTable();
-			this.add(new JScrollPane(orderDetailsTable),BorderLayout.SOUTH);
+			add(buttonPane, BorderLayout.SOUTH);
 		}
 		
 		private void setUpinvoiceList() {
@@ -207,7 +179,7 @@ import bicyclestore.transaction.ShoppingBasket;
 			buttonPane = Box.createHorizontalBox();
 			
 			
-			btnDeleteCustomer = new JButton("Delete Invoice");
+			btnDeleteCustomer = new JButton("Delete Customer");
 			
 			
 		    buttonPane.add(Box.createHorizontalStrut(10));
@@ -222,9 +194,27 @@ import bicyclestore.transaction.ShoppingBasket;
 			
 		}
 		
-	
+		private void emptyOrderDetailFields() {
+			lblTransactionID.setText("");
+			lblEmployee.setText("");
+			lblCustomer.setText("");
+			lblCost.setText("");
+			lblPaymentMethod.setText("");
+			lblDate.setText("");
+		}
 		
-
+		@Override
+		public void valueChanged(ListSelectionEvent arg0) {
+			// if list still contains entries reset selection and display content
+			if(!listModel.isEmpty()) {
+				if(invoiceList.isSelectionEmpty())
+					invoiceList.setSelectedIndex(0);
+				setOrderDetailsContent();	
+			}
+			// if list empty reset fields to blank
+			else
+				emptyOrderDetailFields();
+		}
 		
 		public void refresh(int newTransactionID) {
 			listModel.addElement(newTransactionID+"");
@@ -237,8 +227,6 @@ import bicyclestore.transaction.ShoppingBasket;
 		}
 		
 		public void customerDeleted(String transactionID) {
-			emptyInvoiceTable();
-			emptyDetailsTable();
 			listModel.removeElement(transactionID);
 			String currentId = lblTransactionID.getText();
 			if(currentId == transactionID) {
@@ -258,14 +246,6 @@ import bicyclestore.transaction.ShoppingBasket;
 				cardlayout.customerDeleted(customerName);
 			}
 		}
-			private void setUpTable() {
-				tableModel = new DefaultTableModel();
-				tableModel.setColumnIdentifiers(TABLE_COLS);
-				orderDetailsTable = new JTable(tableModel);
-				orderDetailsTable.setFillsViewportHeight(true);
-				orderDetailsTable.setPreferredScrollableViewportSize(new Dimension(600,150));
-			
-		}
 		
 		private class ButtonClickListener implements ActionListener {
 
@@ -277,59 +257,7 @@ import bicyclestore.transaction.ShoppingBasket;
 				}
 			}
 		}
-		public void addInvoiceDetails() {
-			int transactionId = Integer.parseInt(invoiceList.getSelectedValue());
-			SalesTransaction invoice = database.getSalesTransaction(transactionId);
-			ShoppingBasket trolley = invoice.getShoppingList();
-			quantity= trolley.getQuantity();
-			
-			
-		
-			for(int i = 0; i < quantity; i++) {
-				String productType=""+trolley.getShoppingList().get(i).getClass();
-				productType = productType.replace("class bicyclestore.bikes.", "");			
-			
-			Object[] row = { productType, ""+trolley.getShoppingList().get(i).getModel(), 
-					""+trolley.getShoppingList().get(i).getColour(),""+trolley.getShoppingList().get(i).getSalePrice()};
-			tableModel.addRow(row);
-			
-			}
-		}
-		private void emptyInvoiceTable() {
-			//Object[] row = {"","",""," "};
-			for(int i = tableModel.getRowCount() -1; i >= 0; i--) {
-				tableModel.removeRow(i);
-			}
-		}
-		private void emptyDetailsTable() {
-			lblTransactionID.setText("");
-			lblEmployee.setText("");
-			lblCustomer.setText("");
-			lblCost.setText("");
-			lblPaymentMethod.setText("");
-			lblDate.setText("");
-			}
-		
-			
-			@Override
-			public void valueChanged(ListSelectionEvent arg0) {
-				// if list still contains entries reset selection and display content
-				emptyInvoiceTable();
-				if(!listModel.isEmpty()) {
-					if(invoiceList.isSelectionEmpty())
-						invoiceList.setSelectedIndex(0);
-					setOrderDetailsContent();
-					addInvoiceDetails();
-				}
-				// if list empty reset fields to blank
-				else
-					//emptyOrderDetailFields();
-				    emptyInvoiceTable();
-				
-			}
-		}	
-	
-	
+	}
 
 	
 

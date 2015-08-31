@@ -26,13 +26,13 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 		private static final String INVOICE_A_CUSTOMER = "Sell to a Customer";
 		private static final String VIEW_INVOICE = "View Invoice";
 		private static final String DELETE_INVOICE = "Delete Invoice";
-		private String[] comboBoxItems = {INVOICE_A_CUSTOMER, VIEW_INVOICE};
+		private String[] comboBoxItems = {INVOICE_A_CUSTOMER, VIEW_INVOICE, DELETE_INVOICE};
 		
 		// Card classes
 		private CreateInvoiceCard createInvoice;
 		private InvoiceShoppingCartCard shoppingCartCard;
 		private ViewInvoiceCard viewInvoiceCard;
-		//private DeleteInvoice deleteInvoice;
+		private DeleteInvoice deleteInvoice;
 		
 
 		public InvoiceCardLayout(Database database, Employee employee) {
@@ -49,17 +49,17 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 			
 			createInvoice = new CreateInvoiceCard(database, employee, this);
 			viewInvoiceCard = new ViewInvoiceCard(database, this);
-			//deleteInvoice = new DeleteInvoice(database, this);
+			deleteInvoice = new DeleteInvoice(database, this);
 			
 			// create cards to make up card layout
 			JPanel card1 = createInvoice;
 			JPanel card2 = viewInvoiceCard;
-			//JPanel card3 = deleteInvoice;
+			JPanel card3 = deleteInvoice;
 		
 			
 			cards.add(card1, INVOICE_A_CUSTOMER);
 			cards.add(card2, VIEW_INVOICE);
-			//cards.add(card3, DELETE_INVOICE);
+		//	cards.add(card3, DELETE_INVOICE);
 			
 			
 			this.add(comboBoxPane, BorderLayout.NORTH);
