@@ -27,13 +27,7 @@ import javax.swing.border.TitledBorder;
 
 import bicyclestore.Database;
 import bicyclestore.Utilities;
-import bicyclestore.bikes.BMX;
 import bicyclestore.bikes.Bicycle;
-import bicyclestore.bikes.Cruiser;
-import bicyclestore.bikes.Hybrid;
-import bicyclestore.bikes.MotorisedBike;
-import bicyclestore.bikes.MountainBike;
-import bicyclestore.bikes.RoadBike;
 import bicyclestore.staff.Employee;
 import bicyclestore.suppliers.Supplier;
 
@@ -157,23 +151,14 @@ public class OrderFromSupplierCard extends JPanel implements ItemListener {
 		buttonPane.add(Box.createHorizontalGlue());
 	}
 	
-	private String[] getSupplierListItems() {
-		ArrayList<Supplier> suppliers = database.getSuppliers();
-		String[] supplierListItems = new String[suppliers.size()];
-		for(int i = 0; i < suppliers.size(); i++) {
-			supplierListItems[i] = suppliers.get(i).getName();
-		}
-		return supplierListItems;
-	}
-	
 	private class ButtonListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			// find out if user pressed process order button
 			if(event.getSource() == btnAddToCart) {
-				// do not attempt to save an order if no product is present in combo box
-				if(productModelList.getSelectedObjects().length > 0) {
+				// do not attempt to save an order if no product or supplier is present in combo box
+				if(productModelList.getSelectedIndex() > 0 && supplierList.getSelectedIndex() > 0) {
 					String productType = (String)productTypeList.getSelectedItem();
 					String supplierChoice = (String)supplierList.getSelectedItem();
 					String model = (String)productModelList.getSelectedItem();
@@ -186,6 +171,11 @@ public class OrderFromSupplierCard extends JPanel implements ItemListener {
 							+ "Press view shopping cart to view items in cart",
 							"Item added to cart", JOptionPane.INFORMATION_MESSAGE);
 					
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "You must select a product type, model and"
+							+ " a supplier before proceding",
+							"Incomplete fields", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			

@@ -61,7 +61,7 @@ public class OrdersCardLayout extends JPanel implements ItemListener {
 		JPanel card2 = viewOrdersCard;
 		JPanel card3 = viewOldOrdersCard;
 		JPanel card4 = deliveryDatesCard;
-		JPanel card5 = viewCostsCard;
+		JPanel card5 = viewCostsCard.getCardLayout();
 		
 		cards.add(card1, ORDER_SUPPLIER);
 		cards.add(card2, VIEW_ORDERS);

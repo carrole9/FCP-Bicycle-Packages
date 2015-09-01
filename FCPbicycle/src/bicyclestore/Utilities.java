@@ -3,6 +3,8 @@ package bicyclestore;
 import java.util.Calendar;
 import java.util.Date;
 
+import bicyclestore.transaction.PurchasingTransaction;
+
 /*
  * Utilities class contains general static methods 
  * Feel free to add more methods. Useful for general methods that can be 
@@ -29,6 +31,15 @@ public final class Utilities {
 		int targetWeek = targetCalendar.get(Calendar.WEEK_OF_YEAR);
 		int targetYear = targetCalendar.get(Calendar.YEAR);
 		return week == targetWeek && year == targetYear;
+	}
+	
+	// Calculate total cost of all purchasing transactions in database
+	public static double  getTotalCostOfOrders(Database database) {
+		double totalCost = 0.0;
+		for(PurchasingTransaction order : database.getPurchasingTransactions()) {
+			totalCost += order.getTransactionCost();
+		}
+		return totalCost;
 	}
 
 }
