@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -25,6 +26,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import bicyclestore.Database;
+import bicyclestore.Utilities;
 import bicyclestore.bikes.BMX;
 import bicyclestore.bikes.Bicycle;
 import bicyclestore.bikes.Cruiser;
@@ -54,11 +56,6 @@ public class OrderFromSupplierCard extends JPanel implements ItemListener {
 	private JLabel lblSelectSupplier, lblSelectProductType, lblSelectProductModel, lblSelectQuantity;
 	private JComboBox<String> supplierList, productTypeList, productModelList;
 	
-	private String[] productTypes = {"Please Select Product Type", "BMX", "Mountain Bike",
-			"Road Bike", "Hybrid", "Cruiser", "Motorised Bike"};
-	
-	private String[] productModels; // product models will be empty until use selects product type
-	
 	private SpinnerNumberModel numberModel;
 	private JSpinner quantitySpinner;
 	
@@ -78,7 +75,7 @@ public class OrderFromSupplierCard extends JPanel implements ItemListener {
 		
 		cards = new JPanel(new CardLayout());
 		
-		shoppingCartCard = new OrderShoppingCartCard(database, employee, cardLayout, btnBackToOrder);
+		shoppingCartCard = new OrderShoppingCartCard(database, employee, cardLayout, btnBackToOrder, this);
 		
 		JPanel card1 = productDetailsCard();
 		JPanel card2 = shoppingCartCard;
@@ -102,10 +99,12 @@ public class OrderFromSupplierCard extends JPanel implements ItemListener {
 		lblSelectQuantity = new JLabel("Select Quantity");
 		
 		// set up combo boxes
-		supplierList = new JComboBox<String>(getSupplierListItems());
-		productTypeList = new JComboBox<String>(productTypes);
+		supplierList = new JComboBox<String>();
+		productTypeList = new JComboBox<String>();
 		productTypeList.addActionListener(new ComboBoxListener());
 		productModelList = new JComboBox<String>();
+		productModelList.addActionListener(new ComboBoxListener());
+		setProductTypeOptions();
 		
 		// set up spinner to allow user to select quantity of items
 		int minValue = 1;
@@ -208,60 +207,13 @@ public class OrderFromSupplierCard extends JPanel implements ItemListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			// populate model list combo box with bicycles of selected type
-			
-			// get string name for product type selected
-			String productType = (String)productTypeList.getSelectedItem();
-			ArrayList<String> products = new ArrayList<String>();
-			
-			// Fill new collection of bicycles of selected type from database
-			if(productType.equals("BMX")) {
-				ArrayList<Bicycle> bicycles = database.getBicycles();
-				for(Bicycle bicycle : bicycles) {
-					if(bicycle instanceof BMX)
-						products.add(bicycle.getModel());
-				}
-			}
-			if(productType.equals("Mountain Bike")) {
-				ArrayList<Bicycle> bicycles = database.getBicycles();
-				for(Bicycle bicycle : bicycles) {
-					if(bicycle instanceof MountainBike)
-						products.add(bicycle.getModel());
-				}
-			}
-			if(productType.equals("Road Bike")) {
-				ArrayList<Bicycle> bicycles = database.getBicycles();
-				for(Bicycle bicycle : bicycles) {
-					if(bicycle instanceof RoadBike)
-						products.add(bicycle.getModel());
-				}
-			}
-			if(productType.equals("Hybrid")) {
-				ArrayList<Bicycle> bicycles = database.getBicycles();
-				for(Bicycle bicycle : bicycles) {
-					if(bicycle instanceof Hybrid)
-						products.add(bicycle.getModel());
-				}
-			}
-			if(productType.equals("Cruiser")) {
-				ArrayList<Bicycle> bicycles = database.getBicycles();
-				for(Bicycle bicycle : bicycles) {
-					if(bicycle instanceof Cruiser)
-						products.add(bicycle.getModel());
-				}
-			}
-			if(productType.equals("Motorised Bike")) {
-				ArrayList<Bicycle> bicycles = database.getBicycles();
-				for(Bicycle bicycle : bicycles) {
-					if(bicycle instanceof MotorisedBike)
-						products.add(bicycle.getModel());
-				}
+			if(e.getSource() == productTypeList) {
+				setBicycleModelOptions();
 			}
 			
-			// convert ArrayList to array and update combo box to contain selected models 
-			productModels = products.toArray(new String[products.size()]);
-			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(productModels);
-			productModelList.setModel(model);
+			if(e.getSource() == productModelList) {
+				setSupplierOptions();
+			}
 		}
 		
 	}
@@ -270,6 +222,105 @@ public class OrderFromSupplierCard extends JPanel implements ItemListener {
 	public void itemStateChanged(ItemEvent e) {
 		CardLayout c1 = (CardLayout) cards.getLayout();
 		c1.show(cards, (String)e.getItem());
+	}
+	
+	// populate the type combo box with available product types
+	public void setProductTypeOptions() {
+		HashSet<String> productTypeSet = new HashSet<String>();
+		if (shoppingCartCard.isShoppingCartEmpty()) {
+			// add all product types if shopping cart is empty
+			for (Supplier supplier : database.getSuppliers()) {
+				for (Bicycle bike : supplier.getProducts()) {
+					productTypeSet.add(Utilities.splitCamelCase(bike.getClass().getSimpleName()));
+				}
+			}
+			supplierList.setModel(new DefaultComboBoxModel<String>(new String[0]));
+		} else {
+			// only allow user to select product types provided by one supplier
+			for (Bicycle bike : shoppingCartCard.getSupplier().getProducts()) {
+				productTypeSet.add(Utilities.splitCamelCase(bike.getClass().getSimpleName()));
+			}
+			setSupplierOptions();
+		}
+		// convert ArrayList to array and update combo box to contain selected models
+		ArrayList<String> productTypeArrayList = new ArrayList<String>(productTypeSet);
+		productTypeArrayList.add(0, "Select a product type");
+		String[] productTypes = productTypeArrayList.toArray(new String[productTypeArrayList.size()]);
+		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(productTypes);
+		productTypeList.setModel(model);
+		
+		// set supplier combo box blank until user selects a model
+		productModelList.setModel(new DefaultComboBoxModel<String>(new String[0]));
+		
+	}
+	
+	// populate model list combo box with available bicycles of selected type
+	private void setBicycleModelOptions() {
+		// get string name for product type selected
+		String productType = (String) productTypeList.getSelectedItem();
+		// use a set to store available models so that there is no repetition
+		HashSet<String> products = new HashSet<String>();
+		
+		// fill set with all available models in suppliers catalogue that match product type
+		for(Supplier supplier : database.getSuppliers()) {
+			for(Bicycle bike : supplier.getProducts()) {
+				if(productType.equals(Utilities.splitCamelCase(bike.getClass().getSimpleName()))) {
+					products.add(bike.getModel());
+				}
+			}
+		}
+
+		// convert ArrayList to array and update combo box to contain selected models
+		ArrayList<String> productNames = new ArrayList<String>(products);
+		productNames.add(0, "Select a model");
+		String[] productModels = productNames.toArray(new String[productNames.size()]);
+		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(productModels);
+		productModelList.setModel(model);
+		
+		if(shoppingCartCard.isShoppingCartEmpty()) {
+			// set supplier combo box blank until user selects a model
+			supplierList.setModel(new DefaultComboBoxModel<String>(new String[0]));
+		}
+		else
+			setSupplierOptions();
+		
+	}
+	
+	// populate supplier list combo box with suppliers that sell the selected model
+	private void setSupplierOptions() {
+
+		if (shoppingCartCard.isShoppingCartEmpty()) {
+			String bikeModel = (String) productModelList.getSelectedItem();
+			ArrayList<String> supplierNames = new ArrayList<String>();
+
+			if (!bikeModel.equals("Select a model")) {
+
+				// fill array list with available suppliers who stock the selected model
+				for (Supplier supplier : database.getSuppliers()) {
+					for (Bicycle bike : supplier.getProducts()) {
+						if (bikeModel.equals(bike.getModel())) {
+							supplierNames.add(supplier.getName());
+							break;
+						}
+					}
+				}
+			}
+			// convert ArrayList to array and update combo box to contain
+			// selected models
+			String[] suppliers = new String[supplierNames.size() + 1];
+			suppliers[0] = "Select a supplier";
+			for (int i = 1; i < suppliers.length; i++) {
+				suppliers[i] = supplierNames.get(i - 1);
+			}
+			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(suppliers);
+			supplierList.setModel(model);
+		}
+		else {
+			String[] suppliers = {shoppingCartCard.getSupplier().getName()};
+			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(suppliers);
+			supplierList.setModel(model);
+		}
+
 	}
 
 }

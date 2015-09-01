@@ -15,6 +15,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import bicyclestore.Database;
+import bicyclestore.Utilities;
 import bicyclestore.bikes.Bicycle;
 import bicyclestore.transaction.PurchasingTransaction;
 
@@ -124,15 +125,9 @@ public class DeliveryDatesCard extends JPanel implements ListSelectionListener {
 		int transactionId = (int)deliveryTable.getValueAt(deliveryTable.getSelectedRow(), 0);
 		PurchasingTransaction order = database.getPurchasingTransaction(transactionId);
 		for(Bicycle bike : order.getShoppingList().getShoppingList()) {
-			Object[] row = {splitCamelCase(bike.getClass().getSimpleName()), bike.getModel(), bike.getCostPrice()};
+			Object[] row = {Utilities.splitCamelCase(bike.getClass().getSimpleName()), bike.getModel(), bike.getCostPrice()};
 			productsTableModel.addRow(row);
 		}
-	}
-	
-	// separate words contained in camelCase. E.g class name "RoadBike" will become "Road Bike"
-	private String splitCamelCase(String s) {
-		return s.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])",
-				"(?<=[A-Za-z])(?=[^A-Za-z])"), " ");
 	}
 	
 	// refresh table to add new orders to delivery dates table

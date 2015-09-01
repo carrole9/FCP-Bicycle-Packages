@@ -3,10 +3,15 @@ package bicyclestore;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Utilities {
+/*
+ * Utilities class contains general static methods 
+ * Feel free to add more methods. Useful for general methods that can be 
+ * used in multiple places without needing an instance
+ */
+
+public final class Utilities {
 	
-	// separate words contained in camelCase. E.g class name "RoadBike" will
-	// become "Road Bike"
+	// separate words contained in camelCase. E.g class name "RoadBike" will become "Road Bike"
 	// Expression retrieved from:
 	// http://stackoverflow.com/questions/2559759/how-do-i-convert-camelcase-into-human-readable-names-in-java
 	public static String splitCamelCase(String s) {

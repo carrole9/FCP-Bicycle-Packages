@@ -36,6 +36,7 @@ public class OrderShoppingCartCard extends JPanel {
 	private Supplier supplier;
 	
 	private OrdersCardLayout cardLayout;
+	private OrderFromSupplierCard orderCard;
 	
 	private JButton btnProcessOrder, btnReturnOrder;
 	
@@ -51,13 +52,14 @@ public class OrderShoppingCartCard extends JPanel {
 	private JTable orderDetailsTable;
 	private static final String[] TABLE_COLS = {"Product Type","Model","Supplier","Quanity"};
 
-	public OrderShoppingCartCard(Database database, Employee employee, OrdersCardLayout cardLayout, JButton btnReturnOrder) {
+	public OrderShoppingCartCard(Database database, Employee employee, OrdersCardLayout cardLayout,
+			JButton btnReturnOrder, OrderFromSupplierCard orderCard) {
 		this.database = database;
 		this.employee = employee;
 		basket = new ShoppingBasket();
 		this.cardLayout = cardLayout;
 		this.btnReturnOrder = btnReturnOrder;
-		
+		this.orderCard = orderCard;
 		initComponents();
 	}
 	
@@ -131,6 +133,8 @@ public class OrderShoppingCartCard extends JPanel {
 		Object[] row = {productType, bicycle.getModel(), supplier.getName(), quantity};
 		tableModel.addRow(row);
 		this.supplier = supplier;
+		// set product type options to limit extra orders to one supplier
+		orderCard.setProductTypeOptions();
 	}
 
 	private void createPurchasingTransaction() {
@@ -180,13 +184,21 @@ public class OrderShoppingCartCard extends JPanel {
 		for(int i = tableModel.getRowCount() -1; i >= 0; i--) {
 			tableModel.removeRow(i);
 		}
-		
+		// reset product type options to remove limit to supplier
+		orderCard.setProductTypeOptions(); 
 	}
 	
 	private double calculateCost() {
 		return basket.getTotalCostValue();
 	}
 	
+	public Supplier getSupplier() {
+		return supplier;
+	}
+	
+	public boolean isShoppingCartEmpty() {
+		return tableModel.getRowCount() == 0;
+	}
 	private class ButtonListener implements ActionListener {
 
 		@Override
