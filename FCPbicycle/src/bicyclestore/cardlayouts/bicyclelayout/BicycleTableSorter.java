@@ -1,276 +1,187 @@
-
 package bicyclestore.cardlayouts.bicyclelayout;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
-import bicyclestore.Database;
-import bicyclestore.SystemData;
-import bicyclestore.bikes.Bicycle;
-
-import java.awt.BorderLayout;
-import java.awt.Container;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.LayoutManager;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
-public class BicycleTableSorter extends JPanel {
-    private boolean DEBUG = false;
-    private JTable table;
-    private JPanel bicyclePanel;
-    private JButton refreshButton;
-    JScrollPane scrollPane;
-    
-    private JTextField filterText;
-    private JTextField statusText;
-    private DefaultTableModel model;
-    private TableRowSorter<TableModel> sorter;
-    private BicycleCardLayout bicycleCardLayout;
-    private Database database;
-    private Object[] columnNames = {"Type","Model", "Colour", "Frame Size", "Wheel Size", "Frame Composition","Cost Price","Sale Price"};
-    private Object[][] data = new Object [50][50];
-    private ArrayList<Bicycle> newArrayList;
-   
-    
-
-    public BicycleTableSorter(Database database,BicycleCardLayout bicycleCardLayout) {
-    	
-    	this.database = database;
-    	bicycleCardLayout = this.bicycleCardLayout;
-    	bicyclePanel = new JPanel(new BorderLayout());
-    	
-    	createBicycleTable();
-    	
-        
-       
-    }
-    
-    public void createBicycleTable(){
-    	table = new JTable();
-    
-        //Create a table with a sorter.
-        model = new DefaultTableModel();
-        model.setColumnIdentifiers(columnNames);
-       
-        sorter = new TableRowSorter<TableModel>(model);
-        table.setModel(model);
-        table.setRowSorter(sorter);
-        table.setPreferredScrollableViewportSize(new Dimension(500, 200));
-        table.setFillsViewportHeight(true);
-
-        //For the purposes of this example, better to have a single
-        //selection.
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
-        //When selection changes, provide user with row numbers for
-        //both view and model.
-        table.getSelectionModel().addListSelectionListener(
-                new ListSelectionListener() {
-                    public void valueChanged(ListSelectionEvent event) {
-                        int viewRow = table.getSelectedRow();
-                        if (viewRow < 0) {
-                            //Selection got filtered away.
-                            statusText.setText("");
-                        } else {
-                            int modelRow = 
-                                table.convertRowIndexToModel(viewRow);
-                            statusText.setText(
-                                String.format("Selected Row in view: %d. " +
-                                    "Selected Row in model: %d.", 
-                                    viewRow, modelRow));
-                        }
-                    }
-                }
-        );
-        addBicyclesFromDB();
-    	
-    	viewBicyclesTable();
-    
+import bicyclestore.Database;
+import bicyclestore.bikes.BMX;
+import bicyclestore.bikes.Bicycle;
+import bicyclestore.cardlayouts.customercardlayouts.CustomersCardLayout;
 
 
-        //Create the scroll pane and add the table to it.
-        scrollPane = new JScrollPane(table);
-        scrollPane.setViewportView(table);
-        bicyclePanel.add(scrollPane,BorderLayout.CENTER);
-  
-        
-        //add(scrollPane, BorderLayout.CENTER);
 
-        //Add the scroll pane to this panel.
-       // add(scrollPane);
+public class AddBicycles extends JPanel  {
 
-        //Create a separate form for filterText and statusText
-        JPanel form = new JPanel(new SpringLayout());
-        JLabel l1 = new JLabel("Filter Text:", SwingConstants.TRAILING);
-        form.add(l1);
-        filterText = new JTextField();
-        //Whenever filterText changes, invoke newFilter.
-        filterText.getDocument().addDocumentListener(
-                new DocumentListener() {
-                    public void changedUpdate(DocumentEvent e) {
-                        newFilter();
-                    }
-                    public void insertUpdate(DocumentEvent e) {
-                        newFilter();
-                    }
-                    public void removeUpdate(DocumentEvent e) {
-                        newFilter();
-                    }
-                });
-        l1.setLabelFor(filterText);
-        form.add(filterText);
-        JLabel l2 = new JLabel("Status:", SwingConstants.TRAILING);
-        form.add(l2);
-        statusText = new JTextField();
-        l2.setLabelFor(statusText);
-        form.add(statusText);
-        SpringUtilities.makeCompactGrid(form, 2, 2, 6, 6, 6, 6);
-        //add(form);
-        bicyclePanel.add(form,BorderLayout.SOUTH);
-        
-    }
-    public void addBicyclesFromDB(){
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Database database;
+	private BicycleTableSorter bicycleTableSorter;
+	private BicycleCardLayout bicycleCardLayout;
+	private JTextField txtType, txtModel, txtColour, txtFrameSize, txtWheelSize,txtFrameComposition,txtCostPrice,txtSalePrice;
+	private JButton addBicycleButton;
+	private ArrayList<Bicycle> newArrayList; 
+	
+	public AddBicycles(Database database,BicycleCardLayout bicycleCardLayout ) {
 		
-		database = new Database();
-
-		SystemData symData = new SystemData(database);
-		symData.fillDatabase();
-
-		newArrayList = database.getBicycles();
+		this.database = database;
+		this.bicycleCardLayout = bicycleCardLayout;
 		
-	} 
-
-    public void  viewBicyclesTable(){
-		
-		int i = 0;
-		for (Bicycle bicycle : newArrayList) {
-				
-				Object [] row = {bicycle.getClass().getSimpleName(), bicycle.getModel()
-						,bicycle.getColour(),bicycle.getFrameSize() + "",bicycle.getWheelSize() + "", bicycle.getFrameComposition()
-						,bicycle.getCostPrice(),bicycle.getSalePrice()};
-				model.addRow(row);
-				
-				
+		initComponents();
+		createAddCustomerCard();
 		
 		
-			}
-			//table = new JTable(data, columnNames);
+	}
+	private void initComponents() {
+	
+		
+		txtType = new JTextField(10);
+		txtModel = new JTextField(10);
+		txtColour = new JTextField(10);
+		txtFrameSize = new JTextField(10);
+		txtWheelSize = new JTextField(10);
+		txtFrameComposition = new JTextField(10);
+		txtCostPrice = new JTextField(10);
+		txtSalePrice = new JTextField(10);
+		
+		addBicycleButton = new JButton("Add Bicycle");
+		addBicycleButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		addBicycleButton.addActionListener(new ButtonActionListener());
+	}
+	
+	public void createAddCustomerCard(){
+		TitledBorder addBicycleBorder = BorderFactory.createTitledBorder("Enter Bicycle Details");
+		addBicycleBorder.setTitleJustification(TitledBorder.CENTER);
+		setBorder(addBicycleBorder);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(createBicycleDetailsForm());
+		add(addBicycleButton);
+	}
+	public JPanel createBicycleDetailsForm(){
+		
+		JPanel bicycleDetailsGrid = new JPanel();
+		GridLayout gridLayout = new GridLayout(8,2);
+		gridLayout.setVgap(10);
+		bicycleDetailsGrid.setBorder(new EmptyBorder(20,20,20,20));
+		bicycleDetailsGrid.setLayout(gridLayout);
+		bicycleDetailsGrid.setMaximumSize(new Dimension(400, 400));
+		
+		bicycleDetailsGrid.add(new JLabel("Bicycle Type"));
+		bicycleDetailsGrid.add(txtType);
+		bicycleDetailsGrid.add(new JLabel("Bicycle Model"));
+		bicycleDetailsGrid.add(txtModel);
+		bicycleDetailsGrid.add(new JLabel("Bicycle Colour"));
+		bicycleDetailsGrid.add(txtColour);
+		bicycleDetailsGrid.add(new JLabel("Bicycle Frame Size"));
+		bicycleDetailsGrid.add(txtFrameSize);
+		bicycleDetailsGrid.add(new JLabel("Bicycle Wheel Size"));
+		bicycleDetailsGrid.add(txtWheelSize);
+		bicycleDetailsGrid.add(new JLabel("Bicycle Frame Composition"));
+		bicycleDetailsGrid.add(txtFrameComposition);
+		bicycleDetailsGrid.add(new JLabel("Bicycle Cost Price"));
+		bicycleDetailsGrid.add(txtCostPrice);
+		bicycleDetailsGrid.add(new JLabel("Bicycle Sale Price"));
+		bicycleDetailsGrid.add(txtSalePrice);
+		
+		return bicycleDetailsGrid;
 		
 		}
-    
-    public void refresh(){
-    	
-    	table.revalidate();
-    }
-    
-    
+	public void checkFieldsComplete(){
+		
+		// get bicycle details from text fields
+				String type = txtType.getText();
+				String model = txtModel.getText();
+				String colour = txtColour.getText();
+				String frameSize = txtFrameSize.getText();
+				String wheelSize = txtWheelSize.getText();
+				String frameComposition = txtFrameComposition.getText();
+				String costPrice = txtCostPrice.getText();
+				String salePrice = txtSalePrice.getText();
+				
+				int intFrameSize;
+				int intWheelSize;
+				double doubleCostPrice;
+				double doubleSalePrice;
+				intFrameSize = Integer.parseInt(frameSize);
+				intWheelSize = Integer.parseInt(wheelSize);
+				doubleCostPrice = Double.parseDouble(costPrice);
+				doubleSalePrice = Double.parseDouble(salePrice);
+				 
+				
+				// check if any text fields have been left blank and output error message if true
+				if(type.length() == 0 || model.length() == 0 || colour.length() == 0 
+						|| frameSize.length() == 0 || wheelSize.length() == 0 || frameComposition.length() == 0 || costPrice.length() == 0 || salePrice.length() == 0 ) {
+					JOptionPane.showMessageDialog(null, "Please Enter All Details", 
+							"Incomplete content", JOptionPane.ERROR_MESSAGE);
+				}
+				// attempt to add bicycle if all fields are complete
+				else if(type.equals("BMX")){
+				
+					addBicycle (model, colour, intFrameSize, intWheelSize,frameComposition,doubleCostPrice,doubleSalePrice);
+				}
+		}
+	
+	public void addBicycle(String model,String colour,int intFrameSize,int intWheelSize,String frameComposition, double doubleCostPrice,double doubleSalePrice  ){
+		
+			
+		//if(type.equals("BMX")){
+			
+		database.addBicycle(new BMX(model, colour, intFrameSize, intWheelSize,frameComposition, doubleCostPrice, doubleSalePrice));
+		
+		//}
+		txtType.setText("");
+		txtModel.setText("");
+		txtColour.setText("");
+		txtFrameSize.setText("");
+		txtWheelSize.setText("");
+		txtFrameComposition.setText("");
+		txtCostPrice.setText("");
+		txtSalePrice.setText("");
+		
+		bicycleCardLayout.newBicyclerAdded();
+		
+		//bicycleTableSorter.refresh();
+		
+	
+		
+		
+		
+	}
+	
 
-    /** 
-     * Update the row filter regular expression from the expression in
-     * the text box.
-     */
-    private void newFilter() {
-        RowFilter<TableModel, Object> rf = null;
-        //If current expression doesn't parse, don't update.
-        try {
-            rf = RowFilter.regexFilter(filterText.getText(), 0);
-        } catch (java.util.regex.PatternSyntaxException e) {
-            return;
-        }
-        sorter.setRowFilter(rf);
-    }
-        
-        
-  
-        
-    	public void addNewBicycle(){
-     		
-    		database = new Database();
+	private class ButtonActionListener implements ActionListener {
 
-    		SystemData symData = new SystemData(database);
-    		symData.fillDatabase();
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			
+			// if the user pressed the add bicycle button, check if fields are all filled and attempt to add customer
+			if(event.getSource() == addBicycleButton) {
+				System.out.println("button pressed");
+				checkFieldsComplete();
+			System.out.println("button pressed");
+			}
+			
+				
+			
+	
+		}
+	}
+	
+}
 
-    		newArrayList = database.getBicycles();
-     		
-     	}
-     	public JPanel getBicycleLayoutPane() {
-     		return bicyclePanel;
-     	}
-    
-    			
-        
-
-        public int getColumnCount() {
-            return columnNames.length;
-        }
-
-        public int getRowCount() {
-            return data.length;
-        }
-
-        public Object getColumnName(int col) {
-            return columnNames[col];
-        }
-
-        public Object getValueAt(int row, int col) {
-            return data[row][col];
-        }
-        
-
-        /*
-         * JTable uses this method to determine the default renderer/
-         * editor for each cell.  If we didn't implement this method,
-         * then the last column would contain text ("true"/"false"),
-         * rather than a check box.
-         */
-        public Class getColumnClass(int c) {
-            return getValueAt(0, c).getClass();
-        }
-        
-
-        /*
-         * Don't need to implement this method unless your table's
-         * editable.
-         */
-        public boolean isCellEditable(int row, int col) {
-            //Note that the data/cell address is constant,
-            //no matter where the cell appears onscreen.
-            if (col < 2) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-    
-
-        private void printDebugData() {
-            int numRows = getRowCount();
-            int numCols = getColumnCount();
-
-            for (int i=0; i < numRows; i++) {
-                System.out.print("    row " + i + ":");
-                for (int j=0; j < numCols; j++) {
-                    System.out.print("  " + data[i][j]);
-                }
-                System.out.println();
-            }
-            System.out.println("--------------------------");
-        }
-    
-    
-
- 	
- 
- 	
-    }
-    
-
-
-
+	
