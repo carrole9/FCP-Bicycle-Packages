@@ -3,6 +3,8 @@ package bicyclestore.cardlayouts.bicyclelayout;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import bicyclestore.Database;
@@ -13,26 +15,51 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 
-public class BicycleTableSorter {
+public class BicycleTableSorter extends JPanel {
     private boolean DEBUG = false;
     private JTable table;
-    private static JPanel bicyclePanel;
+    private JPanel bicyclePanel;
+    private JButton refreshButton;
+    JScrollPane scrollPane;
+    
     private JTextField filterText;
     private JTextField statusText;
-    private TableRowSorter<MyTableModel> sorter;
+    private DefaultTableModel model;
+    private TableRowSorter<TableModel> sorter;
+    private BicycleCardLayout bicycleCardLayout;
+    private Database database;
+    private Object[] columnNames = {"Type","Model", "Colour", "Frame Size", "Wheel Size", "Frame Composition","Cost Price","Sale Price"};
+    private Object[][] data = new Object [50][50];
+    private ArrayList<Bicycle> newArrayList;
+   
     
 
-    public BicycleTableSorter() {
+    public BicycleTableSorter(Database database,BicycleCardLayout bicycleCardLayout) {
+    	
+    	this.database = database;
+    	bicycleCardLayout = this.bicycleCardLayout;
     	bicyclePanel = new JPanel(new BorderLayout());
-
-      
+    	
+    	createBicycleTable();
+    	
+        
+       
+    }
+    
+    public void createBicycleTable(){
+    	table = new JTable();
+    
         //Create a table with a sorter.
-        MyTableModel model = new MyTableModel();
-        sorter = new TableRowSorter<MyTableModel>(model);
-        table = new JTable(model);
+        model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+       
+        sorter = new TableRowSorter<TableModel>(model);
+        table.setModel(model);
         table.setRowSorter(sorter);
         table.setPreferredScrollableViewportSize(new Dimension(500, 200));
         table.setFillsViewportHeight(true);
@@ -40,7 +67,7 @@ public class BicycleTableSorter {
         //For the purposes of this example, better to have a single
         //selection.
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+        
         //When selection changes, provide user with row numbers for
         //both view and model.
         table.getSelectionModel().addListSelectionListener(
@@ -61,11 +88,18 @@ public class BicycleTableSorter {
                     }
                 }
         );
+        addBicyclesFromDB();
+    	
+    	viewBicyclesTable();
+    
 
 
         //Create the scroll pane and add the table to it.
-        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane = new JScrollPane(table);
+        scrollPane.setViewportView(table);
         bicyclePanel.add(scrollPane,BorderLayout.CENTER);
+  
+        
         //add(scrollPane, BorderLayout.CENTER);
 
         //Add the scroll pane to this panel.
@@ -100,15 +134,49 @@ public class BicycleTableSorter {
         //add(form);
         bicyclePanel.add(form,BorderLayout.SOUTH);
         
-       
     }
+    public void addBicyclesFromDB(){
+		
+		database = new Database();
+
+		SystemData symData = new SystemData(database);
+		symData.fillDatabase();
+
+		newArrayList = database.getBicycles();
+		
+	} 
+
+    public void  viewBicyclesTable(){
+		
+		int i = 0;
+		for (Bicycle bicycle : newArrayList) {
+				
+				Object [] row = {bicycle.getClass().getSimpleName(), bicycle.getModel()
+						,bicycle.getColour(),bicycle.getFrameSize() + "",bicycle.getWheelSize() + "", bicycle.getFrameComposition()
+						,bicycle.getCostPrice(),bicycle.getSalePrice()};
+				model.addRow(row);
+				
+				
+		
+		
+			}
+			//table = new JTable(data, columnNames);
+		
+		}
+    
+    public void refresh(){
+    	
+    	table.revalidate();
+    }
+    
+    
 
     /** 
      * Update the row filter regular expression from the expression in
      * the text box.
      */
     private void newFilter() {
-        RowFilter<MyTableModel, Object> rf = null;
+        RowFilter<TableModel, Object> rf = null;
         //If current expression doesn't parse, don't update.
         try {
             rf = RowFilter.regexFilter(filterText.getText(), 0);
@@ -116,60 +184,24 @@ public class BicycleTableSorter {
             return;
         }
         sorter.setRowFilter(rf);
-        
-        
     }
-	public JPanel getBicycleLayoutPane() {
-		return bicyclePanel;
-	}
-	
-
-
-
-
-    class MyTableModel extends AbstractTableModel {
-        private String[] columnNames = {"Model", "Colour", "Frame Size", "Wheel Size", "Frame Composition"};
-        private Object[][] data = new Object [50][50];
-        private ArrayList<Bicycle> newArrayList = new ArrayList<Bicycle>();
-        private Database database;
-
-        public MyTableModel(){
-        	addBicyclesFromDB();
-        	viewBicyclesTable();
-        }
-        public void addBicyclesFromDB(){
-    		
+        
+        
+  
+        
+    	public void addNewBicycle(){
+     		
     		database = new Database();
 
     		SystemData symData = new SystemData(database);
     		symData.fillDatabase();
 
     		newArrayList = database.getBicycles();
-    		
-    	} 
-        public void  viewBicyclesTable(){
-    		
-    		int i = 0;
-    		for (Bicycle bicycle : newArrayList) {
-
-    			if (newArrayList.size() != 0) {
-
-    				data[i][0] = bicycle.getSimpleName();
-    				data[i][1] = bicycle.getColour();
-    				data[i][2] = bicycle.getFrameSize() + "";
-    				data[i][3] = bicycle.getWheelSize() + "";
-    				data[i][4] = bicycle.getFrameComposition();
-    				data[i][5] = bicycle.isInStock();
-    				data[i][6] = bicycle.getCostPrice();
-    				
-    				i++;
-    				//table = new JTable(objs, columnNames);
-    				
-
-    			}
-    			table = new JTable(data, columnNames);
-    		}
-        }
+     		
+     	}
+     	public JPanel getBicycleLayoutPane() {
+     		return bicyclePanel;
+     	}
     
     			
         
@@ -182,13 +214,14 @@ public class BicycleTableSorter {
             return data.length;
         }
 
-        public String getColumnName(int col) {
+        public Object getColumnName(int col) {
             return columnNames[col];
         }
 
         public Object getValueAt(int row, int col) {
             return data[row][col];
         }
+        
 
         /*
          * JTable uses this method to determine the default renderer/
@@ -199,6 +232,7 @@ public class BicycleTableSorter {
         public Class getColumnClass(int c) {
             return getValueAt(0, c).getClass();
         }
+        
 
         /*
          * Don't need to implement this method unless your table's
@@ -214,26 +248,7 @@ public class BicycleTableSorter {
             }
         }
 
-        /*
-         * Don't need to implement this method unless your table's
-         * data can change.
-         */
-        public void setValueAt(Object value, int row, int col) {
-            if (DEBUG) {
-                System.out.println("Setting value at " + row + "," + col
-                                   + " to " + value
-                                   + " (an instance of "
-                                   + value.getClass() + ")");
-            }
-
-            data[row][col] = value;
-            fireTableCellUpdated(row, col);
-
-            if (DEBUG) {
-                System.out.println("New value of data:");
-                printDebugData();
-            }
-        }
+    
 
         private void printDebugData() {
             int numRows = getRowCount();
@@ -248,8 +263,14 @@ public class BicycleTableSorter {
             }
             System.out.println("--------------------------");
         }
+    
+    
+
+ 	
+ 
+ 	
     }
+    
 
 
-}
 
