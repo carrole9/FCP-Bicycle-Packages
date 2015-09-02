@@ -158,7 +158,7 @@ public class OrderFromSupplierCard extends JPanel implements ItemListener {
 			// find out if user pressed process order button
 			if(event.getSource() == btnAddToCart) {
 				// do not attempt to save an order if no product or supplier is present in combo box
-				if(productModelList.getSelectedIndex() > 0 && supplierList.getSelectedIndex() > 0) {
+				if(productModelList.getSelectedIndex() > 0 && productTypeList.getSelectedIndex() > 0) {
 					String productType = (String)productTypeList.getSelectedItem();
 					String supplierChoice = (String)supplierList.getSelectedItem();
 					String model = (String)productModelList.getSelectedItem();
