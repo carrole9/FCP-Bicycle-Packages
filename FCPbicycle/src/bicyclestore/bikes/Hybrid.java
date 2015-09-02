@@ -7,10 +7,10 @@ public class Hybrid extends Bicycle {
 	private int noOfGears;
 	private boolean hasBasket;
 
-	public Hybrid(int noOfGears,String model,String colour,int frameSize,int wheelSize,String frameComposition,Database database,
+	public Hybrid(int noOfGears,String model,String colour,int frameSize,int wheelSize,String frameComposition,
 			double costPrice, double salePrice) {
 
-		super(model,colour, frameSize, wheelSize, frameComposition,database, costPrice, salePrice);
+		super(model,colour, frameSize, wheelSize, frameComposition, costPrice, salePrice);
 		this.noOfGears = noOfGears;
 	}
 

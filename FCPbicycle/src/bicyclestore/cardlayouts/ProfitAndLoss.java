@@ -1,4 +1,4 @@
-package bicyclestore.transaction;
+package bicyclestore.cardlayouts;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,6 +6,8 @@ import java.util.Date;
 
 import bicyclestore.Database;
 import bicyclestore.staff.Employee;
+import bicyclestore.transaction.PurchasingTransaction;
+import bicyclestore.transaction.SalesTransaction;
 
 public class ProfitAndLoss {
 

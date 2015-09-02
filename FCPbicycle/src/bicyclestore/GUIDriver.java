@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
+import bicyclestore.cardlayouts.bicyclelayout.BicycleCardLayout;
 import bicyclestore.cardlayouts.bicyclelayout.BicycleTableSorter;
 import bicyclestore.cardlayouts.customercardlayouts.CustomersCardLayout;
 import bicyclestore.cardlayouts.invoicecardlayouts.InvoiceCardLayout;
@@ -100,8 +101,8 @@ public class GUIDriver extends JFrame{
 		invoicingTab.add(invoiceCard);
 		
 		// add Bicycle card layout to products tab
-		BicycleTableSorter bicycleTableSorter = new BicycleTableSorter();
-		productTab.add(bicycleTableSorter.getBicycleLayoutPane());
+		BicycleCardLayout bicycleCardLayout = new BicycleCardLayout(database);
+		productTab.add(bicycleCardLayout);
 		
 		tabbedPane.add("Customers", customerTab);
 		tabbedPane.add("Products", productTab);
@@ -144,8 +145,8 @@ public class GUIDriver extends JFrame{
 		profitAndLossTab.add(profitAndLossCard.getStockControlCardLayout());
 		
 		// add Bicycle card layout to products tab
-		BicycleTableSorter bicycleTableSorter = new BicycleTableSorter();
-		productTab.add(bicycleTableSorter.getBicycleLayoutPane());
+			BicycleCardLayout bicycleCardLayout = new BicycleCardLayout(database);
+			productTab.add(bicycleCardLayout);
 		
 		tabbedPane.add("Customers", customerTab);
 		tabbedPane.add("Products", productTab);

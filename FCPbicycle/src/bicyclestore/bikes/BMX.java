@@ -6,10 +6,10 @@ public class BMX extends Bicycle {
 
 	private boolean hasStuntPegs;
 	
-	public BMX(String colour,String model,int frameSize,int wheelSize,String frameComposition,Database database,
+	public BMX(String colour,String model,int frameSize,int wheelSize,String frameComposition,
 			double costPrice, double salePrice) {
 
-		super(model,colour, frameSize, wheelSize, frameComposition,database, costPrice, salePrice);
+		super(model,colour, frameSize, wheelSize, frameComposition,costPrice, salePrice);
 		
 	}
 

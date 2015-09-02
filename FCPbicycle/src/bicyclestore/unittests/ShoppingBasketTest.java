@@ -19,8 +19,8 @@ public class ShoppingBasketTest {
 	@Test
 	public void testRemoveInt() {
 		ShoppingBasket basket = new ShoppingBasket();
-		basket.add(new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", database, 480, 649));
-		basket.add(new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", database, 170, 300));
+		basket.add(new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", 480, 649));
+		basket.add(new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", 170, 300));
 		
 		assertEquals(2, basket.getQuantity());
 		basket.remove(0);
@@ -30,8 +30,8 @@ public class ShoppingBasketTest {
 	@Test
 	public void testRemoveBicycle() {
 		ShoppingBasket basket = new ShoppingBasket();
-		Bicycle bike1 = new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", database, 480, 649);
-		Bicycle bike2 = new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", database, 170, 300);
+		Bicycle bike1 = new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", 480, 649);
+		Bicycle bike2 = new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", 170, 300);
 		basket.add(bike1);
 		basket.add(bike2);
 		
@@ -43,8 +43,8 @@ public class ShoppingBasketTest {
 	@Test
 	public void testRemoveAll() {
 		ShoppingBasket basket = new ShoppingBasket();
-		basket.add(new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", database, 480, 649));
-		basket.add(new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", database, 170, 300));
+		basket.add(new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", 480, 649));
+		basket.add(new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", 170, 300));
 		
 		assertEquals(2, basket.getQuantity());
 		basket.removeAll();
@@ -54,8 +54,8 @@ public class ShoppingBasketTest {
 	@Test
 	public void testGetTotalCostValue() {
 		ShoppingBasket basket = new ShoppingBasket();
-		basket.add(new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", database, 480, 649));
-		basket.add(new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", database, 170, 300));
+		basket.add(new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", 480, 649));
+		basket.add(new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", 170, 300));
 		
 		assertEquals(650, basket.getTotalCostValue(), DELTA);
 		
@@ -68,8 +68,8 @@ public class ShoppingBasketTest {
 	@Test
 	public void testGetTotalSaleValue() {
 		ShoppingBasket basket = new ShoppingBasket();
-		basket.add(new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", database, 480, 649));
-		basket.add(new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", database, 170, 300));
+		basket.add(new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", 480, 649));
+		basket.add(new BMX("Black", "Giant GFR", 20, 20, "High Tensile Steel", 170, 300));
 		
 		assertEquals(949, basket.getTotalSaleValue(), DELTA);
 		

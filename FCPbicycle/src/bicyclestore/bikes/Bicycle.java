@@ -15,7 +15,7 @@ public class Bicycle {
 	private double costPrice;
 	private double salePrice;
 	
-	public Bicycle(String model,String colour,int frameSize,int wheelSize,String frameComposition,Database database,
+	public Bicycle(String model,String colour,int frameSize,int wheelSize,String frameComposition,
 			double costPrice, double salePrice) {
 		
 		this.model = model;

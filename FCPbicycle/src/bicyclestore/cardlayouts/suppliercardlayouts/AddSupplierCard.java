@@ -255,27 +255,27 @@ public class AddSupplierCard extends JPanel {
 		switch(combo.getSelectedItem().toString()) {
 			case "BMX":
 				bike = new BMX(txtColour.getText(), txtModel.getText(), frameSize, wheelSize, txtFrameComposition.getText(),
-						database, costPrice, salePrice);
+						costPrice, salePrice);
 				break;
 			case "Road Bike":
 				bike = new RoadBike(numGears, txtModel.getText(), txtColour.getText(), frameSize, wheelSize,
-						txtFrameComposition.getText(), database, costPrice, salePrice);
+						txtFrameComposition.getText(), costPrice, salePrice);
 				break;
 			case "Mountain Bike":
 				bike = new MountainBike(numGears, txtModel.getText(), txtColour.getText(), frameSize, wheelSize,
-						txtFrameComposition.getText(), database, costPrice, salePrice);
+						txtFrameComposition.getText(), costPrice, salePrice);
 				break;
 			case "Hybrid":
 				bike = new Hybrid(numGears, txtModel.getText(), txtColour.getText(), frameSize, wheelSize,
-						txtFrameComposition.getText(), database, costPrice, salePrice);
+						txtFrameComposition.getText(), costPrice, salePrice);
 				break;
 			case "Cruiser":
 				bike = new Cruiser(txtColour.getText(), txtModel.getText(), frameSize, wheelSize,
-						txtFrameComposition.getText(), database, costPrice, salePrice);
+						txtFrameComposition.getText(), costPrice, salePrice);
 				break;
 			case "Motorised Bike":
 				bike = new MotorisedBike(txtModel.getText(), txtColour.getText(), frameSize, wheelSize,
-						txtFrameComposition.getText(), database, costPrice, salePrice);
+						txtFrameComposition.getText(), costPrice, salePrice);
 				break;
 			default:
 				bike = null;

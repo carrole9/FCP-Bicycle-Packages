@@ -6,11 +6,11 @@ public class RoadBike extends Bicycle  {
 
 	int numberOfGears;
 	
-	public RoadBike(int numberOfGears,String model,String colour,int frameSize,int wheelSize,String frameComposition,Database database,
+	public RoadBike(int numberOfGears,String model,String colour,int frameSize,int wheelSize,String frameComposition,
 			double costPrice, double salePrice)  {
 
 		
-		super(model,colour, frameSize, wheelSize, frameComposition, database, costPrice, salePrice);
+		super(model,colour, frameSize, wheelSize, frameComposition, costPrice, salePrice);
 		
 		this.numberOfGears = numberOfGears;
 	}
