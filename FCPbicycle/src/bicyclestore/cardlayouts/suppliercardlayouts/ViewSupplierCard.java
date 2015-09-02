@@ -6,17 +6,21 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 import bicyclestore.Database;
+import bicyclestore.bikes.Bicycle;
 import bicyclestore.suppliers.Supplier;
 
 public class ViewSupplierCard extends JPanel implements ListSelectionListener {
@@ -28,12 +32,17 @@ public class ViewSupplierCard extends JPanel implements ListSelectionListener {
 	private DefaultListModel<String> listModel;
 	private JScrollPane listScrollPane;
 	private JPanel supplierDetails;
+	
+	private JTable productDetailsTable;
+	private Box supplierDetailsBox;
+	private DefaultTableModel productsTableModel;
+	private JScrollPane tableScrollPane;
 
 	private Database database;
 	
 	// labels to store supplier details
-	private JLabel idLabel, nameLabel, addressLabel, typeOfProductLabel, phoneNumLabel, emailLabel, supplierID,
-						supplierName, supplierAddress, supplierTypeOfProduct, supplierPhoneNum, supplierEmail;
+	private JLabel idLabel, nameLabel, addressLabel, phoneNumLabel, emailLabel, supplierID,
+						supplierName, supplierAddress, supplierPhoneNum, supplierEmail;
 	
 	public ViewSupplierCard(Database database) {
 		this.database = database;
@@ -76,10 +85,12 @@ public class ViewSupplierCard extends JPanel implements ListSelectionListener {
 			setSupplierDetailsContent();
 		
 		add(listScrollPane, BorderLayout.WEST);
-		add(supplierDetails, BorderLayout.CENTER);
+		add(supplierDetailsBox, BorderLayout.CENTER);
 	}
 	
 	private void setUpSupplierDetailsPane() {
+		supplierDetailsBox = Box.createVerticalBox();
+		
 		// set titled border on panel
 		GridLayout detailsGrid = new GridLayout(6,2);
 		detailsGrid.setVgap(5);
@@ -88,13 +99,19 @@ public class ViewSupplierCard extends JPanel implements ListSelectionListener {
 		TitledBorder detailsBorder = BorderFactory.createTitledBorder("Supplier Details");
 		detailsBorder.setTitleJustification(TitledBorder.CENTER);
 		supplierDetails.setBorder(detailsBorder);
+		
+		createProductDetailsTable();
+		
+		supplierDetailsBox.add(supplierDetails);
+		supplierDetailsBox.add(tableScrollPane);
+		
+		
 	}
 	
 	private void setUpLabels() {
 		idLabel = new JLabel("Supplier ID:", JLabel.CENTER);
 		nameLabel = new JLabel("Supplier Name:", JLabel.CENTER);
 		addressLabel = new JLabel("Supplier Address:", JLabel.CENTER);
-		typeOfProductLabel = new JLabel("Supplier Product:", JLabel.CENTER);
 		phoneNumLabel = new JLabel("Supplier Phone:", JLabel.CENTER);
 		emailLabel = new JLabel("Supplier Email:", JLabel.CENTER);
 		
@@ -110,10 +127,6 @@ public class ViewSupplierCard extends JPanel implements ListSelectionListener {
 		addressLabel.setForeground(Color.WHITE);
 		addressLabel.setOpaque(true);
 		
-		typeOfProductLabel.setBackground(new Color(107,106,104));
-		typeOfProductLabel.setForeground(Color.WHITE);
-		typeOfProductLabel.setOpaque(true);
-		
 		phoneNumLabel.setBackground(new Color(107,106,104));
 		phoneNumLabel.setForeground(Color.WHITE);
 		phoneNumLabel.setOpaque(true);
@@ -125,7 +138,6 @@ public class ViewSupplierCard extends JPanel implements ListSelectionListener {
 		supplierID = new JLabel("", JLabel.CENTER);
 		supplierName = new JLabel("", JLabel.CENTER);
 		supplierAddress = new JLabel("", JLabel.CENTER);
-		supplierTypeOfProduct = new JLabel("", JLabel.CENTER);
 		supplierPhoneNum = new JLabel("", JLabel.CENTER);
 		supplierEmail = new JLabel("", JLabel.CENTER);
 		
@@ -137,9 +149,6 @@ public class ViewSupplierCard extends JPanel implements ListSelectionListener {
 		
 		supplierAddress.setBackground(Color.LIGHT_GRAY);
 		supplierAddress.setOpaque(true);
-		
-		supplierTypeOfProduct.setBackground(Color.LIGHT_GRAY);
-		supplierTypeOfProduct.setOpaque(true);
 		
 		supplierPhoneNum.setBackground(Color.LIGHT_GRAY);
 		supplierPhoneNum.setOpaque(true);
@@ -154,8 +163,6 @@ public class ViewSupplierCard extends JPanel implements ListSelectionListener {
 		supplierDetails.add(supplierName);
 		supplierDetails.add(addressLabel);
 		supplierDetails.add(supplierAddress);
-		supplierDetails.add(typeOfProductLabel);
-		supplierDetails.add(supplierTypeOfProduct);
 		supplierDetails.add(phoneNumLabel);
 		supplierDetails.add(supplierPhoneNum);
 		supplierDetails.add(emailLabel);
@@ -163,20 +170,65 @@ public class ViewSupplierCard extends JPanel implements ListSelectionListener {
 	}
 	
 	private void setSupplierDetailsContent() {
-		// get customer at selected index
+		// get supplier at selected index
 		Supplier supplier = database.getSupplier(supplierList.getSelectedValue());
 		supplierID.setText(supplier.getSupplierID()+"");
 		supplierName.setText(supplier.getName());
 		supplierAddress.setText(supplier.getAddress());
 		supplierPhoneNum.setText(supplier.getPhoneNum());
 		supplierEmail.setText(supplier.getEmail());
+		
+		addProductDetailsContent(supplier);
 	}
+	
+	private void createProductDetailsTable() {
+		// set up scroll pane and border for products table
+		tableScrollPane = new JScrollPane();
+		TitledBorder border = BorderFactory.createTitledBorder("Products");
+		border.setTitleJustification(TitledBorder.CENTER);
+		tableScrollPane.setBorder(border);
+		
+		Object[] colNames = {"Product Type","Model","Cost"};
+		productsTableModel = new DefaultTableModel();
+		
+		// set up table and make sure cells can not be edited by user
+		productDetailsTable = new JTable() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		productsTableModel.setColumnIdentifiers(colNames);
+		
+		productDetailsTable.setModel(productsTableModel);
+		productDetailsTable.setFillsViewportHeight(true);
+		productDetailsTable.setPreferredScrollableViewportSize(new Dimension(600,100));
+		
+		tableScrollPane.setViewportView(productDetailsTable);
+	}
+	
+	private void addProductDetailsContent(Supplier supplier) {
+		// remove any suppliers already on table
+		for(int i = productsTableModel.getRowCount()-1; i >= 0; i--) {
+			productsTableModel.removeRow(i);
+		}
+		// add all product details from supplier
+		for(Bicycle bike : supplier.getProducts()) {
+			Object[] row = {splitCamelCase(bike.getClass().getSimpleName()), bike.getModel(), bike.getCostPrice()};
+			productsTableModel.addRow(row);
+		}
+	}
+	
+	// separate words contained in camelCase. E.g class name "RoadBike" will become "Road Bike"
+		private String splitCamelCase(String s) {
+			return s.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])",
+					"(?<=[A-Za-z])(?=[^A-Za-z])"), " ");
+		}
 	
 	private void emptySupplierDetailFields() {
 		supplierID.setText("");
 		supplierName.setText("");
 		supplierAddress.setText("");
-		supplierTypeOfProduct.setText("");
 		supplierPhoneNum.setText("");
 		supplierEmail.setText("");
 	}
