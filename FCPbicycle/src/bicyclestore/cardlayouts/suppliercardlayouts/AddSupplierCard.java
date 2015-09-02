@@ -122,7 +122,7 @@ public class AddSupplierCard extends JPanel {
 	private void createProductDetailsTable() {
 		// set up scroll pane and border for products table
 		tableScrollPane = new JScrollPane();
-		TitledBorder border = BorderFactory.createTitledBorder("Products supplier sells");
+		TitledBorder border = BorderFactory.createTitledBorder("Products");
 		border.setTitleJustification(TitledBorder.CENTER);
 		tableScrollPane.setBorder(border);
 		
@@ -167,7 +167,7 @@ public class AddSupplierCard extends JPanel {
 	private void displayAddProductForm() {
         JPanel panel = setUpDialogPanel();
         
-        int result = JOptionPane.showConfirmDialog(null, panel, "Enter bicycle details",
+        int result = JOptionPane.showConfirmDialog(null, panel, "Enter Bicycle Details",
             JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         
         if (result == JOptionPane.OK_OPTION) {
@@ -191,9 +191,7 @@ public class AddSupplierCard extends JPanel {
 	        		System.out.println("Bike is null");
         	}
 			
-        } else {
-            System.out.println("Cancelled");
-        }
+        } 
     }
 	
 	private JPanel setUpDialogPanel() {
@@ -222,13 +220,13 @@ public class AddSupplierCard extends JPanel {
 		panel.add(txtFrameSize);
 		panel.add(new JLabel("Wheel size:"));
 		panel.add(txtWheelSize);
-		panel.add(new JLabel("FrameComposition:"));
+		panel.add(new JLabel("Frame Composition:"));
 		panel.add(txtFrameComposition);
-		panel.add(new JLabel("CostPrice:"));
+		panel.add(new JLabel("Cost Price:"));
 		panel.add(txtCostPrice);
 		panel.add(new JLabel("RRP:"));
 		panel.add(txtSalePrice);
-		panel.add(new JLabel("Number of gears"));
+		panel.add(new JLabel("Number of gears:"));
 		panel.add(txtNumGears);
 		
 		return panel;
@@ -336,7 +334,7 @@ public class AddSupplierCard extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			// if user pressed the add supplier button check fields are complete and attempt to add supplier
 			if (e.getSource() == btnAddSupplier) {
-				// get customer details from text fields
+				// get supplier details from text fields
 				String supId = txtID.getText();
 				String supName = txtName.getText();
 				String supAddress = txtAddress.getText();
