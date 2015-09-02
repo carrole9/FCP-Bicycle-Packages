@@ -125,6 +125,7 @@ public class AddBicycles extends JPanel  {
 				doubleSalePrice = Double.parseDouble(salePrice);
 				
 				
+				
 				// check if any text fields have been left blank and output error message if true
 				if(type.length() == 0 || model.length() == 0 || colour.length() == 0 
 						|| frameSize.length() == 0 || wheelSize.length() == 0 || frameComposition.length() == 0 || costPrice.length() == 0 || salePrice.length() == 0 ) {
