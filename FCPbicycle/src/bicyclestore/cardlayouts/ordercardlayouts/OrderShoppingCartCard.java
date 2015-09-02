@@ -38,7 +38,7 @@ public class OrderShoppingCartCard extends JPanel {
 	private OrdersCardLayout cardLayout;
 	private OrderFromSupplierCard orderCard;
 	
-	private JButton btnProcessOrder, btnReturnOrder;
+	private JButton btnProcessOrder, btnReturnOrder, btnDiscardOrder;
 	
 	private Box buttonPane;
 	
@@ -114,11 +114,16 @@ public class OrderShoppingCartCard extends JPanel {
 		btnProcessOrder = new JButton("Process Order");
 		btnProcessOrder.addActionListener(new ButtonListener());
 		
+		btnDiscardOrder = new JButton("Discard Order");
+		btnDiscardOrder.addActionListener(new ButtonListener());
+		
 		buttonPane = Box.createHorizontalBox();
 		buttonPane.setBorder(new EmptyBorder(20,20,20,20));
 		
 		buttonPane.add(Box.createHorizontalGlue());
 		buttonPane.add(btnProcessOrder);
+		buttonPane.add(Box.createHorizontalStrut(10));
+		buttonPane.add(btnDiscardOrder);
 		buttonPane.add(Box.createHorizontalStrut(10));
 		buttonPane.add(btnReturnOrder);
 		buttonPane.add(Box.createHorizontalGlue());
@@ -214,6 +219,11 @@ public class OrderShoppingCartCard extends JPanel {
 				else {
 					createPurchasingTransaction();
 				}
+			}
+			
+			if(event.getSource() == btnDiscardOrder) {
+				// remove all items from shopping basket and clear table
+				resetFields();
 			}
 			
 			if(event.getSource() == btnEditId) {
