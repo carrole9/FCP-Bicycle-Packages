@@ -112,8 +112,8 @@ public class SystemData {
 		// create Road bikes
 		database.addBicycle(new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", 480, 649));
 		database.addBicycle(new RoadBike(11, "Cannondale CAAD10", "Black", 56, 700, "SmartFormed 6069 Alloy", 1350, 1845));
-		database.addBicycle(new RoadBike(20, "Giant Anyroad 1", "Black", 60, 700, "ALUXX-Grade Aluminum", 1249, 800));
-		database.addBicycle(new RoadBike(22, "Lapierre Aircode 300", "Black", 58, 700, "AIRCODE CARBON", 2949, 1850));
+		database.addBicycle(new RoadBike(20, "Giant Anyroad 1", "Black", 60, 700, "ALUXX-Grade Aluminum", 800, 1249));
+		database.addBicycle(new RoadBike(22, "Lapierre Aircode 300", "Black", 58, 700, "AIRCODE CARBON", 1850, 2949));
 		database.addBicycle(new RoadBike(21, "Raleigh", "White", 54, 700, "Steel", 500, 999.99));
 		
 		// create Hybrid bikes
@@ -146,7 +146,7 @@ public class SystemData {
 		basket1.add(new MountainBike(27, "VooDoo Aizan 29er", "Black", 29, 29, "6061 Aluminium", 400, 565.95));
 		basket1.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", 300, 479.95));
 		basket1.add(new MotorisedBike("EBCO UCL30 Electric", "Black", 21, 26, "Aluminium", 480, 699.99));
-		basket1.add(new RoadBike(22, "Lapierre Aircode 300", "Black", 58, 700, "AIRCODE CARBON", 2949, 1850));
+		basket1.add(new RoadBike(22, "Lapierre Aircode 300", "Black", 58, 700, "AIRCODE CARBON", 1850, 2949));
 		basket1.add(new MountainBike(24, "Cannondale Tango 7", "Black", 29, 27, "Optimized 6061 alloy", 350, 640));
 		basket1.add(new Cruiser("Blue", " Kent Bay Breeze", 15, 26, "Steel", 120, 200));
 		basket2.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", 300, 479.95));
