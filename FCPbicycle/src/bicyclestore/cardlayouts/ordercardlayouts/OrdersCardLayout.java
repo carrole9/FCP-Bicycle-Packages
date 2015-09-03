@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import bicyclestore.Database;
+import bicyclestore.cardlayouts.profitandlosscardlayout.ProfitAndLossCard;
 import bicyclestore.staff.Employee;
-import bicyclestore.transaction.ShoppingBasket;
 
 @SuppressWarnings("serial")
 public class OrdersCardLayout extends JPanel implements ItemListener {
@@ -37,10 +37,13 @@ public class OrdersCardLayout extends JPanel implements ItemListener {
 	private ViewOldOrdersCard viewOldOrdersCard;
 	private DeliveryDatesCard deliveryDatesCard;
 	private ViewOrderCostsCard viewCostsCard;
+	
+	private ProfitAndLossCard profitAndLossCard;
 
-	public OrdersCardLayout(Database database, Employee employee) {
+	public OrdersCardLayout(Database database, Employee employee, ProfitAndLossCard profitAndLossCard) {
 		this.database = database;
 		this.employee = employee;
+		this.profitAndLossCard = profitAndLossCard;
 		createCardLayoutPane();
 	}
 	
@@ -50,7 +53,7 @@ public class OrdersCardLayout extends JPanel implements ItemListener {
 		createComboBoxPane();
 		cards = new JPanel(new CardLayout());
 		
-		orderSupplierCard = new OrderFromSupplierCard(database, employee, this);
+		orderSupplierCard = new OrderFromSupplierCard(database, employee, this, profitAndLossCard);
 		viewOrdersCard = new ViewOrdersCard(database);
 		viewOldOrdersCard = new ViewOldOrdersCard(database);
 		deliveryDatesCard = new DeliveryDatesCard(database);

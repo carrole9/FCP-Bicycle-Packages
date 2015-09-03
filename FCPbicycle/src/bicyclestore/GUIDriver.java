@@ -120,12 +120,16 @@ public class GUIDriver extends JFrame{
 		JPanel profitAndLossTab = new JPanel();
 		JPanel stockTab = new JPanel();
 		
+		// add profit and loss card layout to profit and loss tab
+		ProfitAndLossCard profitAndLossCard = new ProfitAndLossCard(database);
+		profitAndLossTab.add(profitAndLossCard.getStockControlCardLayout());
+		
 		// add customer card layout to customer tab
 		CustomersCardLayout customersLayout = new CustomersCardLayout(database);
 		customerTab.add(customersLayout.getCardLayoutPane());
 		
 		// add orders card layout to orders tab 
-		OrdersCardLayout ordersLayout = new OrdersCardLayout(database, employee); 
+		OrdersCardLayout ordersLayout = new OrdersCardLayout(database, employee, profitAndLossCard); 
 		orderingTab.add(ordersLayout); 
 		
 		// add stock control layout to stock control tab
@@ -139,10 +143,6 @@ public class GUIDriver extends JFrame{
 		// add invoicing card layout to invoicing tab
 		InvoiceCardLayout invoiceCard = new InvoiceCardLayout(database, employee);
 		invoicingTab.add(invoiceCard);
-		
-		// add profit and loss card layout to profit and loss tab
-		ProfitAndLossCard profitAndLossCard = new ProfitAndLossCard(database);
-		profitAndLossTab.add(profitAndLossCard.getStockControlCardLayout());
 		
 		// add Bicycle card layout to products tab
 			BicycleCardLayout bicycleCardLayout = new BicycleCardLayout(database);

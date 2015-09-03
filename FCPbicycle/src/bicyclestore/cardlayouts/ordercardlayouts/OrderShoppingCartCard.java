@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 
 import bicyclestore.Database;
 import bicyclestore.bikes.Bicycle;
+import bicyclestore.cardlayouts.profitandlosscardlayout.ProfitAndLossCard;
 import bicyclestore.staff.Employee;
 import bicyclestore.suppliers.Supplier;
 import bicyclestore.transaction.PurchasingTransaction;
@@ -54,11 +55,11 @@ public class OrderShoppingCartCard extends JPanel {
 	private ProfitAndLossCard profitAndLoss;
 
 	public OrderShoppingCartCard(Database database, Employee employee, OrdersCardLayout cardLayout,
-			JButton btnReturnOrder, OrderFromSupplierCard orderCard) {
+			JButton btnReturnOrder, OrderFromSupplierCard orderCard, ProfitAndLossCard profitAndLossCard) {
 		this.database = database;
 		this.employee = employee;
 		basket = new ShoppingBasket();
-		profitAndLoss=new ProfitAndLossCard(database);
+		this.profitAndLoss = profitAndLossCard;
 		this.cardLayout = cardLayout;
 		this.btnReturnOrder = btnReturnOrder;
 		this.orderCard = orderCard;
@@ -172,6 +173,7 @@ public class OrderShoppingCartCard extends JPanel {
 		resetFields();
 		
 		cardLayout.newOrderAdded(transactionId);
+		profitAndLoss.orderAdded(); 
 	}
 	
 	private Date getDeliveryDate(Date current, int deliveryDays) {
@@ -192,7 +194,7 @@ public class OrderShoppingCartCard extends JPanel {
 			tableModel.removeRow(i);
 		}
 		// reset product type options to remove limit to supplier
-		orderCard.setProductTypeOptions(); 
+		orderCard.setProductTypeOptions();
 	}
 	
 	private double calculateCost() {
@@ -220,7 +222,6 @@ public class OrderShoppingCartCard extends JPanel {
 				}
 				else {
 					createPurchasingTransaction();
-					profitAndLoss.orderAdded();
 				}
 			}
 			

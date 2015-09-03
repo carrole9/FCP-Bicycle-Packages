@@ -28,6 +28,7 @@ import javax.swing.border.TitledBorder;
 import bicyclestore.Database;
 import bicyclestore.Utilities;
 import bicyclestore.bikes.Bicycle;
+import bicyclestore.cardlayouts.profitandlosscardlayout.ProfitAndLossCard;
 import bicyclestore.staff.Employee;
 import bicyclestore.suppliers.Supplier;
 
@@ -42,6 +43,8 @@ public class OrderFromSupplierCard extends JPanel implements ItemListener {
 	
 	private OrderShoppingCartCard shoppingCartCard;
 	
+	private ProfitAndLossCard profitAndLossCard;
+	
 	private JPanel cards;
 	
 	private JButton btnAddToCart, btnViewCart, btnBackToOrder;
@@ -53,10 +56,12 @@ public class OrderFromSupplierCard extends JPanel implements ItemListener {
 	private SpinnerNumberModel numberModel;
 	private JSpinner quantitySpinner;
 	
-	public OrderFromSupplierCard(Database database, Employee employee, OrdersCardLayout cardLayout) {
+	public OrderFromSupplierCard(Database database, Employee employee, OrdersCardLayout cardLayout,
+			ProfitAndLossCard profitAndLossCard) {
 		this.database = database;
 		this.employee = employee;
 		this.cardLayout = cardLayout;
+		this.profitAndLossCard = profitAndLossCard;
 
 		createCardLayoutPane();
 		
@@ -69,7 +74,8 @@ public class OrderFromSupplierCard extends JPanel implements ItemListener {
 		
 		cards = new JPanel(new CardLayout());
 		
-		shoppingCartCard = new OrderShoppingCartCard(database, employee, cardLayout, btnBackToOrder, this);
+		shoppingCartCard = new OrderShoppingCartCard(database, employee, cardLayout, btnBackToOrder,
+				this, profitAndLossCard);
 		
 		JPanel card1 = productDetailsCard();
 		JPanel card2 = shoppingCartCard;
