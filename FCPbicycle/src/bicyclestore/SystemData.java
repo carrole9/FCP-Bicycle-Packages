@@ -114,6 +114,7 @@ public class SystemData {
 		database.addBicycle(new RoadBike(11, "Cannondale CAAD10", "Black", 56, 700, "SmartFormed 6069 Alloy", 1350, 1845));
 		database.addBicycle(new RoadBike(20, "Giant Anyroad 1", "Black", 60, 700, "ALUXX-Grade Aluminum", 1249, 800));
 		database.addBicycle(new RoadBike(22, "Lapierre Aircode 300", "Black", 58, 700, "AIRCODE CARBON", 2949, 1850));
+		database.addBicycle(new RoadBike(21, "Raleigh", "White", 54, 700, "Steel", 500, 999.99));
 		
 		// create Hybrid bikes
 		database.addBicycle(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", 300, 479.95));
