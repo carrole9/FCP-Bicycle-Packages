@@ -258,13 +258,47 @@ public class SystemData {
 	}
 
 	private void createSalesTransaction() {
-		ShoppingBasket basket = new ShoppingBasket();
-		basket.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", 300, 479.95));
-		basket.add(new BMX("Blue", "Mongoose Scan R90", 21, 20, "Aluminium", 180, 299.99));
+		ShoppingBasket basket1 = new ShoppingBasket();
+		basket1.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", 300, 479.95));
+		basket1.add(new BMX("Blue", "Mongoose Scan R90", 21, 20, "Aluminium", 180, 299.99));
+		
+		ShoppingBasket basket2 = new ShoppingBasket();
+		basket2.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", 300, 479.95));
+		basket2.add(new BMX("Blue", "Mongoose Scan R90", 21, 20, "Aluminium", 180, 299.99));
+		
+		ShoppingBasket basket3 = new ShoppingBasket();
+		basket3.add(new MotorisedBike("EBCO UCL30 Electric", "Black", 21, 26, "Aluminium", 480, 699.99));
+		basket3.add(new Cruiser("Blue", " Kent Bay Breeze", 15, 26, "Steel", 120, 200));
+		
+		ShoppingBasket basket4 = new ShoppingBasket();
+		basket4.add(new Hybrid(24, "Carrera Subway 1", "Black", 22, 27, "Alloy", 300, 479.95));
+		basket4.add(new MountainBike(30, "Cube LTD Race", "Blue", 20, 29, "Aluminium Lite", 750, 1149));
+		basket4.add(new MotorisedBike("BH Evo City", "White", 28, 700, "Aluminium", 1800, 2650));
+		basket4.add(new Cruiser("Green", "Firmstrong Bella", 26, 26, "Steel", 180, 300));
+		basket4.add(new BMX("Blue", "Social Storm", 21, 20, "CrMo", 400, 630));
 		
 		Date yesterday = new Date(System.currentTimeMillis() - 24*60*60*1000);
-		SalesTransaction firstsale= new SalesTransaction(111, database.getEmployee(10002),database.getCustomer("Tom Smith"),100.99, "Cash", yesterday, basket);
+		SalesTransaction firstsale= new SalesTransaction(111, database.getEmployee(10002),database.getCustomer("Tom Smith"),100.99, "Cash", yesterday, basket1);
 		database.addSalesTransaction(firstsale);
+		
+		Date threeDaysAgo = new Date(System.currentTimeMillis() - 3*24*60*60*1000);
+		SalesTransaction secondSale= new SalesTransaction(112, database.getEmployee(10003),database.getCustomer("John Doe"), basket2.getTotalSaleValue(), "Cash", threeDaysAgo, basket2);
+		database.addSalesTransaction(secondSale);
+		
+		Calendar oneWeekAgo = Calendar.getInstance();
+		oneWeekAgo.set(Calendar.WEEK_OF_YEAR, oneWeekAgo.get(Calendar.WEEK_OF_YEAR)-1);
+		database.addSalesTransaction(new SalesTransaction(113, database.getEmployee(10001),
+				database.getCustomer("Patrick Dunne"), basket3.getTotalSaleValue(), "Cash", oneWeekAgo.getTime(), basket3));
+		
+		Calendar twoWeeksAgo = Calendar.getInstance();
+		oneWeekAgo.set(Calendar.WEEK_OF_YEAR, twoWeeksAgo.get(Calendar.WEEK_OF_YEAR)-2);
+		database.addSalesTransaction(new SalesTransaction(114, database.getEmployee(10001),
+				database.getCustomer("Freddy Mercury"), basket4.getTotalSaleValue(), "Cash", twoWeeksAgo.getTime(), basket4));
+		
+		Calendar threeWeeksAgo = Calendar.getInstance();
+		oneWeekAgo.set(Calendar.WEEK_OF_YEAR, threeWeeksAgo.get(Calendar.WEEK_OF_YEAR)-3);
+		database.addSalesTransaction(new SalesTransaction(114, database.getEmployee(10001),
+				database.getCustomer("Tom Smith"), basket2.getTotalSaleValue(), "Cash", threeWeeksAgo.getTime(), basket2));
 		
 	}
 
