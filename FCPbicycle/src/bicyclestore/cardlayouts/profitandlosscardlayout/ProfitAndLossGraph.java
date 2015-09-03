@@ -31,12 +31,15 @@ public class ProfitAndLossGraph extends JPanel
     private JPanel labelPanel;
     
     private Database data;
+    private ProfitAndLossGraphIcon graph;
 
     private List<Bar> bars = new ArrayList<Bar>();
 
     public ProfitAndLossGraph(Database data){
     	this.data=data;
+    	//graph= new ProfitAndLossGraphIcon(null, 0, 0, data);
     	setUpGraph();
+    	
     	
     }
     public void setUpGraph(){
@@ -56,6 +59,8 @@ public class ProfitAndLossGraph extends JPanel
 
         add(barPanel, BorderLayout.CENTER);
         add(labelPanel, BorderLayout.PAGE_END);
+        
+        
     }
 
     public void addColumn(String label, double value, Color color)
@@ -133,6 +138,7 @@ public class ProfitAndLossGraph extends JPanel
         private int width;
         private double height;
         private Database data;
+        private ProfitAndLossGraph panel;
 
         public ProfitAndLossGraphIcon(Color color, int width, double barHeight, Database data)
         {
@@ -140,6 +146,7 @@ public class ProfitAndLossGraph extends JPanel
             this.width = width;
             this.height = barHeight;
             this.data=data;
+            panel = new ProfitAndLossGraph(data);
         }
 
         public int getIconWidth()
@@ -165,7 +172,6 @@ public class ProfitAndLossGraph extends JPanel
     public Component createAndShowGUI()
     {   ProfitAndLoss profit = new ProfitAndLoss(data);
     	profit.updateAccounts();
-    	ProfitAndLossGraph panel = new ProfitAndLossGraph(data);
     	DecimalFormat df = new DecimalFormat("0.00");
         double first=(int) Math.round(profit.getTotalExpenditure());
         double second=(int) Math.round(profit.getTotalIncome());
@@ -207,6 +213,15 @@ public class ProfitAndLossGraph extends JPanel
         
         panel.layoutGraph();
 		return panel;	
+    }
+    
+    public void refresh(){
+    	ProfitAndLoss profit = new ProfitAndLoss(data);
+     	profit.updateAccounts();
+     	System.out.println(profit.getOverallBalance());
+    	panel.removeAll();
+    	panel.revalidate();
+    	createAndShowGUI();
     }
 
     }

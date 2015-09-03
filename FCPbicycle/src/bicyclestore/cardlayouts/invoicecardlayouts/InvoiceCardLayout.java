@@ -59,7 +59,7 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 			
 			cards.add(card1, INVOICE_A_CUSTOMER);
 			cards.add(card2, VIEW_INVOICE);
-		//	cards.add(card3, DELETE_INVOICE);
+			cards.add(card3, DELETE_INVOICE);
 			
 			
 			this.add(comboBoxPane, BorderLayout.NORTH);
@@ -98,6 +98,21 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 		public void newInvoiceAdded(int transactionId) {
 			// refresh customer lists
 			viewInvoiceCard.refresh(transactionId);
+			viewInvoiceCard.refreshTable();
+			deleteInvoice.refresh(transactionId);
+		}
+
+		public void InvoiceRemoved(int transactionId) {
+			// refresh customer lists
+			viewInvoiceCard.refreshAndRemove(transactionId);
+			deleteInvoice.refreshAndRemove(transactionId);
+			viewInvoiceCard.refreshTable();
+		}
+		public void ProductRemoved(int id, int row) {
+			// refresh products table
+			viewInvoiceCard.refreshAndRemoveProduct(id, row);
+			deleteInvoice.refreshAndRemove(row);
+			viewInvoiceCard.refreshTable();
 		}
 
 	}

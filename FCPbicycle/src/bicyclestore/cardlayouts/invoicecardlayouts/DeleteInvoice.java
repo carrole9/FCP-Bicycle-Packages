@@ -7,8 +7,10 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
-	import javax.swing.BorderFactory;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -17,15 +19,26 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 	import javax.swing.JScrollPane;
-	import javax.swing.ListSelectionModel;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 	import javax.swing.event.ListSelectionEvent;
 	import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
-	import bicyclestore.Database;
-
+import bicyclestore.Database;
+import bicyclestore.bikes.BMX;
+import bicyclestore.bikes.Bicycle;
+import bicyclestore.bikes.Cruiser;
+import bicyclestore.bikes.Hybrid;
+import bicyclestore.bikes.MotorisedBike;
+import bicyclestore.bikes.MountainBike;
+import bicyclestore.bikes.RoadBike;
+import bicyclestore.customers.Customer;
+import bicyclestore.staff.Employee;
 import bicyclestore.transaction.SalesTransaction;
+import bicyclestore.transaction.ShoppingBasket;
 
 	@SuppressWarnings("serial")
 	public class DeleteInvoice extends JPanel implements ListSelectionListener {
@@ -37,21 +50,38 @@ import bicyclestore.transaction.SalesTransaction;
 		private JScrollPane listScrollPane;
 		private JPanel invoiceDetailsPane;
 		private Box buttonPane;
-		private JButton btnDeleteCustomer;
+		private JButton btnDeleteInvoice,btnDeleteProduct;
+		
+		private ShoppingBasket basket;
+		private Customer customer;
 		
 		private InvoiceCardLayout cardlayout;
 		
 		private JLabel idLabel, employeeLabel, customerLabel, costLabel, paymentMethodLabel, dateLabel,
 							lblTransactionID, lblEmployee, lblCustomer, lblCost, lblPaymentMethod, lblDate;
 		
+		private DefaultTableModel tableModel;
+		private JTable invoiceDetailsTable;
+		private static final String[] TABLE_COLS = {"Product Type","Model","Colour","Price"};
+		private String productType;
+		private Bicycle bicycle;
+		private int quantity;
+		
+		
 		public DeleteInvoice(Database database,InvoiceCardLayout cardlayout) {
+			basket = new ShoppingBasket();
 			this.database = database;
 			this.cardlayout=cardlayout;
 			setUpinvoiceList();
 			createViewOrderCard();
 			setUpButtonPane();
 			
+
+			
 			add(buttonPane, BorderLayout.SOUTH);
+			
+			setUpTable();
+			this.add(new JScrollPane(invoiceDetailsTable),BorderLayout.EAST);
 		}
 		
 		private void setUpinvoiceList() {
@@ -179,46 +209,35 @@ import bicyclestore.transaction.SalesTransaction;
 			buttonPane = Box.createHorizontalBox();
 			
 			
-			btnDeleteCustomer = new JButton("Delete Customer");
-			
+			btnDeleteInvoice = new JButton("Delete Invoice");
+			btnDeleteProduct = new JButton("Delete Product from Invoice");
 			
 		    buttonPane.add(Box.createHorizontalStrut(10));
-		    buttonPane.add(btnDeleteCustomer);
+		    buttonPane.add(btnDeleteInvoice);
+		    buttonPane.add(Box.createHorizontalGlue());
+		    
+		    buttonPane.add(Box.createHorizontalStrut(10));
+		    buttonPane.add(btnDeleteProduct);
 		    buttonPane.add(Box.createHorizontalGlue());
 		    
 		    buttonPane.setBorder(new EmptyBorder(20,20,20,20));
 		    
 		
-			btnDeleteCustomer.addActionListener(new ButtonClickListener());
+			btnDeleteInvoice.addActionListener(new ButtonClickListener());
+			btnDeleteProduct.addActionListener(new ButtonClickListener());
 			
 			
 		}
 		
-		private void emptyOrderDetailFields() {
-			lblTransactionID.setText("");
-			lblEmployee.setText("");
-			lblCustomer.setText("");
-			lblCost.setText("");
-			lblPaymentMethod.setText("");
-			lblDate.setText("");
-		}
+	
 		
-		@Override
-		public void valueChanged(ListSelectionEvent arg0) {
-			// if list still contains entries reset selection and display content
-			if(!listModel.isEmpty()) {
-				if(invoiceList.isSelectionEmpty())
-					invoiceList.setSelectedIndex(0);
-				setOrderDetailsContent();	
-			}
-			// if list empty reset fields to blank
-			else
-				emptyOrderDetailFields();
-		}
+
 		
 		public void refresh(int newTransactionID) {
 			listModel.addElement(newTransactionID+"");
 		}
+		
+		
 		
 		public void customerDetailsEdited(String oldID, String newID) {
 			listModel.setElementAt(oldID+"", listModel.indexOf(newID));
@@ -227,6 +246,8 @@ import bicyclestore.transaction.SalesTransaction;
 		}
 		
 		public void customerDeleted(String transactionID) {
+			emptyInvoiceTable();
+			emptyDetailsTable();
 			listModel.removeElement(transactionID);
 			String currentId = lblTransactionID.getText();
 			if(currentId == transactionID) {
@@ -234,30 +255,152 @@ import bicyclestore.transaction.SalesTransaction;
 			}
 		}
 		
-		private void deleteSelectedCustomer() {
-			int value = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected customer?",
-					"Warning, Customer will be removed from system", JOptionPane.YES_NO_OPTION);
+		private void deleteSelectedInvoice() {
+			int value = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected invoice?",
+					"Warning, Invoice will be removed from system", JOptionPane.YES_NO_OPTION);
 			
 			if(value == JOptionPane.YES_OPTION) {
 				// if the customer selected yes, delete the customer
 				String customerName = invoiceList.getSelectedValue();
 				database.removeSalesTransaction(database.getSalesTransaction(Integer.parseInt(customerName)));
 				listModel.removeElement(customerName);
-				cardlayout.customerDeleted(customerName);
+	            // remove selected row from the model
+	            //tableModel.removeRow(invoiceDetailsTable.getSelectedRow());}
+				int id= Integer.parseInt(customerName);
+				cardlayout.InvoiceRemoved(id);
+			}}
+		
+		
+		private void deleteSelectedProduct() {
+			
+			int value = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected product from the invoice?",
+					"Warning, Product will be removed from invoice", JOptionPane.YES_NO_OPTION);
+			List<String> colValues = new ArrayList<String>();
+			colValues.add((String) invoiceDetailsTable.getValueAt(invoiceDetailsTable.getSelectedRow(), 1));
+			if(value == JOptionPane.YES_OPTION) {
+			if (invoiceDetailsTable.getSelectedRow() != -1) {
+	            // remove selected row from the model
+	            tableModel.removeRow(invoiceDetailsTable.getSelectedRow());
+	            
 			}
+			int id = invoiceList.getSelectedIndex();
+			System.out.println(id);
+			//int iD = Integer.parseInt(id);
+			int row=invoiceDetailsTable.getSelectedRowCount();
+			System.out.println(row);
+			String bikeModel =colValues.toString();
+			bikeModel =bikeModel.replace("[", "");
+			bikeModel = bikeModel.replace("]", "");
+			//System.out.println(bikeModel);
+			Bicycle mybike;
+			mybike=database.getBicycle(bikeModel);
+			database.addBicycle(mybike);
+			
+			cardlayout.ProductRemoved(id,row);
+			}		
+		
+		}
+	
+		
+	
+		
+		
+		
+		
+		
+		
+			private void setUpTable() {
+				tableModel = new DefaultTableModel();
+				tableModel.setColumnIdentifiers(TABLE_COLS);
+				invoiceDetailsTable = new JTable(tableModel);
+				invoiceDetailsTable.setFillsViewportHeight(true);
+				invoiceDetailsTable.setPreferredScrollableViewportSize(new Dimension(600,150));
+			
 		}
 		
 		private class ButtonClickListener implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(e.getSource() == btnDeleteCustomer) {
+				if(e.getSource() == btnDeleteInvoice) {
 					if(!listModel.isEmpty())
-						deleteSelectedCustomer();
+						deleteSelectedInvoice();
 				}
+				
+				else if(e.getSource() == btnDeleteProduct) {
+						if(!listModel.isEmpty())
+							deleteSelectedProduct();
+				}
+			
+		        }
+			}
+			
+			
+			
+		
+		
+		
+		
+		
+		
+		public void addInvoiceDetails() {
+			int transactionId = Integer.parseInt(invoiceList.getSelectedValue());
+			SalesTransaction invoice = database.getSalesTransaction(transactionId);
+			ShoppingBasket trolley = invoice.getShoppingList();
+			quantity= trolley.getQuantity();
+			
+			
+		
+			for(int i = 0; i < quantity; i++) {
+				String productType=""+trolley.getShoppingList().get(i).getClass();
+				productType = productType.replace("class bicyclestore.bikes.", "");			
+			
+			Object[] row = { productType, ""+trolley.getShoppingList().get(i).getModel(), 
+					""+trolley.getShoppingList().get(i).getColour(),""+trolley.getShoppingList().get(i).getSalePrice()};
+			tableModel.addRow(row);
+			
 			}
 		}
-	}
-
+		private void emptyInvoiceTable() {
+			//Object[] row = {"","",""," "};
+			for(int i = tableModel.getRowCount() -1; i >= 0; i--) {
+				tableModel.removeRow(i);
+			}
+		}
+		private void emptyDetailsTable() {
+			lblTransactionID.setText("");
+			lblEmployee.setText("");
+			lblCustomer.setText("");
+			lblCost.setText("");
+			lblPaymentMethod.setText("");
+			lblDate.setText("");
+			}
+		
+		
+		public void refreshAndRemove(int newTransactionID) {
+			listModel.removeElement(newTransactionID+"");
+		}
+			
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				// if list still contains entries reset selection and display content
+				emptyInvoiceTable();
+				if(!listModel.isEmpty()) {
+					if(invoiceList.isSelectionEmpty())
+						invoiceList.setSelectedIndex(0);
+					setOrderDetailsContent();
+					addInvoiceDetails();
+				}
+				// if list empty reset fields to blank
+				else
+					//emptyOrderDetailFields();
+				    emptyInvoiceTable();
+				
+			}
+			
+			
+		}	
+	
 	
 
+	

@@ -24,6 +24,7 @@ import java.util.Date;
 
 	import bicyclestore.Database;
 	import bicyclestore.bikes.Bicycle;
+import bicyclestore.cardlayouts.profitandlosscardlayout.ProfitAndLossCard;
 import bicyclestore.customers.Customer;
 import bicyclestore.staff.Employee;
 	import bicyclestore.suppliers.Supplier;
@@ -41,6 +42,8 @@ import bicyclestore.transaction.ShoppingBasket;
 		private Customer customer;
 		
 		private InvoiceCardLayout cardLayout;
+		private ViewInvoiceCard viewInvoice;
+		private DeleteInvoice deleteInvoice;
 		
 		private JButton btnProcessOrder, btnReturnOrder;
 		
@@ -51,6 +54,7 @@ import bicyclestore.transaction.ShoppingBasket;
 		private JButton btnEditId;
 		
 		private int transactionIdCount = 10004;
+		private ProfitAndLossCard profitLossCard;
 		
 		private DefaultTableModel tableModel;
 		private JTable orderDetailsTable;
@@ -60,6 +64,7 @@ import bicyclestore.transaction.ShoppingBasket;
 			this.database = database;
 			this.employee = employee;
 			basket = new ShoppingBasket();
+			profitLossCard = new ProfitAndLossCard(database);
 			this.cardLayout = cardLayout;
 			this.btnReturnOrder = btnReturnOrder;
 			
@@ -190,6 +195,7 @@ import bicyclestore.transaction.ShoppingBasket;
 		
 		private void resetFields() {
 			txtId.setText(transactionIdCount+"");
+			basket = new ShoppingBasket();
 			basket.removeAll();
 			// remove all table rows
 			for(int i = tableModel.getRowCount() -1; i >= 0; i--) {
@@ -218,6 +224,7 @@ import bicyclestore.transaction.ShoppingBasket;
 					}
 					else {
 						try {
+							profitLossCard.newOrderAdded();
 							createSalesTransaction();
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
@@ -242,4 +249,4 @@ import bicyclestore.transaction.ShoppingBasket;
 			
 		}
 		
-	}
+	}	

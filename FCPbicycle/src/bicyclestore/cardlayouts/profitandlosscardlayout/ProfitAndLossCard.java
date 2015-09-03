@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.Caret;
 
 import bicyclestore.Database;
 import bicyclestore.SystemData;
@@ -22,14 +23,17 @@ public class ProfitAndLossCard implements ItemListener {
     JLabel expenditure, income, surplus, deficit, breakeven;
 	JLabel purchases, wages, bills, sales, totalexpenditure, totalincome;
 	private static Database data;
+	private ProfitAndLossGraphIcon graph;
 	
 	public ProfitAndLossCard(Database data) {
 		this.data=data;
 		cardLayoutPane = new JPanel(new BorderLayout());
-		addComponentToPane(cardLayoutPane);
+		graph= new ProfitAndLossGraphIcon(null, 0, 0, data);
+		SetUpTable();
+		
 	}
      
-    public void addComponentToPane(Container pane) {
+    public void SetUpTable() {
     	ProfitAndLoss account= new ProfitAndLoss(data);
     	account.updateAccounts();
     	
@@ -43,8 +47,8 @@ public class ProfitAndLossCard implements ItemListener {
         //Create the "cards".
         JPanel card1 = new JPanel();
         JPanel card2 = new JPanel();
-        ProfitAndLossGraphIcon b = new ProfitAndLossGraphIcon(null, 0, 0, data);
-        card2.add(b.createAndShowGUI());
+        //graph = new ProfitAndLossGraphIcon(null, 0, 0, data);
+        card2.add(graph.createAndShowGUI());
         
         JPanel card3 = new JPanel();
          
@@ -54,8 +58,8 @@ public class ProfitAndLossCard implements ItemListener {
         cards.add(card2, GRAPHPANEL);
      
          
-        pane.add(comboBoxPane, BorderLayout.PAGE_START);
-        pane.add(cards, BorderLayout.CENTER);
+        cardLayoutPane.add(comboBoxPane, BorderLayout.PAGE_START);
+        cardLayoutPane.add(cards, BorderLayout.CENTER);
         
         expenditure = new JLabel("--------EXPENDITURE----------- ");
         purchases = new JLabel("Purchases from Supplier: ");
@@ -152,15 +156,25 @@ public class ProfitAndLossCard implements ItemListener {
     }
      
   
-    public static void createAndShowGUI() {
-        //Create and set up the window.
-        JFrame frame = new JFrame("Profit and Loss Accounts");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //ProfitAndLossCard demo = new ProfitAndLossCard(data);
-
-        frame.pack();
-        frame.setVisible(true);
-    }
+   public void orderAdded(){
+	ProfitAndLoss profit = new ProfitAndLoss(data);
+    profit.updateAccounts();
+    System.out.println(profit.getOverallBalance());
+	cardLayoutPane.removeAll();
+	cardLayoutPane.repaint();
+	SetUpTable();
+   }
+   
+   
+   public void invoiceAdded(){
+		ProfitAndLoss profit = new ProfitAndLoss(data);
+	    profit.updateAccounts();
+	    System.out.println(profit.getOverallBalance());
+		cardLayoutPane.removeAll();
+		cardLayoutPane.repaint();
+		SetUpTable();
+	   
+   }
     
     public JPanel getStockControlCardLayout() {
     	return cardLayoutPane;

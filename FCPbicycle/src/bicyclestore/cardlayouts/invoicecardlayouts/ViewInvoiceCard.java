@@ -7,8 +7,9 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
-	import javax.swing.BorderFactory;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -48,7 +49,7 @@ import bicyclestore.transaction.ShoppingBasket;
 		private JScrollPane listScrollPane;
 		private JPanel invoiceDetailsPane;
 		private Box buttonPane;
-		private JButton btnDeleteCustomer;
+		private JButton btnDeleteInvoice,btnDeleteProduct;
 		
 		private ShoppingBasket basket;
 		private Customer customer;
@@ -59,7 +60,7 @@ import bicyclestore.transaction.ShoppingBasket;
 							lblTransactionID, lblEmployee, lblCustomer, lblCost, lblPaymentMethod, lblDate;
 		
 		private DefaultTableModel tableModel;
-		private JTable orderDetailsTable;
+		private JTable invoiceDetailsTable;
 		private static final String[] TABLE_COLS = {"Product Type","Model","Colour","Price"};
 		private String productType;
 		private Bicycle bicycle;
@@ -72,19 +73,19 @@ import bicyclestore.transaction.ShoppingBasket;
 			this.cardlayout=cardlayout;
 			setUpinvoiceList();
 			createViewOrderCard();
-			setUpButtonPane();
+			//setUpButtonPane();
 			
 
 			
-			add(buttonPane, BorderLayout.EAST);
+			//add(buttonPane, BorderLayout.EAST);
 			
 			setUpTable();
-			this.add(new JScrollPane(orderDetailsTable),BorderLayout.SOUTH);
+			this.add(new JScrollPane(invoiceDetailsTable),BorderLayout.SOUTH);
 		}
 		
 		private void setUpinvoiceList() {
 			listModel = new DefaultListModel<String>();
-			addOrdersFromDB();
+			addInvoicesFromDB();
 			
 			invoiceList = new JList<String>(listModel);
 			invoiceList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -101,7 +102,7 @@ import bicyclestore.transaction.ShoppingBasket;
 			invoiceList.setPreferredSize(new Dimension(200,100));
 		}
 
-		private void addOrdersFromDB() {
+		private void addInvoicesFromDB() {
 			for(SalesTransaction order : database.getSalesTransactions()) {
 				listModel.addElement(order.getTransactionID()+"");
 			}
@@ -207,30 +208,25 @@ import bicyclestore.transaction.ShoppingBasket;
 			buttonPane = Box.createHorizontalBox();
 			
 			
-			btnDeleteCustomer = new JButton("Delete Invoice");
-			
+			btnDeleteInvoice = new JButton("Delete Invoice");
+			btnDeleteProduct = new JButton("Delete Product from Invoice");
 			
 		    buttonPane.add(Box.createHorizontalStrut(10));
-		    buttonPane.add(btnDeleteCustomer);
+		    buttonPane.add(btnDeleteInvoice);
+		    buttonPane.add(Box.createHorizontalGlue());
+		    
+		    buttonPane.add(Box.createHorizontalStrut(10));
+		    buttonPane.add(btnDeleteProduct);
 		    buttonPane.add(Box.createHorizontalGlue());
 		    
 		    buttonPane.setBorder(new EmptyBorder(20,20,20,20));
 		    
 		
-			btnDeleteCustomer.addActionListener(new ButtonClickListener());
+			btnDeleteInvoice.addActionListener(new ButtonClickListener());
 			
 			
 		}
-		
-	
-		
-
-		
-		public void refresh(int newTransactionID) {
-			listModel.addElement(newTransactionID+"");
-		}
-		
-		public void customerDetailsEdited(String oldID, String newID) {
+	public void customerDetailsEdited(String oldID, String newID) {
 			listModel.setElementAt(oldID+"", listModel.indexOf(newID));
 			invoiceList.setSelectedValue(newID, true);
 			setOrderDetailsContent();
@@ -246,24 +242,24 @@ import bicyclestore.transaction.ShoppingBasket;
 			}
 		}
 		
-		private void deleteSelectedCustomer() {
-			int value = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected customer?",
-					"Warning, Customer will be removed from system", JOptionPane.YES_NO_OPTION);
+		private void deleteSelectedInvoice() {
+			int value = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected invoice?",
+					"Warning, Invoice will be removed from system", JOptionPane.YES_NO_OPTION);
 			
 			if(value == JOptionPane.YES_OPTION) {
 				// if the customer selected yes, delete the customer
-				String customerName = invoiceList.getSelectedValue();
-				database.removeSalesTransaction(database.getSalesTransaction(Integer.parseInt(customerName)));
-				listModel.removeElement(customerName);
-				cardlayout.customerDeleted(customerName);
+				String customerID = invoiceList.getSelectedValue();
+				database.removeSalesTransaction(database.getSalesTransaction(Integer.parseInt(customerID)));
+				listModel.removeElement(customerID);
+				cardlayout.customerDeleted(customerID);
 			}
 		}
 			private void setUpTable() {
 				tableModel = new DefaultTableModel();
 				tableModel.setColumnIdentifiers(TABLE_COLS);
-				orderDetailsTable = new JTable(tableModel);
-				orderDetailsTable.setFillsViewportHeight(true);
-				orderDetailsTable.setPreferredScrollableViewportSize(new Dimension(600,150));
+				invoiceDetailsTable = new JTable(tableModel);
+				invoiceDetailsTable.setFillsViewportHeight(true);
+				invoiceDetailsTable.setPreferredScrollableViewportSize(new Dimension(600,150));
 			
 		}
 		
@@ -271,9 +267,9 @@ import bicyclestore.transaction.ShoppingBasket;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(e.getSource() == btnDeleteCustomer) {
+				if(e.getSource() == btnDeleteInvoice) {
 					if(!listModel.isEmpty())
-						deleteSelectedCustomer();
+						deleteSelectedInvoice();
 				}
 			}
 		}
@@ -327,6 +323,51 @@ import bicyclestore.transaction.ShoppingBasket;
 				    emptyInvoiceTable();
 				
 			}
+			
+			public void refresh(int newTransactionID) {
+				listModel.addElement(newTransactionID+"");
+			}
+			
+			public void refreshAndRemove(int newTransactionID) {
+				listModel.removeElement(newTransactionID+"");
+			}
+			
+			public void refreshAndRemoveProduct(int id, int row) {
+				SalesTransaction invoice = database.getSalesTransaction(id);
+				
+					invoiceList.setSelectedIndex(id);
+					invoiceDetailsTable.setRowSelectionInterval(row, 0);
+				    
+				    invoiceDetailsTable.remove(row);
+				    resetFields();
+				    
+				    if (invoiceDetailsTable.getSelectedRow() != -1) {
+			            // remove selected row from the model
+			            tableModel.removeRow(invoiceDetailsTable.getSelectedRow());
+			           
+				}}
+			
+			private void resetFields() {
+				//txtId.setText(transactionIdCount+"");
+				basket=new ShoppingBasket();
+				basket.removeAll();
+				// remove all table rows
+				for(int i = tableModel.getRowCount() -1; i >= 0; i--) {
+					tableModel.removeRow(i);
+				}
+				
+			}
+				
+			
+			public void refreshTable(){
+				basket=new ShoppingBasket();
+				invoiceDetailsTable.removeAll();
+				invoiceDetailsTable.revalidate();
+				invoiceDetailsTable.repaint();
+			}
+			
+			
+			
 		}	
 	
 	

@@ -44,6 +44,7 @@ import bicyclestore.staff.Employee;
 		private Employee employee;
 		private InvoiceCardLayout cardLayout;
 		private DeleteInvoice deleteInvoice;
+		private ViewInvoiceCard viewInvoice;
 		
 		private InvoiceShoppingCartCard shoppingCartCard;
 		
@@ -81,6 +82,7 @@ import bicyclestore.staff.Employee;
 			
 			shoppingCartCard = new InvoiceShoppingCartCard(database, employee, cardLayout, btnBackToOrder);
 			deleteInvoice = new DeleteInvoice(database, cardLayout);
+			viewInvoice= new ViewInvoiceCard(database, cardLayout);
 			
 			JPanel card1 = productDetailsCard();
 			JPanel card2 = shoppingCartCard;
@@ -88,7 +90,7 @@ import bicyclestore.staff.Employee;
 			//
 			cards.add(card1);
 			cards.add(card2, VIEW_CART);
-			//cards.add(card3);
+			cards.add(card3);
 			
 			TitledBorder orderBorder = BorderFactory.createTitledBorder("Sell to a Customer");
 			orderBorder.setTitleJustification(TitledBorder.CENTER);
