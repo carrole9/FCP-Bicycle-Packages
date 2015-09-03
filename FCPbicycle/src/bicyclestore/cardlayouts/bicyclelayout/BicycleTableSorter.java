@@ -8,6 +8,7 @@ import javax.swing.table.TableRowSorter;
 
 import bicyclestore.Database;
 import bicyclestore.SystemData;
+import bicyclestore.Utilities;
 import bicyclestore.bikes.Bicycle;
 import bicyclestore.bikes.MotorisedBike;
 
@@ -162,7 +163,7 @@ public class BicycleTableSorter extends JPanel {
 		for (Bicycle bicycle : newArrayList) {
 			
 			
-				Object [] row = {bicycle.getClass().getSimpleName(), bicycle.getModel()
+				Object [] row = {Utilities.splitCamelCase(bicycle.getClass().getSimpleName()), bicycle.getModel()
 						,bicycle.getColour(),bicycle.getFrameSize() + "",bicycle.getWheelSize() + "", bicycle.getFrameComposition()
 						,bicycle.getCostPrice(),bicycle.getSalePrice()};
 				model.addRow(row);
