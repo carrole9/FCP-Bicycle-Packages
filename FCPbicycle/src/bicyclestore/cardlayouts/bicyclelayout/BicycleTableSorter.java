@@ -182,6 +182,7 @@ public class BicycleTableSorter extends JPanel {
 			}
 			else if(bicycle instanceof MotorisedBike){
 				bikeGears = 0;
+			
 			}
 			else if(bicycle instanceof Cruiser){
 				bikeGears = 0;
