@@ -4,15 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import bicyclestore.Database;
 import bicyclestore.bikes.BMX;
 import bicyclestore.bikes.Bicycle;
 import bicyclestore.bikes.RoadBike;
 import bicyclestore.transaction.ShoppingBasket;
 
 public class ShoppingBasketTest {
-	
-	private Database database = new Database();
 	
 	private static final double DELTA = 1e-15; // value for double test precision
 

@@ -176,7 +176,7 @@ public class OrderShoppingCartCard extends JPanel {
 		profitAndLoss.orderAdded(); 
 	}
 	
-	private Date getDeliveryDate(Date current, int deliveryDays) {
+	public Date getDeliveryDate(Date current, int deliveryDays) {
 		Calendar c = Calendar.getInstance();
 		// add number of delivery days and set time to 14:00:00
 		c.set(Calendar.DAY_OF_YEAR, c.get(Calendar.DAY_OF_YEAR) +deliveryDays); 
