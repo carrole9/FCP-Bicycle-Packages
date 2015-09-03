@@ -194,12 +194,14 @@ public class BicycleTableSorter extends JPanel {
         RowFilter<TableModel, Object> rf = null;
         //If current expression doesn't parse, don't update.
         try {
-            rf = RowFilter.regexFilter(filterText.getText(), 0);
+            rf = RowFilter.regexFilter("(?i)" +filterText.getText());
         } catch (java.util.regex.PatternSyntaxException e) {
             return;
         }
         sorter.setRowFilter(rf);
     }
+   
+    
         
         
   
