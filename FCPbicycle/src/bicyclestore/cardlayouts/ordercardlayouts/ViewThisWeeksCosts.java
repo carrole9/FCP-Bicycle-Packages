@@ -163,7 +163,7 @@ public class ViewThisWeeksCosts extends JPanel {
 		return totalCost;
 	}
 	
-	private double getThisWeeksOrdersCost() {
+	public double getThisWeeksOrdersCost() {
 		double totalCost = 0.0;
 		for(PurchasingTransaction order : database.getPurchasingTransactions()) {
 			if(Utilities.isDateInCurrentWeek(order.getTransactionDate()))
@@ -172,7 +172,7 @@ public class ViewThisWeeksCosts extends JPanel {
 		return totalCost;
 	}
 	
-	private int getNoOrdersThisWeek() {
+	public int getNoOrdersThisWeek() {
 		int noOrders = 0;
 		// set start of week object to preceding Monday at 00:00:00
 		Calendar startOfWeek = Calendar.getInstance();
@@ -186,7 +186,7 @@ public class ViewThisWeeksCosts extends JPanel {
 		return noOrders;
 	}
 	
-	private double getPercentEarlierCost() {
+	public double getPercentEarlierCost() {
 		double totalCost = 0.0;
 		double earlierCost = 0.0;
 		for(PurchasingTransaction order : database.getPurchasingTransactions()) {
@@ -198,7 +198,7 @@ public class ViewThisWeeksCosts extends JPanel {
 		return (double)earlierCost/totalCost *100;
 	}
 	
-	private double getPercentCostThisWeek() {
+	public double getPercentCostThisWeek() {
 		double weeksCost = 0.0;
 		double totalCost = 0.0;
 		for(PurchasingTransaction order : database.getPurchasingTransactions()) {
