@@ -9,8 +9,13 @@ import javax.swing.table.TableRowSorter;
 import bicyclestore.Database;
 import bicyclestore.SystemData;
 import bicyclestore.Utilities;
+import bicyclestore.bikes.BMX;
 import bicyclestore.bikes.Bicycle;
+import bicyclestore.bikes.Cruiser;
+import bicyclestore.bikes.Hybrid;
 import bicyclestore.bikes.MotorisedBike;
+import bicyclestore.bikes.MountainBike;
+import bicyclestore.bikes.RoadBike;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -36,7 +41,7 @@ public class BicycleTableSorter extends JPanel {
     private DefaultTableModel model;
     private TableRowSorter<TableModel> sorter;
     private Database database;
-    private Object[] columnNames = {"Product Type","Model", "Colour", "Frame Size", "Wheel Size","Frame Composition","Cost Price","Sale Price"};
+    private Object[] columnNames = {"Product Type","Model", "Colour", "Frame Size", "Wheel Size","Gears","Frame Composition","Cost Price","Sale Price"};
     private Object[][] data = new Object [50][50];
     private ArrayList<Bicycle> newArrayList;
    
@@ -159,12 +164,35 @@ public class BicycleTableSorter extends JPanel {
 	} 
 
     public void  viewBicyclesTable(){
+		int bikeGears = 0;
 		
 		for (Bicycle bicycle : newArrayList) {
 			
 			
+			
+			if(bicycle instanceof MountainBike ){
+				bikeGears = ((MountainBike) bicycle).getNoOfGears();
+				
+			}
+			else if( bicycle instanceof RoadBike){
+				bikeGears = ((RoadBike) bicycle).getNumberOfGears();
+			}
+			else if(bicycle instanceof Hybrid){
+				bikeGears = ((Hybrid) bicycle).getNoOfGears();
+			}
+			else if(bicycle instanceof MotorisedBike){
+				bikeGears = 0;
+			}
+			else if(bicycle instanceof Cruiser){
+				bikeGears = 0;
+			}
+			else if(bicycle instanceof BMX){
+				bikeGears = 0;
+			}
+			
+				
 				Object [] row = {Utilities.splitCamelCase(bicycle.getClass().getSimpleName()), bicycle.getModel()
-						,bicycle.getColour(),bicycle.getFrameSize() + "",bicycle.getWheelSize() + "", bicycle.getFrameComposition()
+						,bicycle.getColour(),bicycle.getFrameSize() + "",bicycle.getWheelSize() + "",bikeGears+"", bicycle.getFrameComposition()
 						,bicycle.getCostPrice(),bicycle.getSalePrice()};
 				model.addRow(row);
 				

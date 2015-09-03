@@ -163,6 +163,7 @@ public class ProfitAndLossCard implements ItemListener {
 	cardLayoutPane.removeAll();
 	cardLayoutPane.repaint();
 	SetUpTable();
+	graph.refresh();
    }
    
    
@@ -173,7 +174,7 @@ public class ProfitAndLossCard implements ItemListener {
 		cardLayoutPane.removeAll();
 		cardLayoutPane.repaint();
 		SetUpTable();
-	   
+	   graph.refresh();
    }
     
     public JPanel getStockControlCardLayout() {

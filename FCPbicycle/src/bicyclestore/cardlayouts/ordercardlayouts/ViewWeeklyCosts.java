@@ -84,8 +84,8 @@ public class ViewWeeklyCosts extends JPanel {
 		txtPanel.add(lblAverageSixWeeks);
 	}
 	
-	private double getWeeklyAverage() {
-		int numWeeks = 0;
+	public double getWeeklyAverage() {
+		int numWeeks = 1;
 		if(database.getPurchasingTransactions().size() == 0) {
 			return 0;
 		} else {
@@ -97,12 +97,13 @@ public class ViewWeeklyCosts extends JPanel {
 				firstTransDate.add(Calendar.WEEK_OF_YEAR, 1);
 				numWeeks++;
 			}
+			System.out.println(numWeeks);
 			return Utilities.getTotalCostOfOrders(database) / numWeeks;
 		}
 	}
 	
-	private double getLastSixWeeksAverage() {
-		int numWeeks = 0;
+	public double getLastSixWeeksAverage() {
+		int numWeeks = 1;
 		double totalCost = 0.0;
 		if (database.getPurchasingTransactions().size() == 0) {
 			return 0;
@@ -144,7 +145,7 @@ public class ViewWeeklyCosts extends JPanel {
 	}
 	
 	// Calculate the cost for each week over the last 6 weeks
-	private double[] calculateWeeklyCosts() {
+	public double[] calculateWeeklyCosts() {
 		double[] weekCosts = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		Calendar now = Calendar.getInstance();
 		int currentWeek = now.get(Calendar.WEEK_OF_YEAR);

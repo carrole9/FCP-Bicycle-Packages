@@ -62,6 +62,10 @@ public class ProfitAndLossGraph extends JPanel
         
         
     }
+    
+    public void clearBars() {
+    	bars.clear();
+    }
 
     public void addColumn(String label, double value, Color color)
     {
@@ -221,6 +225,8 @@ public class ProfitAndLossGraph extends JPanel
      	System.out.println(profit.getOverallBalance());
     	panel.removeAll();
     	panel.revalidate();
+    	panel.clearBars();
+    	panel.setUpGraph();
     	createAndShowGUI();
     }
 
