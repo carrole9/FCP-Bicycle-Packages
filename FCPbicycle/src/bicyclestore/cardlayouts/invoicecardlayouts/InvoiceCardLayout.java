@@ -13,7 +13,8 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 
 	import bicyclestore.Database;
 	import bicyclestore.cardlayouts.ordercardlayouts.ViewOrdersCard;
-	import bicyclestore.staff.Employee;
+import bicyclestore.cardlayouts.profitandlosscardlayout.ProfitAndLossCard;
+import bicyclestore.staff.Employee;
 	import bicyclestore.transaction.ShoppingBasket;
 
 	@SuppressWarnings("serial")
@@ -34,10 +35,21 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 		private ViewInvoiceCard viewInvoiceCard;
 		private DeleteInvoice deleteInvoice;
 		
+		private ProfitAndLossCard profitAndLossCard;
+		
 
+		public InvoiceCardLayout(Database database, Employee employee, ProfitAndLossCard profitAndLossCard) {
+			this.database = database;
+			this.employee = employee;
+			this.profitAndLossCard = profitAndLossCard;
+			createCardLayoutPane();
+		}
+		
+		// constructor without profit and loss card for sales assistant
 		public InvoiceCardLayout(Database database, Employee employee) {
 			this.database = database;
 			this.employee = employee;
+			profitAndLossCard = new ProfitAndLossCard(database);
 			createCardLayoutPane();
 		}
 		
@@ -47,7 +59,7 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 			createComboBoxPane();
 			cards = new JPanel(new CardLayout());
 			
-			createInvoice = new CreateInvoiceCard(database, employee, this);
+			createInvoice = new CreateInvoiceCard(database, employee, this, profitAndLossCard);
 			viewInvoiceCard = new ViewInvoiceCard(database, this);
 			deleteInvoice = new DeleteInvoice(database, this);
 			

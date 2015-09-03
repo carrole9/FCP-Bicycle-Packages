@@ -31,6 +31,7 @@ package bicyclestore.cardlayouts.invoicecardlayouts;
 	import bicyclestore.bikes.MotorisedBike;
 	import bicyclestore.bikes.MountainBike;
 	import bicyclestore.bikes.RoadBike;
+import bicyclestore.cardlayouts.profitandlosscardlayout.ProfitAndLossCard;
 import bicyclestore.customers.Customer;
 import bicyclestore.staff.Employee;
 	import bicyclestore.suppliers.Supplier;
@@ -48,6 +49,8 @@ import bicyclestore.staff.Employee;
 		
 		private InvoiceShoppingCartCard shoppingCartCard;
 		
+		private ProfitAndLossCard profitAndLossCard;
+		
 		private JPanel cards;
 		
 		private JButton btnAddToCart, btnViewCart, btnBackToOrder;
@@ -64,10 +67,12 @@ import bicyclestore.staff.Employee;
 		private SpinnerNumberModel numberModel;
 		private JSpinner quantitySpinner;
 		
-		public CreateInvoiceCard(Database database, Employee employee, InvoiceCardLayout cardLayout) {
+		public CreateInvoiceCard(Database database, Employee employee, 
+				InvoiceCardLayout cardLayout, ProfitAndLossCard profitAndLossCard) {
 			this.database = database;
 			this.employee = employee;
 			this.cardLayout = cardLayout;
+			this.profitAndLossCard = profitAndLossCard;
 
 			createCardLayoutPane();
 			
@@ -80,7 +85,8 @@ import bicyclestore.staff.Employee;
 			
 			cards = new JPanel(new CardLayout());
 			
-			shoppingCartCard = new InvoiceShoppingCartCard(database, employee, cardLayout, btnBackToOrder);
+			shoppingCartCard = new InvoiceShoppingCartCard(database, employee, cardLayout, 
+					btnBackToOrder, profitAndLossCard);
 			deleteInvoice = new DeleteInvoice(database, cardLayout);
 			viewInvoice= new ViewInvoiceCard(database, cardLayout);
 			

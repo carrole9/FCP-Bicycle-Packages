@@ -60,11 +60,12 @@ import bicyclestore.transaction.ShoppingBasket;
 		private JTable orderDetailsTable;
 		private static final String[] TABLE_COLS = {"Product Type","Model","Customer","Quanity"};
 
-		public InvoiceShoppingCartCard(Database database, Employee employee, InvoiceCardLayout cardLayout, JButton btnReturnOrder) {
+		public InvoiceShoppingCartCard(Database database, Employee employee, InvoiceCardLayout cardLayout,
+				JButton btnReturnOrder, ProfitAndLossCard profitAndLossCard) {
 			this.database = database;
 			this.employee = employee;
 			basket = new ShoppingBasket();
-			profitLossCard = new ProfitAndLossCard(database);
+			this.profitLossCard = profitAndLossCard;
 			this.cardLayout = cardLayout;
 			this.btnReturnOrder = btnReturnOrder;
 			
@@ -224,7 +225,7 @@ import bicyclestore.transaction.ShoppingBasket;
 					}
 					else {
 						try {
-							profitLossCard.newOrderAdded();
+							profitLossCard.invoiceAdded();
 							createSalesTransaction();
 						} catch (IOException e) {
 							// TODO Auto-generated catch block

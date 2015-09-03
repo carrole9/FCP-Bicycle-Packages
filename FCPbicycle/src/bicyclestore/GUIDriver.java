@@ -141,7 +141,7 @@ public class GUIDriver extends JFrame{
 		supplierTab.add(suppliersLayout.getCardLayoutPane());
 		
 		// add invoicing card layout to invoicing tab
-		InvoiceCardLayout invoiceCard = new InvoiceCardLayout(database, employee);
+		InvoiceCardLayout invoiceCard = new InvoiceCardLayout(database, employee, profitAndLossCard);
 		invoicingTab.add(invoiceCard);
 		
 		// add Bicycle card layout to products tab
