@@ -51,12 +51,14 @@ public class OrderShoppingCartCard extends JPanel {
 	private DefaultTableModel tableModel;
 	private JTable orderDetailsTable;
 	private static final String[] TABLE_COLS = {"Product Type","Model","Supplier","Quanity"};
+	private ProfitAndLossCard profitAndLoss;
 
 	public OrderShoppingCartCard(Database database, Employee employee, OrdersCardLayout cardLayout,
 			JButton btnReturnOrder, OrderFromSupplierCard orderCard) {
 		this.database = database;
 		this.employee = employee;
 		basket = new ShoppingBasket();
+		profitAndLoss=new ProfitAndLossCard(database);
 		this.cardLayout = cardLayout;
 		this.btnReturnOrder = btnReturnOrder;
 		this.orderCard = orderCard;
@@ -218,6 +220,7 @@ public class OrderShoppingCartCard extends JPanel {
 				}
 				else {
 					createPurchasingTransaction();
+					profitAndLoss.orderAdded();
 				}
 			}
 			
