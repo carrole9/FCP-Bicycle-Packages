@@ -25,6 +25,7 @@ import java.util.Date;
 
 	import bicyclestore.Database;
 	import bicyclestore.bikes.Bicycle;
+import bicyclestore.cardlayouts.invoicecardlayouts.InvoiceCardLayout;
 import bicyclestore.customers.Customer;
 import bicyclestore.staff.Employee;
 	import bicyclestore.suppliers.Supplier;
@@ -148,11 +149,13 @@ import bicyclestore.transaction.ShoppingBasket;
 				for(int j=0; j<bikesInStock.size();j++){
 				if(basket.getShoppingList().get(i) != bikesInStock.get(j)
 						&& basket.getShoppingList().get(i).isInStock()==false){
-					
+					String s = basket.getShoppingList().get(i).getModel();
 					JOptionPane.showMessageDialog(null, "Error"
-							+ "Bicycle Currently out of Stock."
-							+ "Please place and order",
-							"Error" ,JOptionPane.INFORMATION_MESSAGE);
+							+ "\nBicycle Currently out of Stock."
+							+ "\nPlease place and order for:"
+							+ "\n"+basket.getShoppingList().get(i).getModel(),
+							"\nError" ,JOptionPane.INFORMATION_MESSAGE);
+					        break;
 				}
 				else if(basket.getShoppingList().get(i) == bikesInStock.get(j)
 						&& basket.getShoppingList().get(i).isInStock()==false){
@@ -258,3 +261,4 @@ import bicyclestore.transaction.ShoppingBasket;
 		}
 		
 	}
+
