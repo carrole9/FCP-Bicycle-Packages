@@ -47,6 +47,12 @@ public class AddBicycles extends JPanel {
 	private JButton addBicycleButton;
 	private JComboBox<String> productBox;
 	private String[] productItems = {"Select a Product Type","BMX","Cruiser","Hybrid","Motorised Bike","Mountain Bike","Road Bike"};
+	private int intNoOfGears;
+	private int intFrameSize;
+	private int intWheelSize;
+	private double doubleCostPrice;
+	private double doubleSalePrice;
+	
 	
 	public AddBicycles(Database database,BicycleCardLayout bicycleCardLayout ) {
 		
@@ -143,16 +149,7 @@ public class AddBicycles extends JPanel {
 				String costPrice = txtCostPrice.getText();
 				String salePrice = txtSalePrice.getText();
 				
-				int intNoOfGears;
-				int intFrameSize;
-				int intWheelSize;
-				double doubleCostPrice;
-				double doubleSalePrice;
-				intNoOfGears = Integer.parseInt(noOfGears);
-				intFrameSize = Integer.parseInt(frameSize);
-				intWheelSize = Integer.parseInt(wheelSize);
-				doubleCostPrice = Double.parseDouble(costPrice);
-				doubleSalePrice = Double.parseDouble(salePrice);
+			
 				
 				
 				
@@ -162,14 +159,23 @@ public class AddBicycles extends JPanel {
 					JOptionPane.showMessageDialog(null, "Please Enter All Details", 
 							"Incomplete content", JOptionPane.ERROR_MESSAGE);
 				}
+				
 				// attempt to add bicycle if all fields are complete
 				else if(cbItemName.equals("BMX")) {
-				
+					intFrameSize = Integer.parseInt(frameSize);
+					intWheelSize = Integer.parseInt(wheelSize);
+					doubleCostPrice = Double.parseDouble(costPrice);
+					doubleSalePrice = Double.parseDouble(salePrice);
+					
 					database.addBicycle(new BMX(model, colour, intFrameSize, intWheelSize,frameComposition, doubleCostPrice, doubleSalePrice));
 					clearTextFields();
 					//addBicycle (model, colour, intFrameSize, intWheelSize,frameComposition,doubleCostPrice,doubleSalePrice);
 				}
 				else if(cbItemName.equals("Cruiser")) {
+					intFrameSize = Integer.parseInt(frameSize);
+					intWheelSize = Integer.parseInt(wheelSize);
+					doubleCostPrice = Double.parseDouble(costPrice);
+					doubleSalePrice = Double.parseDouble(salePrice);
 					
 					database.addBicycle(new Cruiser(model, colour, intFrameSize, intWheelSize,frameComposition, doubleCostPrice, doubleSalePrice));
 					clearTextFields();
@@ -177,10 +183,21 @@ public class AddBicycles extends JPanel {
 				}
 				else if(cbItemName.equals("Hybrid")) {
 					
+					intNoOfGears = Integer.parseInt(noOfGears);
+					intFrameSize = Integer.parseInt(frameSize);
+					intWheelSize = Integer.parseInt(wheelSize);
+					doubleCostPrice = Double.parseDouble(costPrice);
+					doubleSalePrice = Double.parseDouble(salePrice);
+					
 					database.addBicycle(new Hybrid(intNoOfGears,model, colour, intFrameSize, intWheelSize,frameComposition, doubleCostPrice, doubleSalePrice));
 					clearTextFields();
 				}
 				else if(cbItemName.equals("Motorised Bike")) {
+				
+					intFrameSize = Integer.parseInt(frameSize);
+					intWheelSize = Integer.parseInt(wheelSize);
+					doubleCostPrice = Double.parseDouble(costPrice);
+					doubleSalePrice = Double.parseDouble(salePrice);
 					
 					database.addBicycle(new MotorisedBike(model, colour, intFrameSize, intWheelSize,frameComposition, doubleCostPrice, doubleSalePrice));
 					clearTextFields();
@@ -188,11 +205,23 @@ public class AddBicycles extends JPanel {
 				}
 				else if(cbItemName.equals("Mountain Bike")) {
 					
+					intNoOfGears = Integer.parseInt(noOfGears);
+					intFrameSize = Integer.parseInt(frameSize);
+					intWheelSize = Integer.parseInt(wheelSize);
+					doubleCostPrice = Double.parseDouble(costPrice);
+					doubleSalePrice = Double.parseDouble(salePrice);
+					
 					database.addBicycle(new MountainBike(intNoOfGears,model, colour, intFrameSize, intWheelSize,frameComposition, doubleCostPrice, doubleSalePrice));
 					clearTextFields();
 					//addBicycle (model, colour, intFrameSize, intWheelSize,frameComposition,doubleCostPrice,doubleSalePrice);
 				}
 				else if(cbItemName.equals("Road Bike")) {
+					
+					intNoOfGears = Integer.parseInt(noOfGears);
+					intFrameSize = Integer.parseInt(frameSize);
+					intWheelSize = Integer.parseInt(wheelSize);
+					doubleCostPrice = Double.parseDouble(costPrice);
+					doubleSalePrice = Double.parseDouble(salePrice);
 					
 					database.addBicycle(new RoadBike(intNoOfGears,model, colour, intFrameSize, intWheelSize,frameComposition, doubleCostPrice, doubleSalePrice));
 					clearTextFields();
@@ -255,12 +284,15 @@ public class AddBicycles extends JPanel {
             // grey out number of gears field if unavailable for selected product type
             if(cb.getSelectedItem().equals("BMX") || cb.getSelectedItem().equals("Cruiser") 
                     || cb.getSelectedItem().equals("Motorised Bike")) {
-            	txtNoOfGears.setText("");
+            	txtNoOfGears.setText("0");
+            	txtNoOfGears.setVisible(false);
             	txtNoOfGears.setEditable(false);
             	txtNoOfGears.setOpaque(true);
             	txtNoOfGears.setBackground(Color.GRAY);
             }
             else {
+            	txtNoOfGears.setText("");
+            	txtNoOfGears.setVisible(true);
             	txtNoOfGears.setEditable(true);
             	txtNoOfGears.setBackground(Color.WHITE);
             }
