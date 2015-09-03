@@ -86,39 +86,47 @@ public class ViewWeeklyCosts extends JPanel {
 	
 	private double getWeeklyAverage() {
 		int numWeeks = 0;
-		// count number of weeks from first order to current date
-		Calendar now = Calendar.getInstance();
-		Calendar firstTransDate = Calendar.getInstance();
-		firstTransDate.setTime(database.getPurchasingTransactions().get(0).getTransactionDate());
-		while(firstTransDate.before(now)) {
-			firstTransDate.add(Calendar.WEEK_OF_YEAR, 1);
-			numWeeks++;
+		if(database.getPurchasingTransactions().size() == 0) {
+			return 0;
+		} else {
+			// count number of weeks from first order to current date
+			Calendar now = Calendar.getInstance();
+			Calendar firstTransDate = Calendar.getInstance();
+			firstTransDate.setTime(database.getPurchasingTransactions().get(0).getTransactionDate());
+			while (firstTransDate.before(now)) {
+				firstTransDate.add(Calendar.WEEK_OF_YEAR, 1);
+				numWeeks++;
+			}
+			return Utilities.getTotalCostOfOrders(database) / numWeeks;
 		}
-		return Utilities.getTotalCostOfOrders(database)/numWeeks;
 	}
 	
 	private double getLastSixWeeksAverage() {
 		int numWeeks = 0;
 		double totalCost = 0.0;
-		// Count backwards to get last six weeks total cost
-		Calendar now = Calendar.getInstance();
-		int currentWeek = now.get(Calendar.WEEK_OF_YEAR);
-		for(int i = database.getPurchasingTransactions().size()-1; i >= 0; i--) {
-			PurchasingTransaction order = database.getPurchasingTransactions().get(i);
-			Calendar orderDate = Calendar.getInstance();
-			orderDate.setTime(order.getTransactionDate());
-			int orderWeek = orderDate.get(Calendar.WEEK_OF_YEAR);
-			if(orderWeek != currentWeek) {
-				int numWeeksPassed = currentWeek - orderWeek;
-				currentWeek -= numWeeksPassed;
-				numWeeks += numWeeksPassed;
+		if (database.getPurchasingTransactions().size() == 0) {
+			return 0;
+		} else {
+			// Count backwards to get last six weeks total cost
+			Calendar now = Calendar.getInstance();
+			int currentWeek = now.get(Calendar.WEEK_OF_YEAR);
+			for (int i = database.getPurchasingTransactions().size() - 1; i >= 0; i--) {
+				PurchasingTransaction order = database.getPurchasingTransactions().get(i);
+				Calendar orderDate = Calendar.getInstance();
+				orderDate.setTime(order.getTransactionDate());
+				int orderWeek = orderDate.get(Calendar.WEEK_OF_YEAR);
+				if (orderWeek != currentWeek) {
+					int numWeeksPassed = currentWeek - orderWeek;
+					currentWeek -= numWeeksPassed;
+					numWeeks += numWeeksPassed;
+				}
+				if (numWeeks > 6)
+					break;
+				totalCost += order.getTransactionCost();
+
 			}
-			if(numWeeks > 6)
-				break;
-			totalCost += order.getTransactionCost();
-			
+			return totalCost / 6;
 		}
-		return totalCost / 6;
 	}
 	
 	private void setUpGraphPanel() {

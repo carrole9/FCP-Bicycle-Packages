@@ -124,7 +124,7 @@ public class AddCustomerCard extends JPanel {
 			addCustomer(strId, strName, strAddress, strPhone, strEmail);
 	}
 	
-	private void addCustomer(String strId, String name, String address, String phoneNum, String email) {
+	public void addCustomer(String strId, String name, String address, String phoneNum, String email) {
 		// attempt to parse customer id integer from string
 		int customerId = 0;
 		boolean gotId = false;

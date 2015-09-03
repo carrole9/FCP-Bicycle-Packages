@@ -208,6 +208,11 @@ public class OrderShoppingCartCard extends JPanel {
 	public boolean isShoppingCartEmpty() {
 		return tableModel.getRowCount() == 0;
 	}
+	
+	public ShoppingBasket getShoppingBasket() {
+		return basket;
+	}
+	
 	private class ButtonListener implements ActionListener {
 
 		@Override
