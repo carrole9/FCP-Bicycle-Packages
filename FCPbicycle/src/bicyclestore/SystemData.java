@@ -75,8 +75,8 @@ public class SystemData {
 		
 		catalog2.add(new RoadBike(18, "Boardman Road Comp", "Grey", 53, 700, "Alloy", 480, 649));
 		catalog2.add(new RoadBike(11, "Cannondale CAAD10", "Black", 56, 700, "SmartFormed 6069 Alloy", 1350, 1845));
-		catalog2.add(new RoadBike(20, "Giant Anyroad 1", "Black", 60, 700, "ALUXX-Grade Aluminum", 1249, 800));
-		catalog2.add(new RoadBike(22, "Lapierre Aircode 300", "Black", 58, 700, "AIRCODE CARBON", 2949, 1850));
+		catalog2.add(new RoadBike(20, "Giant Anyroad 1", "Black", 60, 700, "ALUXX-Grade Aluminum", 800, 1249));
+		catalog2.add(new RoadBike(22, "Lapierre Aircode 300", "Black", 58, 700, "AIRCODE CARBON", 1850, 2949));
 		
 		catalog3.add(new MountainBike(27, "Kona Blast","Orange", 27, 27, "Aluminium",550, 719.99));
 		catalog3.add(new MountainBike(27, "VooDoo Aizan 29er", "Black", 29, 29, "6061 Aluminium", 400, 565.95));
