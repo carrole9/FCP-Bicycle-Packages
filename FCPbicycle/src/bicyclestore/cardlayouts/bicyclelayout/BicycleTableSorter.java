@@ -2,7 +2,6 @@
 package bicyclestore.cardlayouts.bicyclelayout;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -10,6 +9,7 @@ import javax.swing.table.TableRowSorter;
 import bicyclestore.Database;
 import bicyclestore.SystemData;
 import bicyclestore.bikes.Bicycle;
+import bicyclestore.bikes.MotorisedBike;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -21,19 +21,21 @@ import java.util.ArrayList;
 
 
 public class BicycleTableSorter extends JPanel {
-    private boolean DEBUG = false;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private boolean DEBUG = false;
     private JTable table;
     private JPanel bicyclePanel;
-    private JButton refreshButton;
     JScrollPane scrollPane;
     
     private JTextField filterText;
     private JTextField statusText;
     private DefaultTableModel model;
     private TableRowSorter<TableModel> sorter;
-    private BicycleCardLayout bicycleCardLayout;
     private Database database;
-    private Object[] columnNames = {"Type","Model", "Colour", "Frame Size", "Wheel Size", "Frame Composition","Cost Price","Sale Price"};
+    private Object[] columnNames = {"Product Type","Model", "Colour", "Frame Size", "Wheel Size","Frame Composition","Cost Price","Sale Price"};
     private Object[][] data = new Object [50][50];
     private ArrayList<Bicycle> newArrayList;
    
@@ -42,7 +44,6 @@ public class BicycleTableSorter extends JPanel {
     public BicycleTableSorter(Database database,BicycleCardLayout bicycleCardLayout) {
     	
     	this.database = database;
-    	this.bicycleCardLayout= bicycleCardLayout;
     	bicyclePanel = new JPanel(new BorderLayout());
     	
     	createBicycleTable();
@@ -52,11 +53,23 @@ public class BicycleTableSorter extends JPanel {
     }
     
     public void createBicycleTable(){
-    	table = new JTable();
+    	table = new JTable() {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
     
         //Create a table with a sorter.
         model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);
+        
        
         sorter = new TableRowSorter<TableModel>(model);
         table.setModel(model);
@@ -67,6 +80,7 @@ public class BicycleTableSorter extends JPanel {
         //For the purposes of this example, better to have a single
         //selection.
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
         
         //When selection changes, provide user with row numbers for
         //both view and model.
@@ -145,19 +159,20 @@ public class BicycleTableSorter extends JPanel {
 
     public void  viewBicyclesTable(){
 		
-		int i = 0;
 		for (Bicycle bicycle : newArrayList) {
-				
+			
+			
 				Object [] row = {bicycle.getClass().getSimpleName(), bicycle.getModel()
 						,bicycle.getColour(),bicycle.getFrameSize() + "",bicycle.getWheelSize() + "", bicycle.getFrameComposition()
 						,bicycle.getCostPrice(),bicycle.getSalePrice()};
 				model.addRow(row);
 				
+			
 				
+
 		
 		
 			}
-			//table = new JTable(data, columnNames);
 		
 		}
     
@@ -238,15 +253,8 @@ public class BicycleTableSorter extends JPanel {
          * Don't need to implement this method unless your table's
          * editable.
          */
-        public boolean isCellEditable(int row, int col) {
-            //Note that the data/cell address is constant,
-            //no matter where the cell appears onscreen.
-            if (col < 2) {
-                return false;
-            } else {
-                return true;
-            }
-        }
+        
+       
 
     
 
