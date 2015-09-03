@@ -193,8 +193,8 @@ public class BicycleTableSorter extends JPanel {
 			
 				
 				Object [] row = {Utilities.splitCamelCase(bicycle.getClass().getSimpleName()), bicycle.getModel()
-						,bicycle.getColour(),bicycle.getFrameSize() + "",bicycle.getWheelSize() + "",bikeGears+"", bicycle.getFrameComposition()
-						,bicycle.getCostPrice(),bicycle.getSalePrice()};
+						,bicycle.getColour(),bicycle.getFrameSize() + " inch",bicycle.getWheelSize() + " inch",bikeGears+"", bicycle.getFrameComposition()
+						,"\u20AC"+bicycle.getCostPrice(),"\u20AC"+bicycle.getSalePrice()};
 				model.addRow(row);
 				
 			
