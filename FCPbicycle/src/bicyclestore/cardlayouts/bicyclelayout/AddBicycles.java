@@ -31,6 +31,7 @@ import bicyclestore.bikes.MountainBike;
 import bicyclestore.bikes.RoadBike;
 import bicyclestore.cardlayouts.customercardlayouts.CustomersCardLayout;
 //import bicyclestore.cardlayouts.ordercardlayouts.OrderFromSupplierCard.ComboBoxListener;
+import bicyclestore.cardlayouts.stockcontrol.StockControlCard;
 
 
 
@@ -52,12 +53,14 @@ public class AddBicycles extends JPanel {
 	private int intWheelSize;
 	private double doubleCostPrice;
 	private double doubleSalePrice;
+	private StockControlCard stock;
 	
 	
-	public AddBicycles(Database database,BicycleCardLayout bicycleCardLayout ) {
+	public AddBicycles(Database database,BicycleCardLayout bicycleCardLayout,StockControlCard stock ) {
 		
 		this.database = database;
 		this.bicycleCardLayout = bicycleCardLayout;
+		this.stock=stock;
 	
 		
 		initComponents();
@@ -168,6 +171,7 @@ public class AddBicycles extends JPanel {
 					doubleSalePrice = Double.parseDouble(salePrice);
 					
 					database.addBicycle(new BMX(model, colour, intFrameSize, intWheelSize,frameComposition, doubleCostPrice, doubleSalePrice));
+					stock.bicycleAdded();
 					clearTextFields();
 					//addBicycle (model, colour, intFrameSize, intWheelSize,frameComposition,doubleCostPrice,doubleSalePrice);
 				}
@@ -178,6 +182,7 @@ public class AddBicycles extends JPanel {
 					doubleSalePrice = Double.parseDouble(salePrice);
 					
 					database.addBicycle(new Cruiser(model, colour, intFrameSize, intWheelSize,frameComposition, doubleCostPrice, doubleSalePrice));
+					stock.bicycleAdded();
 					clearTextFields();
 					//addBicycle (model, colour, intFrameSize, intWheelSize,frameComposition,doubleCostPrice,doubleSalePrice);
 				}
@@ -190,6 +195,7 @@ public class AddBicycles extends JPanel {
 					doubleSalePrice = Double.parseDouble(salePrice);
 					
 					database.addBicycle(new Hybrid(intNoOfGears,model, colour, intFrameSize, intWheelSize,frameComposition, doubleCostPrice, doubleSalePrice));
+					stock.bicycleAdded();
 					clearTextFields();
 				}
 				else if(cbItemName.equals("Motorised Bike")) {
@@ -200,6 +206,7 @@ public class AddBicycles extends JPanel {
 					doubleSalePrice = Double.parseDouble(salePrice);
 					
 					database.addBicycle(new MotorisedBike(model, colour, intFrameSize, intWheelSize,frameComposition, doubleCostPrice, doubleSalePrice));
+					stock.bicycleAdded();
 					clearTextFields();
 					//addBicycle(,model, colour, intFrameSize, intWheelSize,frameComposition,doubleCostPrice,doubleSalePrice);
 				}
@@ -212,6 +219,7 @@ public class AddBicycles extends JPanel {
 					doubleSalePrice = Double.parseDouble(salePrice);
 					
 					database.addBicycle(new MountainBike(intNoOfGears,model, colour, intFrameSize, intWheelSize,frameComposition, doubleCostPrice, doubleSalePrice));
+					stock.bicycleAdded();
 					clearTextFields();
 					//addBicycle (model, colour, intFrameSize, intWheelSize,frameComposition,doubleCostPrice,doubleSalePrice);
 				}
@@ -224,6 +232,7 @@ public class AddBicycles extends JPanel {
 					doubleSalePrice = Double.parseDouble(salePrice);
 					
 					database.addBicycle(new RoadBike(intNoOfGears,model, colour, intFrameSize, intWheelSize,frameComposition, doubleCostPrice, doubleSalePrice));
+					stock.bicycleAdded();
 					clearTextFields();
 					//addBicycle (model, colour, intFrameSize, intWheelSize,frameComposition,doubleCostPrice,doubleSalePrice);
 				}

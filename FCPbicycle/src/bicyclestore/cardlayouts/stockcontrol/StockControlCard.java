@@ -7,6 +7,7 @@ import javax.swing.border.TitledBorder;
 
 import bicyclestore.Database;
 import bicyclestore.SystemData;
+import bicyclestore.transaction.ProfitAndLoss;
 //import bicyclestore.cardlayouts.customercardlayouts.AddCustomerCard;
 //import bicyclestore.cardlayouts.customercardlayouts.EditCustomerCard;
 //import bicyclestore.cardlayouts.customercardlayouts.ViewCustomerCard;
@@ -20,23 +21,25 @@ public class StockControlCard implements ItemListener {
     final static String PredictionPANEL = "Sales Forcast";
     JLabel bmx, motorised, mountain, hybrid, road, cruiser;
 	JLabel sales, predictions;
+	
+	private static Database data;
+	private StockControl stock;
 	GraphIcon graph = new GraphIcon(null, 0, 0);
 	
 	//private JPanel comboBoxPane;
 	
-	public StockControlCard() {
+	public StockControlCard(Database data) {
+		this.data=data;
 		cardLayoutPane = new JPanel(new BorderLayout());
-		addComponentToPane(cardLayoutPane);
+		addComponentToPane();
+		 stock = new StockControl();
 	}
      
-    public void addComponentToPane(Container pane) {
-    	StockControl stock = new StockControl();
-        StockControlGraph panel = new StockControlGraph();
-		Database database= new Database();
-		SystemData data=new SystemData(database);
-		data.fillDatabase();
-		stock.calculateStock(null, database);
-		stock.predictions(database);
+    public void addComponentToPane() {
+    	stock = new StockControl();
+        //StockControlGraph panel = new StockControlGraph();
+        stock.calculateStock(null, data);
+		stock.predictions(data);
 		
     	
     	
@@ -64,8 +67,8 @@ public class StockControlCard implements ItemListener {
         cards.add(card2, GRAPHPANEL);
         cards.add(card3, PredictionPANEL);
          
-        pane.add(comboBoxPane, BorderLayout.PAGE_START);
-        pane.add(cards, BorderLayout.CENTER);
+        cardLayoutPane.add(comboBoxPane, BorderLayout.PAGE_START);
+        cardLayoutPane.add(cards, BorderLayout.CENTER);
         
         bmx = new JLabel("Bmx bikes: ");
 		motorised = new JLabel("Motorised Bike: ");
@@ -127,20 +130,16 @@ public class StockControlCard implements ItemListener {
     }
      
   
-    public static void createAndShowGUI() {
-        //Create and set up the window.
-        JFrame frame = new JFrame("CardLayoutDemo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         
-        //Create and set up the content pane.
-        StockControlCard demo = new StockControlCard();
-        demo.addComponentToPane(frame.getContentPane());
-        //demo.addComponentToPane(cardLayoutPane); 
-        
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
-    }
+   
+    
+    public void bicycleAdded(){
+    	graph.refreshCharts();
+		cardLayoutPane.removeAll();
+		cardLayoutPane.repaint();
+		
+		addComponentToPane();
+		
+   }
     
     public JPanel getStockControlCardLayout() {
     	return cardLayoutPane;

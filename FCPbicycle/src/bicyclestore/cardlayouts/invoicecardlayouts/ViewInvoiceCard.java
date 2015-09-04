@@ -80,7 +80,7 @@ import bicyclestore.transaction.ShoppingBasket;
 			//add(buttonPane, BorderLayout.EAST);
 			
 			setUpTable();
-			this.add(new JScrollPane(invoiceDetailsTable),BorderLayout.SOUTH);
+			this.add(new JScrollPane(invoiceDetailsTable),BorderLayout.EAST);
 		}
 		
 		private void setUpinvoiceList() {
@@ -94,10 +94,15 @@ import bicyclestore.transaction.ShoppingBasket;
 			invoiceList.setVisibleRowCount(10);
 			
 			// set up scroll pane to contain list and wrap in titled border
+			
 			listScrollPane = new JScrollPane(invoiceList);
 			TitledBorder scrollPaneBorder = BorderFactory.createTitledBorder("Select an invoice");
 			scrollPaneBorder.setTitleJustification(TitledBorder.CENTER);
 			listScrollPane.setBorder(scrollPaneBorder);
+			
+			
+			
+			
 			
 			invoiceList.setPreferredSize(new Dimension(200,100));
 		}

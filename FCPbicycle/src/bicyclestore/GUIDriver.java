@@ -91,6 +91,7 @@ public class GUIDriver extends JFrame{
 		JPanel customerTab = new JPanel();
 		JPanel productTab  = new JPanel();
 		JPanel invoicingTab = new JPanel();
+		JPanel stockTab = new JPanel();
 		
 		// add customer card layout to customer tab
 		CustomersCardLayout customersLayout = new CustomersCardLayout(database);
@@ -100,8 +101,12 @@ public class GUIDriver extends JFrame{
 		InvoiceCardLayout invoiceCard = new InvoiceCardLayout(database, employee);
 		invoicingTab.add(invoiceCard);
 		
+		// add stock control layout to stock control tab
+		StockControlCard stockControlCard = new StockControlCard(database);
+		stockTab.add(stockControlCard.getStockControlCardLayout());
+		
 		// add Bicycle card layout to products tab
-		BicycleCardLayout bicycleCardLayout = new BicycleCardLayout(database);
+		BicycleCardLayout bicycleCardLayout = new BicycleCardLayout(database, stockControlCard);
 		productTab.add(bicycleCardLayout);
 		
 		tabbedPane.add("Customers", customerTab);
@@ -133,7 +138,7 @@ public class GUIDriver extends JFrame{
 		orderingTab.add(ordersLayout); 
 		
 		// add stock control layout to stock control tab
-		StockControlCard stockControlCard = new StockControlCard();
+		StockControlCard stockControlCard = new StockControlCard(database);
 		stockTab.add(stockControlCard.getStockControlCardLayout());
 		
 		// add supplier card layout to supplier control tab
@@ -145,7 +150,7 @@ public class GUIDriver extends JFrame{
 		invoicingTab.add(invoiceCard);
 		
 		// add Bicycle card layout to products tab
-			BicycleCardLayout bicycleCardLayout = new BicycleCardLayout(database);
+			BicycleCardLayout bicycleCardLayout = new BicycleCardLayout(database, stockControlCard);
 			productTab.add(bicycleCardLayout);
 		
 		tabbedPane.add("Customers", customerTab);

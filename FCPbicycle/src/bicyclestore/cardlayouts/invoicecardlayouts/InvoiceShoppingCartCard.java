@@ -53,7 +53,7 @@ import bicyclestore.transaction.ShoppingBasket;
 		private JTextField txtId;
 		private JButton btnEditId;
 		
-		private int transactionIdCount = 10004;
+		private int transactionIdCount = 10016;
 		private ProfitAndLossCard profitLossCard;
 		
 		private DefaultTableModel tableModel;
@@ -115,7 +115,7 @@ import bicyclestore.transaction.ShoppingBasket;
 		
 		private void setUpButtonPane() {
 			
-			btnProcessOrder = new JButton("Process Order");
+			btnProcessOrder = new JButton("Process Invoice");
 			btnProcessOrder.addActionListener(new ButtonListener());
 			
 			buttonPane = Box.createHorizontalBox();

@@ -23,14 +23,21 @@ public class StockControlGraph extends JPanel
     private int graphHeight = 200;
     private int barWidth = 50;
     private int barGap = 25;
-
+    private JPanel graphPanel;
     private JPanel barPanel;
     private JPanel labelPanel;
-
+    private GraphIcon icon;
     private List<Bar> bars = new ArrayList<Bar>();
 
     public StockControlGraph()
     {
+    	//GraphIcon icon = new GraphIcon(null, 0, 0);
+    	SetUpGraph();
+    	//icon.createAndShowGUI();
+    	
+    }
+    	 public void SetUpGraph(){
+    	
         setBorder( new EmptyBorder(10, 10, 10, 10) );
         setLayout( new BorderLayout() );
 
@@ -43,14 +50,21 @@ public class StockControlGraph extends JPanel
         labelPanel = new JPanel( new GridLayout(1, 0, barGap, 0) );
         labelPanel.setBorder( new EmptyBorder(10, 10, 0, 10) );
 
-        add(barPanel, BorderLayout.CENTER);
-        add(labelPanel, BorderLayout.PAGE_END);
+       add(barPanel, BorderLayout.CENTER);
+       add(labelPanel, BorderLayout.PAGE_END);
+		
     }
 
     public void addColumn(String label, int value, Color color)
     {
         Bar bar = new Bar(label, value, color);
         bars.add( bar );
+    }
+    
+    public void removeColumn()
+    {
+        
+        bars.clear();
     }
 
     public void layoutGraph()
@@ -71,7 +85,7 @@ public class StockControlGraph extends JPanel
             tag.setVerticalTextPosition(JLabel.TOP);
             tag.setVerticalAlignment(JLabel.BOTTOM);
             int barHeight = (bar.getValue() * graphHeight) / maxValue;
-            Icon icon = new GraphIcon(bar.getColor(), barWidth, barHeight);
+            GraphIcon icon = new GraphIcon(bar.getColor(), barWidth, barHeight);
             tag.setIcon( icon );
             barPanel.add( tag );
 
@@ -117,12 +131,22 @@ public class StockControlGraph extends JPanel
 	 	private Color color;
         private int width;
         private int height;
+        private Database database;
+        private StockControlGraph panel;
+        private JPanel graph;
+        private StockControl stock;
 
         public GraphIcon(Color color, int width, int height)
         {
             this.color = color;
             this.width = width;
             this.height = height;
+            stock = new StockControl();
+            database=new Database();
+            SystemData data=new SystemData(database);
+    		data.fillDatabase();
+    		 stock.calculateStock(null, database);
+           
         }
 
         public int getIconWidth()
@@ -147,13 +171,9 @@ public class StockControlGraph extends JPanel
 
     public Component createAndShowGUI()
     {
-    	StockControl stock = new StockControl();
-        StockControlGraph panel = new StockControlGraph();
-		Database database= new Database();
-		SystemData data=new SystemData(database);
-		data.fillDatabase();
-        
-        stock.calculateStock(null, database);
+    	panel = new StockControlGraph();
+    	
+		
         panel.addColumn("BMX", stock.getBmx(), Color.RED);
         panel.addColumn("Motorised Bike", stock.getMotorizedBike(), Color.ORANGE);
         panel.addColumn("Mountain Bike", stock.getMountainBike(), Color.YELLOW);
@@ -163,6 +183,34 @@ public class StockControlGraph extends JPanel
         
         panel.layoutGraph();
 		return panel;	
+    }
+    
+    public void refreshCharts(){
+    	
+    	//stock = new StockControl();
+    	//stock.clearStock();
+    	//stock.calculateStock(null, database);
+		//stock.predictions(database);
+        //System.out.println(stock.getBmx());
+    	panel.removeColumn();
+    	panel.removeAll();
+    	panel.repaint();
+    	//panel.SetUpGraph();
+    	//createAndShowGUI();
+    	
+    	
+    	
+
+    	/*//stock = new StockControl();
+    	//stock.clearStock();
+    	stock = new StockControl();
+    	stock.calculateStock(null, database);
+		stock.predictions(database);
+        System.out.println(stock.getBmx());
+    	panel.removeAll();
+    	panel.revalidate();
+    	panel.SetUpGraph();*/
+    	//createAndShowGUI();
     }
 
     }

@@ -133,8 +133,8 @@ public class ViewThisWeeksCosts extends JPanel {
 		
 		lblTotalOrders = new JLabel(database.getPurchasingTransactions().size()+"", JLabel.CENTER);
 		lblOrdersThisWeek = new JLabel(getNoOrdersThisWeek()+"", JLabel.CENTER);
-		lblTotalCost = new JLabel(String.format("€%.2f", getTotalCostOfOrders()), JLabel.CENTER);
-		lblWeeksCost = new JLabel(String.format("€%.2f", getThisWeeksOrdersCost()), JLabel.CENTER);
+		lblTotalCost = new JLabel(String.format("â‚¬%.2f", getTotalCostOfOrders()), JLabel.CENTER);
+		lblWeeksCost = new JLabel(String.format("â‚¬%.2f", getThisWeeksOrdersCost()), JLabel.CENTER);
 		lblTotalOrders.setBackground(Color.LIGHT_GRAY);
 		lblTotalOrders.setOpaque(true);
 		lblOrdersThisWeek.setBackground(Color.LIGHT_GRAY);
@@ -236,8 +236,8 @@ public class ViewThisWeeksCosts extends JPanel {
 	public void newOrderAdded() {
 		lblOrdersThisWeek.setText(getNoOrdersThisWeek()+"");
 		lblTotalOrders.setText(database.getPurchasingTransactions().size()+"");
-		lblWeeksCost.setText(String.format("€%.2f", getThisWeeksOrdersCost()));
-		lblTotalCost.setText(String.format("€%.2f", getTotalCostOfOrders()));
+		lblWeeksCost.setText(String.format("â‚¬%.2f", getThisWeeksOrdersCost()));
+		lblTotalCost.setText(String.format("â‚¬%.2f", getTotalCostOfOrders()));
 		refreshCharts();
 	}
 	

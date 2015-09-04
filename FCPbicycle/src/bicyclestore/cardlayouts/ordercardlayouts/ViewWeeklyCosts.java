@@ -67,14 +67,14 @@ public class ViewWeeklyCosts extends JPanel {
 		averageHeading.setOpaque(true);
 		averageHeading.setBackground(new Color(107,106,104));
 		averageHeading.setForeground(Color.WHITE);
-		lblAverage = new JLabel(String.format("€%.2f", getWeeklyAverage()));
+		lblAverage = new JLabel(String.format("â‚¬%.2f", getWeeklyAverage()));
 		lblAverage.setBackground(Color.LIGHT_GRAY);
 		lblAverage.setOpaque(true);
 		JLabel averageSixHeading = new JLabel("Weekly Average (last six weeks)");
 		averageSixHeading.setOpaque(true);
 		averageSixHeading.setBackground(new Color(107,106,104));
 		averageSixHeading.setForeground(Color.WHITE);
-		lblAverageSixWeeks = new JLabel(String.format("€%.2f", getLastSixWeeksAverage()));
+		lblAverageSixWeeks = new JLabel(String.format("â‚¬%.2f", getLastSixWeeksAverage()));
 		lblAverageSixWeeks.setBackground(Color.LIGHT_GRAY);
 		lblAverageSixWeeks.setOpaque(true);
 		
@@ -196,8 +196,8 @@ public class ViewWeeklyCosts extends JPanel {
 
 	// update content on panel when a new order is added to the system
 	public void newOrderAdded() {
-		lblAverage.setText(String.format("€%.2f", getWeeklyAverage()));
-		lblAverageSixWeeks.setText(String.format("€%.2f", getLastSixWeeksAverage()));
+		lblAverage.setText(String.format("â‚¬%.2f", getWeeklyAverage()));
+		lblAverageSixWeeks.setText(String.format("â‚¬%.2f", getLastSixWeeksAverage()));
 		refreshCharts();
 	}
 

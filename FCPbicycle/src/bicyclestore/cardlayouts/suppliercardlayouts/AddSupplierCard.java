@@ -282,7 +282,7 @@ public class AddSupplierCard extends JPanel {
 		return bike;
 	}
 	
-	private void addSupplier(String supID, String name, String address, String phoneNum, String email, ArrayList<Bicycle> catelog) {
+	public void addSupplier(String supID, String name, String address, String phoneNum, String email, ArrayList<Bicycle> catelog) {
 		// attempt to parse supplier id integer from string
 		int supplierID = 0;
 		boolean gotID = false;

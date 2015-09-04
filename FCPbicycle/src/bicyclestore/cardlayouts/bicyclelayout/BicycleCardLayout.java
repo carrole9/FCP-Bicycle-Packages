@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import bicyclestore.Database;
+import bicyclestore.cardlayouts.stockcontrol.StockControlCard;
 
 
 public class BicycleCardLayout extends JPanel implements ItemListener {
@@ -30,13 +31,15 @@ public class BicycleCardLayout extends JPanel implements ItemListener {
 	
 	private BicycleTableSorter bicycleTableSorter;
 	private AddBicycles addBicycles;
+	private StockControlCard stock;
 	
 	
 	
 	
-	public BicycleCardLayout(Database database) {
+	public BicycleCardLayout(Database database,StockControlCard stock) {
 		
 		this.database = database;
+		this.stock=stock;
 		createCardLayoutPane();
 	}
 	
@@ -48,7 +51,7 @@ public class BicycleCardLayout extends JPanel implements ItemListener {
 				cards = new JPanel(new CardLayout());
 				
 				bicycleTableSorter = new BicycleTableSorter(database,this);
-				addBicycles = new AddBicycles(database,this);
+				addBicycles = new AddBicycles(database,this, stock);
 				
 				// create cards to make up card layout
 				JPanel card1 = bicycleTableSorter.getBicycleLayoutPane();//.getBicycleLayoutPane();
